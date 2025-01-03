@@ -1,0 +1,55 @@
+.cardImg{
+    /* margin:auto; */
+    height: 300px;
+    width: 250px;
+    transition: transform 0.3s;
+}
+.productRow{
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    max-height: 400px;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    /* margin-left: 34px; */
+    position: relative;
+    
+}
+.card{
+    /* margin: 12px; */
+}
+
+@media screen and (max-width:3000px)
+{
+    .cardImg{
+       
+        height: 200px;
+        width: 200px;
+        transition: transform 0.3s;
+    }
+    .productRow{
+        max-height: 270px;
+        overflow-x:auto;    
+    }
+    
+    
+}
+
+/* code for the custom  scroll bar  */
+
+.productRow::-webkit-scrollbar {
+    height: 0px; /* Width of the vertical scroll bar */
+  }
+  
+  .productRow::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scroll bar track */
+  }
+  
+  .productRow::-webkit-scrollbar-thumb {
+    background: #aba7a7; /* Color of the scroll bar thumb */
+  }
+  
+  .scroll-content {
+    /* padding-right: 8px;  */
+    padding-bottom: 3px;
+  }

@@ -1,0 +1,21 @@
+#mainContainer{
+    position: absolute; 
+    top:80px;
+    right:40px;
+    z-index: 23;
+    /* height: 400px; */
+   max-width: 400px;
+   background: rgb(253, 252, 252);
+   border-bottom-left-radius: 12px;
+   border-bottom-right-radius: 12px;
+   border-radius: 0 0 3px 3px
+}    
+@media screen and (max-width:576px) {
+    #mainContainer{
+        margin: 0;
+        right: 0;
+        max-width: 576px;
+        width: 100vw;
+        height: 100vh;
+    }
+}
