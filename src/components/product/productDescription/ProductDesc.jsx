@@ -1,7 +1,8 @@
 // this component will show  the detailed description of the product (coming after clicking on the product.)
 import { db } from "../../../../firebaseConfig";
 import { useLocation } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { getAuth,onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import "../../../css/ProductDesc.css"
@@ -10,12 +11,16 @@ import returnlogo from   "../../../assets/DescBanner/return.png";
 import homeDelivery from "../../../assets/DescBanner/homeDelivery.png";
 import cod from "../../../assets/DescBanner/cod.png";
 
+
+
 // component having multiple nested components. 
 const ProductDesc = () => {
     const [purchase, setPurchase] = useState({})
     const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+    const [user,setUser]=useState({});
 // 
     const handleChange= (event)=>{
+        console.log("hii ");
         const { name, value } = event.target;
         setPurchase({
             ...purchase,
@@ -27,17 +32,39 @@ const ProductDesc = () => {
     const [product ,setProduct]=useState(null)
     const prop = useLocation();
     const category = prop.state[1]
+
+    // *****useEffect to set the user
+    useEffect(()=>{
+        
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+        setUser(user);
+            // ...
+        } else {
+            setUser(null)
+            console.log("user not logged in ");
+        }
+        });
+
+    })
     useEffect(()=>{
         const fetchData= async ()=>{
 
             try {
               const docRef = doc(db, category, prop.state[0]);
-                const docSnap = await getDoc(docRef);   
+                const docSnap = await getDoc(docRef)  
 
                 if (docSnap.exists()) {
                 console.log("Document data:", docSnap.data());
-                setProduct(docSnap.data());
-                console.log(product);
+                console.log(docSnap.id);
+                    // setProduct(state=>{return docSnap.data()})
+                    
+                setProduct({...docSnap.data(),["id"]:docSnap.id});
+
+                // console.log("product is ",product);
                 } else {
                 // docSnap.data() will be undefined in this case
                 console.log("No such document!");
@@ -50,8 +77,54 @@ const ProductDesc = () => {
         fetchData();
 
     },[category,prop.state])
-    
-  
+    const purchaseSet=()=>{
+        let cartItem = purchase;
+        cartItem.title=product.title;
+        cartItem.price=product.price;
+        cartItem.photo=product.photo
+        cartItem.id=product.id
+        cartItem.userId=user.uid;
+        setPurchase(cartItem);
+    }
+    const addToCart=()=>{
+        if(!purchase.size || !purchase.color) { alert("choose size and color");}
+        let cart = JSON.parse(localStorage.getItem("cart"))
+        console.log(cart)
+        if(!cart) cart=[];
+
+    //  to set the purchase object
+        purchaseSet();
+        
+        let existingItem= cart.find( item=>item.size == purchase.size && item.color==purchase.color && item.title==purchase.title );
+
+        if(!existingItem)
+        {
+            cart.push(cartItem)
+        }
+        else
+        {
+            alert("Product already in Cart");
+        }
+        localStorage.setItem("cart",JSON.stringify(cart))
+        alert("Added to Cart");
+        console.log(product);
+    }
+    const buyProduct=async ()=>{
+        if(!user) { alert("Please login first to continue"); return;}
+        console.log(user);
+        if(purchase.size && purchase.color){    
+            console.log("buying product");
+            purchaseSet();
+            const docRef = await addDoc(collection(db,"orders"),{  purchase})
+            console.log("purchase done",docRef.id);
+    }
+    else{   
+       alert("choose size and color");
+
+    }
+}
+
+
     return(
         <>
         <div>
@@ -102,6 +175,7 @@ const ProductDesc = () => {
                            <p className="m-0 mt-1">Size</p>
                            <div>
                             <select className="border rounded" name="size" onChange={handleChange} id="size">
+                                <option value="">Select</option>
                                { product.sizes?  product.sizes.map((size)=>{
                                    return(
                                     <option value={size}>{size}</option>
@@ -112,7 +186,10 @@ const ProductDesc = () => {
                            </div>
                              <p className="m-0 mt-3">Color</p>
                            <div className="">
-                            {product.color &&product.color.length>0?
+                          
+                            {
+                            product.color &&product.color.length>0?
+                            
                             product.color.map((color)=>{
                                 return(
                                     <div className="d-inline text-center">
@@ -120,7 +197,7 @@ const ProductDesc = () => {
                                     <input  type="radio" name="color" className="d-none" onChange={handleChange} value={color} id={color} />
                                     <label htmlFor={color} className="">
                                         <img src={product.photo} style={{height:"60px", width:"40px"}} className="border borde-dotted ms-2" alt="" />
-                                        <p>{color}</p>
+                                        <p>{color}</p>  
         
                                     </label>
                                     </div>
@@ -128,14 +205,14 @@ const ProductDesc = () => {
                             })
                             
                            
-                            :""}
+                            :"hii"}
                             {/* <input type="radio" name="color" onChange={handleChange} value="black" id="color2" /> */}
                             {/* <input type="radio" name="color"  onChange={handleChange} value="pink" id="color3" /> */}
                            </div>
 
                            <div className="row mt-3  justify-content-start">
-                            <div className="col-lg-2 fs-6 text-center text-bg-warning border rounded px-2 py-2">Add to Cart</div>
-                            <div className="col-lg-2 fs-6 text-center text-bg-success ms-2 border rounded px-2 py-2"> buy Now</div>
+                            <div className="col-lg-2 fs-6 text-center text-bg-warning border rounded px-2 py-2 btn " onClick={addToCart} >Add to Cart</div>
+                            <div className="col-lg-2 fs-6 text-center text-bg-success ms-2 border rounded px-2 py-2 btn" onClick={buyProduct}> buy Now</div>
                            </div>
                         
                           

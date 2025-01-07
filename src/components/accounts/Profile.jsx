@@ -6,6 +6,8 @@ import wishList from "../../assets/profile/wishList.png"
 import { useState } from 'react'
 import Cart from '../product/cart'
 
+import { getAuth,signOut } from 'firebase/auth'
+
 
 
 function Profile() {
@@ -18,6 +20,10 @@ function Profile() {
     },[])
 
     const logout=()=>{
+        const auth = getAuth();
+        signOut(auth).then(()=>{
+
+        }).catch((err)=>{console.log(err);})
         localStorage.clear();
         window.location.reload();
     }
