@@ -1,0 +1,17 @@
+.orderImg{
+    height: 200px;
+    width: 200px;
+}
+.title{
+    font-size: 19px;
+}
+@media (max-width:768px) {
+    .orderImg{
+    width: 70px;
+    height: 100px;
+    }
+    .title{
+        font-size: 14px;
+    }
+    
+}

@@ -1,18 +1,44 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react'; // Import useState hook
-import jeans from "../assets/jeans.jpg";
-import polo from "../assets/polo.webp";
-import shirt from "../assets/shirt.jpg";
-import jogger from "../assets/jogger.jpg";
+import { useEffect, useState } from 'react'; // Import useState hook
+import jeans from "../assets/jeans.png";
+import polo from "../assets/polo.png";
+import shirt from "../assets/shirt.png";
+import jogger from "../assets/jogger.png";
 // css file 
 import "../css/ProductGrid.css";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
 
-let srcs = [jeans, polo, shirt, jogger,jeans,jeans,jeans];
+
 
 function ProductGrid() {
+  const [products ,setProducts] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null); // State to track hovered index
+  const navigate = useNavigate();
+  
+  useEffect(()=>{
+    const fetchProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "admin", "productsWeOffer", "products"));
+        const productsArray = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(productsArray);
+        console.log(productsArray);
+      } catch (error) {
+        console.error("Error fetching products: ", error);
+      }
+    };
+
+    fetchProducts();
+    console.log("products are ",products);
+  },[])
+
 
   return (
     <>
@@ -20,15 +46,17 @@ function ProductGrid() {
 
       <h1 className='text-center mt-3'>Products we offer</h1>
       <div md={6} className="mt-1  productRow">
-        {srcs.map((src, idx) => (
-          <div key={idx}  className=''>
+        { products.length>0 ? products.map((product, idx) => (
+          <div key={idx}  className='' onClick={()=>{
+            navigate(`${product.path}`)
+          }}>
             <div style={{margin:"12px"}}className='border border-0 '
               onMouseEnter={() => setHoveredIndex(idx)} // Set hovered index on mouse enter
               onMouseLeave={() => setHoveredIndex(null)} // Reset hovered index on mouse leave
               >
               <img className='cardImg'
               
-                src={src}
+                src={product.imgSrc}
                 style={{
                   // Add transition for smoother effect
                   transform: hoveredIndex === idx ? "scale(1.1)" : "scale(1)",
@@ -36,12 +64,12 @@ function ProductGrid() {
                 }}
                 />
               <p className='text-center mt-1 '>
-              Jeans
+              {product.name}
                 
               </p>
             </div>
           </div>
-        ))}
+        )):""}
       </div>
         </div>
     </>

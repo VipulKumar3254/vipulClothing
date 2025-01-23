@@ -8,16 +8,20 @@
    justify-content: space-evenly;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:992px) {
     .tshirtImg{
         height: 500px;
     }
     
-}
-
-@media screen and (max-width:992px) {
-   .tshirtImg{
-    height: 500px;
-   }
     
 }
+    @media screen and (max-width:768px) {
+        .tshirtImg{
+            /* display: none; */
+            height: 200px;
+            /* margin-right: 20px; */
+            /* height: 500px; */
+            /* height: auto; */
+        }
+        
+    }

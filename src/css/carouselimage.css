@@ -1,0 +1,8 @@
+@media (max-width:768px)
+{
+    .carousel-image
+    {
+        /* object-position:left center; */
+        object-position:  left;
+    }
+}

@@ -1,250 +1,227 @@
-// this component will show  the detailed description of the product (coming after clicking on the product.)
 import { db } from "../../../../firebaseConfig";
-import { useLocation } from "react-router-dom";
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
-import { getAuth,onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { useLocation, useParams } from "react-router-dom";
+import { collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import "../../../css/ProductDesc.css"
+import "../../../css/ProductDesc.css";
+
 //desc banner images
-import returnlogo from   "../../../assets/DescBanner/return.png";
+import returnlogo from "../../../assets/DescBanner/return.png";
 import homeDelivery from "../../../assets/DescBanner/homeDelivery.png";
 import cod from "../../../assets/DescBanner/cod.png";
 
-
-
-// component having multiple nested components. 
 const ProductDesc = () => {
-    const [purchase, setPurchase] = useState({})
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0)
-    const [user,setUser]=useState({});
-// 
-    const handleChange= (event)=>{
-        console.log("hii ");
-        const { name, value } = event.target;
-        setPurchase({
-            ...purchase,
-            [name]: value,
-        });
-        console.log(purchase);
+    let { id } = useParams();
+    const [purchase, setPurchase] = useState({});
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [user, setUser] = useState({});
+    const [product, setProduct] = useState(null);
+    const [showTerms, setShowTerms] = useState(false); // Controls the visibility of Terms & Conditions
+    const [selectedColor, setSelectedColor] = useState("");
 
-    }
-    const [product ,setProduct]=useState(null)
-    const prop = useLocation();
-    const category = prop.state[1]
+    const location = useLocation();
+    id = location.state ? location.state[0] : id;
 
-    // *****useEffect to set the user
-    useEffect(()=>{
-        
+    useEffect(() => {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/auth.user
-        setUser(user);
-            // ...
-        } else {
-            setUser(null)
-            console.log("user not logged in ");
-        }
+            setUser(user ? user : null);
         });
+    }, []);
 
-    })
-    useEffect(()=>{
-        const fetchData= async ()=>{
-
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-              const docRef = doc(db, category, prop.state[0]);
-                const docSnap = await getDoc(docRef)  
+                const docRef = doc(db, "products", id);
+                const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                console.log("Document data:", docSnap.data());
-                console.log(docSnap.id);
-                    // setProduct(state=>{return docSnap.data()})
-                    
-                setProduct({...docSnap.data(),["id"]:docSnap.id});
-
-                // console.log("product is ",product);
+                    setProduct({ ...docSnap.data(), id: docSnap.id });
                 } else {
-                // docSnap.data() will be undefined in this case
-                console.log("No such document!");
+                    console.log("No such document!");
                 }
-
             } catch (e) {
                 console.log(e);
             }
-        }
+        };
         fetchData();
+    }, [location.state]);
 
-    },[category,prop.state])
-    const purchaseSet=()=>{
-        let cartItem = purchase;
-        cartItem.title=product.title;
-        cartItem.price=product.price;
-        cartItem.photo=product.photo
-        cartItem.id=product.id
-        cartItem.userId=user.uid;
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setPurchase({ ...purchase, [name]: value });
+
+        if (name === "color") {
+            setSelectedColor(value);
+        }
+    };
+
+    const purchaseSet = () => {
+        let cartItem = { ...purchase, title: product.title, price: product.price, photo: product.photo, productId: product.id, userId: user?.uid };
         setPurchase(cartItem);
-    }
-    const addToCart=()=>{
-        if(!purchase.size || !purchase.color) { alert("choose size and color");}
-        let cart = JSON.parse(localStorage.getItem("cart"))
-        console.log(cart)
-        if(!cart) cart=[];
+        return cartItem;
+    };
 
-    //  to set the purchase object
-        purchaseSet();
-        
-        let existingItem= cart.find( item=>item.size == purchase.size && item.color==purchase.color && item.title==purchase.title );
-
-        if(!existingItem)
-        {
-            cart.push(cartItem)
+    const addToCart = async () => {
+        if (!user) {
+            alert("Login to continue");
+            return;
         }
-        else
-        {
-            alert("Product already in Cart");
+        if (!purchase.size || !purchase.color) {
+            alert("Choose size and color");
+            return;
         }
-        localStorage.setItem("cart",JSON.stringify(cart))
-        alert("Added to Cart");
-        console.log(product);
-    }
-    const buyProduct=async ()=>{
-        if(!user) { alert("Please login first to continue"); return;}
-        console.log(user);
-        if(purchase.size && purchase.color){    
-            console.log("buying product");
-            purchaseSet();
-            const docRef = await addDoc(collection(db,"orders"),{  purchase})
-            console.log("purchase done",docRef.id);
-    }
-    else{   
-       alert("choose size and color");
 
-    }
-}
+        let cartItem = purchaseSet();
+        try {
+            await addDoc(collection(db, `users/${user.uid}/cart`), { ...cartItem });
+            alert("Added to Cart");
+        } catch (err) {
+            console.log("Error while adding to cart:", err);
+        }
+    };
 
+    const handleBuyClick = () => {
+        if (!user) {
+            alert("Please login first to continue");
+            return;
+        }
+        if (!purchase.size || !purchase.color) {
+            alert("Choose size and color");
+            return;
+        }
+        setShowTerms(true); // Show the Terms & Conditions prompt
+    };
 
-    return(
+    const confirmPurchase = async () => {
+        setShowTerms(false); // Hide the terms prompt
+
+        let cartItem = purchaseSet();
+        try {
+            const userRef = doc(db, "users", user.uid);
+            const docRef = await addDoc(collection(db, "orders"), { ...cartItem, user: userRef, status: "Order Requested", date: new Date() });
+
+            await addDoc(collection(db, `users/${user.uid}/orders`), { docRef });
+            alert("Purchase successful");
+        } catch (err) {
+            console.log("Error while purchasing:", err);
+        }
+    };
+
+    return (
         <>
-        <div>
-            {product? (
-                <>
-                <div className="container-fluid">
-                    <div className="row position-relative">
-                        <div className="col-xl-5   ">
-                            <div className="row  ">
-                                <div className="col-lg-1">
+            <div>
+                {product ? (
+                    <>
+                        <div className="container-fluid">
+                            <div className="row position-relative">
+                                {/* Thumbnail images of product */}
+                                <div className="col-xl-5">
+                                    <div>
 
-                                {
-                                    product.photo.map((photo,index)=>{
-                                        return(
-                                            <div  className="mt-2" style={{height:"50px",width:"35px",}}>
-
-                                            <img className="border rounded  " style={{height:"50px",width:"35px",background:"#F7F7F7"}}  src={product.photo[index]} alt="hi" onClick={()=>{ setSelectedImageIndex(index); console.log(selectedImageIndex);}} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                                </div>
-                               <div className="col-lg-6">
-                                
-                        <img className=" productImg  mx-auto  d-block"  src={product.photo[selectedImageIndex]} alt="" />
-                               </div>
-                            </div>
-
-                        </div>
-                        <div className="col-lg-7 border-start ps-4 ">
-                           <p className="text-capitalize fs-3 mt-5 ms-2"  style={{ fontFamily: "Archivo, SansSerif",fontWeight:"500"}}> {product.title}</p>
-                           <p className="fs-5 ms-2">{product.subTitle}</p>
-                           <p className="fs-4 ms-2" style={{fontWeight:"500"}}><sup style={{fontSize:"13px"}}> &#8377;</sup>{product.price}</p>
-                           <div className=" mt-3 text-center d-flex justify-content-start align-items-center">
-                            <div className="m-2 mx-3 ">
-                                <img style={{height:"30px",}}  className=" m-2 "  src={returnlogo} alt="" />
-                                <p className="" style={{fontSize:"12px"}}>10 day return <br /> policy</p>
-                            </div>
-                            <div className="m-2 mx-3 ">
-                                <img style={{height:"30px",}}  className=" m-2 "  src={homeDelivery} alt="" />
-                                <p className="" style={{fontSize:"12px"}}>Fast Home<br/> Delivery</p>
-                            </div>
-                            <div className="m-2 mx-3 ">
-                                <img style={{height:"30px",}}  className=" m-2 "  src={cod} alt="" />
-                                <p className="" style={{fontSize:"12px"}}>Cash on <br /> Delivery</p>
-                            </div>
-                           </div>
-                           <p className="m-0 mt-1">Size</p>
-                           <div>
-                            <select className="border rounded" name="size" onChange={handleChange} id="size">
-                                <option value="">Select</option>
-                               { product.sizes?  product.sizes.map((size)=>{
-                                   return(
-                                    <option value={size}>{size}</option>
-                                   )
-                                   
-                               }):""}
-                            </select>
-                           </div>
-                             <p className="m-0 mt-3">Color</p>
-                           <div className="">
-                          
-                            {
-                            product.color &&product.color.length>0?
-                            
-                            product.color.map((color)=>{
-                                return(
-                                    <div className="d-inline text-center">
-
-                                    <input  type="radio" name="color" className="d-none" onChange={handleChange} value={color} id={color} />
-                                    <label htmlFor={color} className="">
-                                        <img src={product.photo} style={{height:"60px", width:"40px"}} className="border borde-dotted ms-2" alt="" />
-                                        <p>{color}</p>  
-        
-                                    </label>
+                                        <div className="col-lg-1  d-flex   flex-row   ">
+                                            {product.photo.map((photo, index) => (
+                                                <div className="mt-2 ms-1" key={index} style={{ height: "50px", width: "35px" }}>
+                                                    <img
+                                                        className="border rounded"
+                                                        style={{ height: "50px", width: "35px", background: "#F7F7F7" }}
+                                                        src={photo}
+                                                        alt="Product Thumbnail"
+                                                        onClick={() => setSelectedImageIndex(index)}
+                                                    />
+                                                </div>
+                                            ))}
                                     </div>
-                                )
-                            })
-                            
-                           
-                            :"hii"}
-                            {/* <input type="radio" name="color" onChange={handleChange} value="black" id="color2" /> */}
-                            {/* <input type="radio" name="color"  onChange={handleChange} value="pink" id="color3" /> */}
-                           </div>
+                                            
+                                        <div className="col-lg-6 col-12 ">
+                                            <img className="productImg mx-auto d-block" src={product.photo[selectedImageIndex]} alt="Product" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-7  ">
+                                    <p className="fs-3 mt-5 ms-2">{product.title}</p>
+                                    <p className="fs-6 ms-2">{product.subTitle}</p>
+                                    <p className="fs-4 ms-2"><sup style={{ fontSize: "13px" }}> &#8377;</sup>{product.price}</p>
 
-                           <div className="row mt-3  justify-content-start">
-                            <div className="col-lg-2 fs-6 text-center text-bg-warning border rounded px-2 py-2 btn " onClick={addToCart} >Add to Cart</div>
-                            <div className="col-lg-2 fs-6 text-center text-bg-success ms-2 border rounded px-2 py-2 btn" onClick={buyProduct}> buy Now</div>
-                           </div>
-                        
-                          
+                                    <div className="mt-3 text-center d-flex">
+                                        <div className="m-2 mx-3">
+                                            <img style={{ height: "30px" }} src={returnlogo} alt="Return Policy" />
+                                            <p style={{ fontSize: "12px" }}>10 Day Return</p>
+                                        </div>
+                                        <div className="m-2 mx-3">
+                                            <img style={{ height: "30px" }} src={homeDelivery} alt="Home Delivery" />
+                                            <p style={{ fontSize: "12px" }}>Fast Delivery</p>
+                                        </div>
+                                        <div className="m-2 mx-3">
+                                            <img style={{ height: "30px" }} src={cod} alt="COD Available" />
+                                            <p style={{ fontSize: "12px" }}>Cash on Delivery</p>
+                                        </div>
+                                    </div>
 
+                                    <p className="mt-1">Size</p>
+                                    <select className="border rounded" name="size" onChange={handleChange}>
+                                        <option value="">Select</option>
+                                        {product.sizes?.map((size, index) => (
+                                            <option key={index} value={size}>{size}</option>
+                                        ))}
+                                    </select>
+
+                                    <p className="mt-3">Color</p>
+                                    <div>
+                                        {product.color?.map((color, index) => (
+                                            <div key={index} className="d-inline text-center ms-2">
+                                                <input type="radio" name="color" className="d-none" onChange={handleChange} value={color} id={color} />
+                                                <label htmlFor={color}>
+                                                    <img src={product.photo[index]} style={{ height: "60px", width: "50px" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
+                                                    <p>{color}</p>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="row mt-3">
+                                        <button className="col-lg-2 btn btn-warning" onClick={addToCart}>Add to Cart</button>
+                                        <button className="col-lg-2 btn btn-success ms-0 mt-1 ms-md-2 mt-md-0" onClick={handleBuyClick}>Buy Now</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h2 className="mt-5">Product Description</h2>
+                            <div className="container ">
+
+                                <p className="fs-6">{product.desc}</p>
+                            </div>
                         </div>
+                    </>
+                ) : <p>Loading...</p>}
+            </div>
 
-                    </div>
-                    <div>
-                    <hr class="border border-secondary border-1 opacity-50"/>
-                    </div>
-                            <h2>Product Description</h2>
-                    <div className="row mt-4 container mx-auto ">
-                        <div className="col-xl-12">
-                            <pre style={{ fontFamily: "Noto Sans JP, SansSerif",}} className="fs-6">
+            {/* Terms & Conditions Modal */}
+            <div className="terms-modal position-absolute   rounded  " style={{ display: showTerms ? "block" : "none" }}>
 
-                            {product.desc}
-                            </pre>
-                        </div>
-                    </div>
-                    
+                <div>
+                    <p className="text-center fs-4 fw-medium">Please read and accept the Terms & Conditions before proceeding.</p>
+                    <ul>
+
+                        <li className="fs-5">Its Cash On Delivery Service.</li>
+                        <li className="fs-5">We hold the right to Cancel the order at any time.</li>
+                        <li className="fs-5">Your Profile Address will be reffered for delivery.</li>
+                        <li className="fs-5">You may receive a call for the confirmation of the order.</li>
+                        <li className="fs-5">This is the service for the local area by <span className="fw-bold">Kumar Fashion Store</span>. No distinct orders will be taken.</li>
+                        <li className="fs-5">Color accuracy of the product is  not 100% due to technical limitations. Product may have slightly other texture or feel.</li>
+                        <li className="fs-5">We promise 1 day delivery for the nearest locations. If you are not close then it make take 2 days. You will be informed in such case.</li>
+                        <li className="fs-5">Order's first phase is the order request, you need to wait to confirm the order. Owner may cancel order for any reason. Once order is confirmed, order will be delivered within one day.</li>
+                        <li className="fs-5">A confirmation of the same will be sent toyou either on WhatsApp or by SMS.</li>
+                    </ul>
                 </div>
-                </>
+                <div className="text-end">
 
-            ):(
-                <p>Loading...</p>
-            )}
-        </div>
-
-        {/* till not extra data is available we are adding some margin from footer */}
-        <div style={{marginBottom:"600px"}}></div>
+                    <button className="btn btn-success" onClick={confirmPurchase}>Proceed</button>
+                    <button className="btn btn-danger ms-2" onClick={() => setShowTerms(false)}>Cancel</button>
+                </div>
+            </div>
         </>
-    )
-}
+    );
+};
 
-export default ProductDesc; 
+export default ProductDesc;

@@ -4,3 +4,33 @@
     width: 540px;
     background-color: rgb(247, 247, 247);
 }   
+.terms-modal{
+        top: 50%;
+        left:50%;
+        transform: translate(-50%, -70%); 
+        width: 50%;
+        background:#F8FAFC;
+        z-index: 1050; 
+        /* min-height: 500px; */
+        width: 60%;
+}
+.highlighedImage
+{
+    border: 2px solid rgb(39, 39, 40);
+    border-radius: 5px;
+
+}
+@media screen and (max-width:768px) {
+    .terms-modal{
+        top: 0;
+        left: 0;
+        transform: translate(0,0);
+        width: 100%;
+
+    }
+    .productImg{
+        width: 100%;
+        height: auto;
+    }
+}
+

@@ -1,0 +1,21 @@
+.saleBanner{
+    height: 400px;
+}
+
+.f-1{
+    font-size: 34px;
+}
+@media screen and (max-width: 768px){
+    /* banner of ladies with bags in hand */
+    .saleBanner{
+        height: 160px;
+    }
+    .f-1{
+        font-size: 20px;
+        margin: auto;
+        
+
+
+    }
+    
+}

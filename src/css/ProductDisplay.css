@@ -2,7 +2,51 @@
     display: grid;
     width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(300px,1fr) );
-
-
-
+    gap: 5px;
+    min-height: 100vh;
+}
+#noProducts{
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: center;
+    
+}
+.product{
+    /* border: 1px solid rgb(245, 244, 244); */
+   
+    
+}
+.imgContainer{
+    background: #f8f6f9;
+    
+}
+.title{
+    color: rgb(21, 20, 20);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  /* Limit to 1 line */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-family: inter;
+    font-weight: 400;
+    margin: 0;
+}
+.textBlack{
+    color: rgb(21, 20, 20);
+}
+.fwMedium{
+    font-weight:500;
+    color: #262626;
+}
+@media (max-width:768px){
+    .gridMaker{
+        gap: 0px;
+    }
+    /* .title{
+        font-size: 14px;
+    }
+    .imgContainer{
+        height: 150px;
+    } */
 }

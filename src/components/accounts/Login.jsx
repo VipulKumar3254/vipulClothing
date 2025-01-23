@@ -4,12 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {db} from '../../../firebaseConfig';
 import {auth} from '../../../firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { UserContext } from './User';
 import { useContext } from 'react';
 import { doc, getDoc } from "firebase/firestore";
+import { userContext } from '../context/context';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const User = useContext(UserContext);
+    const  User= useContext(userContext)
+    const navigate= useNavigate();
 
 const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,8 +19,6 @@ const [email, setEmail] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
     // Basic validation
     if (!email || !password) {
       setError('Both fields are required');
@@ -36,19 +36,16 @@ const [email, setEmail] = useState('');
       const user = userCredential.user;
       localStorage.setItem("uid",user.uid);
     
-const docRef = doc(db, "users", user.uid);
-const docSnap = await getDoc(docRef);
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
 
-if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-  localStorage.setItem("user",JSON.stringify(docSnap.data()));
-  User.setUser(docSnap.data());
-//   console.log(JSON.parse(localStorage.getItem("user")));  TO PARSE THE USER
-} else {
-  // docSnap.data() will be undefined in this case
-  console.log("No such document!");
-  
-}
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        User.setUser(docSnap.data());
+        navigate("/profile")
+      } else {
+        User.setUser(null);
+      }
 
 
 
@@ -56,7 +53,7 @@ if (docSnap.exists()) {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      setError(errorMessage);
+      setError("Enter Valid Credentials");
       console.log(error);
     })
   };
