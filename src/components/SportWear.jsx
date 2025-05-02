@@ -1,4 +1,5 @@
 import sportwear from "../assets/sportWear.png"
+import "../css/sportWear.css"
 const SportWear = ()=>{
     return (
         <>
@@ -9,7 +10,7 @@ const SportWear = ()=>{
 
         <div className="">
 
-        <img src={sportwear} alt="" />
+        <img className="sportWearImg" src={sportwear} alt="" />
         </div>
        </div>
 

@@ -40,7 +40,7 @@ function ProductGrid() {
   }, []);
 
   return (
-    <div style={{ background: "#F5F5F5" }} className="d-md-flex d-sm-block p-3">
+    <div style={{ background: "#F5F5F5" }} className=" m-0 d-md-flex d-sm-block ">
       <div className="mainContainer1">
         <div className="d-flex  justify-content-center align-items-baseline">
          
@@ -54,12 +54,12 @@ function ProductGrid() {
         </div>
 
         <div className="mt-2">
-          <Row xs={2} sm={2} md={2} lg={2}>
+          <Row style={{width:"100%"}} xs={2} sm={2} md={2} lg={2}>
             {deals.map((product, idx) => (   
-              <Col key={product.id} className="d-flex justify-content-center">
-                <div
-                  onMouseEnter={() => setHoveredIndex(idx)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+              <Col key={product.id} className=" g-0 p-0 d-flex justify-content-center">
+                <div 
+                  // onMouseEnter={() => setHoveredIndex(idx)}
+                  // onMouseLeave={() => setHoveredIndex(null)}
                   onClick={()=>{navigate(`/product/productDesc/${product.id}`)}}
                 >
                   <img
@@ -67,13 +67,12 @@ function ProductGrid() {
                     src={product.photo[0]} // Display first image from Firestore
                     alt={product.title} 
                     style={{
-                      transform: hoveredIndex === idx ? "scale(1.1)" : "scale(1)",
-                      zIndex: hoveredIndex === idx ? "1" : "0",
-                      height:"170px",width:"150px"
+                      // transform: hoveredIndex === idx ? "scale(1.1)" : "scale(1)",
+                      // zIndex: hoveredIndex === idx ? "1" : "0",
                     }}
                   />
-                  <p className="title1 fw-medium">{product.title}</p>
-                  <p className=" title 	text-secondary"><sup>&#8377;</sup>{product.price}</p>
+                  <p className=" p-0 m-0 title1 fw-medium">{product.title}</p>
+                  <p className=" p-0 m-0 title 	text-secondary"><sup>&#8377;</sup>{product.price}</p>
                 </div>
               </Col>
             ))}

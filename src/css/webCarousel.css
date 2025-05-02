@@ -1,0 +1,44 @@
+.web-carousel {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Default height */
+    overflow: hidden;
+  }
+  
+  .web-carousel .carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.8s ease-in-out;
+  }
+  
+  .web-carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Adjust height for different screen sizes */
+  @media (max-width: 1200px) {
+    .web-carousel {
+      height: 400px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .web-carousel {
+      height: 300px;
+    }
+    img{
+        object-position: left;
+        object-fit: cover;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .web-carousel {
+      height: 250px;
+    }
+  }
+  

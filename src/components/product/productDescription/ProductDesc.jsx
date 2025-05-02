@@ -9,6 +9,8 @@ import "../../../css/ProductDesc.css";
 import returnlogo from "../../../assets/DescBanner/return.png";
 import homeDelivery from "../../../assets/DescBanner/homeDelivery.png";
 import cod from "../../../assets/DescBanner/cod.png";
+import Comments from "./Comments";
+import MoreLikeThis from "./MoreLikeThis";
 
 const ProductDesc = () => {
     let { id } = useParams();
@@ -37,6 +39,7 @@ const ProductDesc = () => {
 
                 if (docSnap.exists()) {
                     setProduct({ ...docSnap.data(), id: docSnap.id });
+                    console.log("product data is ", docSnap.data());
                 } else {
                     console.log("No such document!");
                 }
@@ -170,7 +173,10 @@ const ProductDesc = () => {
                                     <div>
                                         {product.color?.map((color, index) => (
                                             <div key={index} className="d-inline text-center ms-2">
-                                                <input type="radio" name="color" className="d-none" onChange={handleChange} value={color} id={color} />
+                                                <input type="radio" name="color" className="d-none" onChange={(e)=>{
+                                                    handleChange(e); 
+                                                    setSelectedImageIndex(index)
+                                                }} value={color} id={color} />
                                                 <label htmlFor={color}>
                                                     <img src={product.photo[index]} style={{ height: "60px", width: "50px" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
                                                     <p>{color}</p>
@@ -220,6 +226,15 @@ const ProductDesc = () => {
                     <button className="btn btn-danger ms-2" onClick={() => setShowTerms(false)}>Cancel</button>
                 </div>
             </div>
+
+
+                {/* comments section  */}
+
+                <Comments product={product}/>
+
+                {/* more like this  */}
+                <MoreLikeThis product={product}/>
+
         </>
     );
 };

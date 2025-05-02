@@ -29,27 +29,27 @@ const Filter = () => {
 
         <div>
 
-          <input type="radio" name="priceCriteria" value="500" onChange={handleCheckbox} />
+          <input type="radio" name="priceCriteria" value="500" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
           <label htmlFor="500">under 500</label>
         </div>
 
         <div>
-          <input type="radio" name="priceCriteria" value="600" onChange={handleCheckbox} />
+          <input type="radio" name="priceCriteria" value="600" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
           <label htmlFor="500">under 600</label>
         </div>
         <div>
-          <input type="radio" name="priceCriteria" value="800" onChange={handleCheckbox} />
+          <input type="radio" name="priceCriteria" value="800" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }} />
           <label htmlFor="500">under 800</label>
         </div>
 
         <hr />
-        <input type="radio" onClick={handleOrder} name='itemOrder' value={"asc"} />
+        <input type="radio" onClick={(e)=>{ handleOrder(e); filter.setFilterShow(!filter.filterShow);}} name='itemOrder' value={"asc"}   />
         <label htmlFor="">Price low to high</label>
         <div>
-          <input type="radio" onClick={handleOrder} name='itemOrder' value={"desc"}  />
+          <input type="radio"onClick={(e)=>{ handleOrder(e); filter.setFilterShow(!filter.filterShow);}} name='itemOrder' value={"desc"}  />
           <label htmlFor="">Price high to low</label>
         </div>
-        <div className="btn btn-light mt-3" onClick={() => { filter.setLessThan(0); filter.setOrderBy(""); formRef.current.reset();  }}>Clear Filters</div>
+        <div className="btn btn-light mt-3" onClick={() => { filter.setLessThan(0); filter.setOrderBy(""); formRef.current.reset(); filter.setFilterShow(!filter.filterShow); }}>Clear Filters</div>
 
 
         </form>

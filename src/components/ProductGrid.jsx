@@ -2,10 +2,6 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useEffect, useState } from 'react'; // Import useState hook
-import jeans from "../assets/jeans.png";
-import polo from "../assets/polo.png";
-import shirt from "../assets/shirt.png";
-import jogger from "../assets/jogger.png";
 // css file 
 import "../css/ProductGrid.css";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';

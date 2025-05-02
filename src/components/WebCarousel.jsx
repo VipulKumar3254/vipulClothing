@@ -1,43 +1,54 @@
-import { useState } from "react";
-import Carousel from "react-bootstrap/Carousel";
-import ExampleCarouselImage from "./CarouselImage";
-import img1 from "../assets/img1.jpeg"
-import img2 from "../assets/img2.jpeg"
-import img3 from "../assets/img3.jpeg"
+import { useState, useEffect } from "react";
+import img1 from "../assets/img1.webp";
+import img2 from "../assets/img2.webp";
+import "../css/webCarousel.css";
+
+const images = [
+  { src: img1, title: "Elevate Your Style", text: "Fashion that speaks your personality." },
+  { src: img2, title: "Where Fashion Meets Passion", text: "From streetwear to high fashion, we got you." },
+  // { src: img3, title: "Wear the Confidence", text: "Because confidence starts with what you wear." },
+];
 
 function WebCarousel() {
   const [index, setIndex] = useState(0);
 
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 4000); // Auto-slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item>
-        <ExampleCarouselImage img={img1} />
-        <Carousel.Caption>
-          <h3>Elevate Your Style</h3>
-          <p>Fashion that speaks your personality.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <ExampleCarouselImage img={img2} />
-        <Carousel.Caption>
-          <h3>Where Fashion Meets Passion</h3>
-          <p>From streetwear to high fashion, we got you.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
-        <ExampleCarouselImage img={img3} />
-        <Carousel.Caption>
-          <h3>Wear the Confidence</h3>
-          <p>
-          Because confidence starts with what you wear.
-          </p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+    <div className="web-carousel d-flex align-items-center justify-content-center">
+      {images.map((img, i) => (
+        <div
+          key={i}
+          className="carousel-slide position-absolute w-100 h-100"
+          style={{ opacity: i === index ? 1 : 0 }}
+        >
+          <img src={img.src} alt={`Slide ${i}`} />
+          <div className="position-absolute bottom-0 w-100 text-center text-white p-3 bg-dark bg-opacity-50">
+            <h3 className="fw-bold">{img.title}</h3>
+            <p className="mb-0">{img.text}</p>
+          </div>
+        </div>
+      ))}
+      {/* Manual Navigation */}
+      <button
+        className="position-absolute start-0 top-50 translate-middle-y btn btn-dark btn-sm"
+        onClick={() => setIndex((index - 1 + images.length) % images.length)}
+      >
+        ◀
+      </button>
+      <button
+        className="position-absolute end-0 top-50 translate-middle-y btn btn-dark btn-sm"
+        onClick={() => setIndex((index + 1) % images.length)}
+      >
+        ▶
+      </button>
+    </div>
   );
 }
 

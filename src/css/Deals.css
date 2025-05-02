@@ -41,18 +41,20 @@
 @media screen and (max-width:768px) {
     .mainContainer1{
         width: 100vw;   
+        width: 100svw;   
     }
     
     .ProductImg{
         width: 200px;
+       
     }
 }
 
 @media screen and (max-width:576px) {
    
     .ProductImg{
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 170px;
     }
 }
 @media screen and (max-width:300px) {

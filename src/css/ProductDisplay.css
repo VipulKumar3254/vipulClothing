@@ -20,6 +20,13 @@
     background: #f8f6f9;
     
 }
+#productImg{
+ 
+    max-width: 100%;
+    height:auto;
+    /* object-fit: contain; */
+    border-radius: 3px;
+}
 .title{
     color: rgb(21, 20, 20);
     display: -webkit-box;
@@ -41,7 +48,12 @@
 }
 @media (max-width:768px){
     .gridMaker{
-        gap: 0px;
+        gap: 1px;
+    grid-template-columns: repeat(auto-fill, minmax(150px,1fr) );
+
+    }
+    #productImg{
+        width: 100%;
     }
     /* .title{
         font-size: 14px;
@@ -49,4 +61,5 @@
     .imgContainer{
         height: 150px;
     } */
+     
 }

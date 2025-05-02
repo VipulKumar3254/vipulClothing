@@ -99,7 +99,12 @@ const [email, setEmail] = useState('');
             Login
           </button>
         </form>
+        <div className="">
+        <p className=' m-0 mt-3 text-center'>dont have account?</p>
+        <button className="btn btn-primary w-100" onClick={()=>navigate("/createAccount")}>Sign-Up</button>
       </div>
+      </div>
+     
     </div>
   );
 };

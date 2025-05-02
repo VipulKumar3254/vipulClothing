@@ -86,8 +86,10 @@ const AdminPanel = () => {
           <Link to={"/admin/allProducts"} className="btn btn-primary mb-3 mb-md-0">All Products</Link>
           <Link to={"/admin/productsWeOffer"} className="btn btn-primary mb-3 mb-md-0">Products we offer</Link>
           <Link to={"/admin/categories"} className="btn btn-primary mb-3 mb-md-0">Categories</Link>
+          <Link to={"/admin/links"} className="btn btn-primary mb-3 mb-md-0">Links</Link>
           <button className="btn btn-primary mb-3 mb-md-0">Deals</button>
-          <button className="btn btn-primary mb-3 mb-md-0">New Arrivals</button>
+          <Link to={"/admin/manageNewArrivals"} className="btn btn-primary mb-3 mb-md-0">New Arrivals</Link>
+
           <button className="btn btn-primary mb-3 mb-md-0">200 Rupees Products</button>
           <button className="btn btn-primary mb-3 mb-md-0">Sale</button>
         </div>

@@ -9,7 +9,9 @@ import Navbar from "./components/necessary/Navbar";
 import WebCarousel from "./components/WebCarousel";
 import ProductGrid from "./components/ProductGrid";
 import Deals from "./components/Deals";
-import NewArrivals from "./components/NewArrivals";
+import NewArrivalsBanner from "./components/NewArrivalsBanner";
+import NewArrivals from './components/NewArrivals';
+
 import Footer from "./components/necessary/Footer";
 import SideView from "./components/SideView";
 import SportWear from "./components/SportWear";
@@ -45,7 +47,9 @@ import UpdateProduct from './components/product/admin/UpdateProduct';
 import AllDeals from './components/AllDeals';
 import Banner from './components/product/productDescription/banners/Banner';
 import Categories from './components/product/admin/Categories';
-
+import Links from './components/product/admin/links/Links';
+import ManageNewArrivals from './components/product/admin/ManageNewArrivals';
+import PrivateRoute from './PrivateRoute';
 
 
 
@@ -94,7 +98,9 @@ function App() {
          <WebCarousel />  {/*web carousal */}
           <ProductGrid />  {/*scrollable products we offer */}
                     <div>
-                    <Deals/>    {/* top deals  and side sale banner*/}
+                    <Deals/>    
+                    {/* top deals  and side sale banner */}
+                    
 
                     </div>
                   <div>
@@ -112,13 +118,15 @@ function App() {
         <Route path='/orders' element={ <><Navbar/> <UserOrders/> <Footer/></>}  ></Route>
         <Route path='/trackOrder' element={ <><Navbar/> <TrackOrder/> <Footer/></>}  ></Route>
         <Route path='/wishList' element={ <><Navbar/> <WishList/> <Footer/></>}  ></Route>
+        <Route path='/newArrivals' element={ <><Navbar/> <NewArrivals/> <Footer/></>}  ></Route>
+        <Route path='/rs200Products' element={ <><Navbar/> <ProductDisplay/> <Footer/></>}  ></Route>
 
 
 
         
         <Route path='/jeans' element={ <>
                     <Navbar/>
-                    <div className='d-block d-lg-flex flex-lg-row '>
+                    <div className='d-block d-md-flex flex-lg-row '>
 
                     <Filter  />
                     <ProductDisplay category={"jeans"} />
@@ -143,7 +151,7 @@ function App() {
                     <div className='d-block d-md-flex flex-lg-row'>
 
                     <Filter  />
-                    <ProductDisplay category={"shirt"}/>
+                    <ProductDisplay category={"shirts"}/>
                     </div>
                     <Footer/>
                   </>}/>
@@ -187,17 +195,19 @@ function App() {
       {/* admin panel endpoints are down  */}
 
           <Route path='/apLogin' element={<> <Navbar/> <APLogin/> <Footer/></> }/>
-          <Route path='/adminPanel' element={<> <Navbar/> <AdminPanelDashboard/> <AdminPanel/> <Footer/></> }/>
-                   <Route path='/admin/upload' element={ <> <Navbar/>  <AdminPanelDashboard/> <UploadProduct/> <Footer/></>} />
-        <Route path='/admin/orders' element={ <> <Navbar/> <AdminPanelDashboard/> <Orders/> <Footer/></>} />
-        <Route path='/admin/users' element={ <> <Navbar/>  <AdminPanelDashboard/> <Users/> <Footer/></>} />
-        <Route path='/admin/allProducts' element={ <> <Navbar/>  <AdminPanelDashboard/> <AllProducts/> <Footer/></>} />
-        <Route path='/admin/updateProduct/:id' element={ <> <Navbar/>  <AdminPanelDashboard/> <UpdateProduct/> <Footer/></>} />
+          <Route path='/adminPanel' element={<> <PrivateRoute><Navbar/> <AdminPanelDashboard/> <AdminPanel/> <Footer/></PrivateRoute></> }/>
+                   <Route path='/admin/upload' element={ <><PrivateRoute> <Navbar/>  <AdminPanelDashboard/> <UploadProduct/> <Footer/></PrivateRoute></>} />
+        <Route path='/admin/orders' element={ <> <PrivateRoute>  <Navbar/> <AdminPanelDashboard/> <Orders/> <Footer/> </PrivateRoute> </>} />
+        <Route path='/admin/users' element={ <>  <PrivateRoute> <Navbar/>  <AdminPanelDashboard/> <Users/> <Footer/>  </PrivateRoute> </>} />
+        <Route path='/admin/allProducts' element={ <> <PrivateRoute> <Navbar/>  <AdminPanelDashboard/> <AllProducts/> <Footer/> </PrivateRoute> </>} />
+        <Route path='/admin/updateProduct/:id' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <UpdateProduct/> <Footer/> </PrivateRoute> </>} />
         
 
-        <Route path='/admin/productsWeOffer' element={ <> <Navbar/>  <AdminPanelDashboard/> <ProductsWeOffer/> <Footer/></>} />
-        <Route path='/admin/AddProductsWeOffer' element={ <> <Navbar/>  <AdminPanelDashboard/> <AddProductsWeOffer/> <Footer/></>} />
-        <Route path='/admin/categories' element={ <> <Navbar/>  <AdminPanelDashboard/> <Categories/> <Footer/></>} />
+        <Route path='/admin/productsWeOffer' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <ProductsWeOffer/> <Footer/> </PrivateRoute> </>} />
+        <Route path='/admin/AddProductsWeOffer' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <AddProductsWeOffer/> <Footer/> </PrivateRoute> </>} />
+        <Route path='/admin/categories' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <Categories/> <Footer/> </PrivateRoute> </>} />
+        <Route path='/admin/links' element={<>  <PrivateRoute> <AdminPanelDashboard/> <Links/> <Footer/> </PrivateRoute>  </>}/>
+        <Route path='/admin/manageNewArrivals' element={<> <PrivateRoute>  <AdminPanelDashboard/> <ManageNewArrivals/> <Footer/> </PrivateRoute>  </>}/>
 
       
 

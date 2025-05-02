@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const AllProducts = () => {
     const [products, setProducts] = useState([]);
     const [deal, setdeal] = useState(false);
+    const [newArrival, setNewArrival] = useState(false);
     const navigate = useNavigate(); // Used for navigation
 
     useEffect(() => {
@@ -36,6 +37,21 @@ const AllProducts = () => {
             setProducts((prev) =>
                 prev.map((product) =>
                     product.id === productId ? { ...product, isDeal: !isDeal } : product
+                )
+            );
+        } catch (error) {
+            console.error("Error updating product: ", error);
+        }
+    };
+    const handleMakeNewArrival = async (productId,isNewArrival) => {
+        try {
+            const productRef = doc(db, "products", productId);
+            await updateDoc(productRef, { isNewArrival: !isNewArrival });
+            alert("Operation successful");
+            
+            setProducts((prev) =>
+                prev.map((product) =>
+                    product.id === productId ? { ...product, isNewArrival: !isNewArrival } : product
                 )
             );
         } catch (error) {
@@ -105,6 +121,13 @@ const AllProducts = () => {
                                         style={{cursor:"pointer"}}
                                      >
                                         {product.isDeal ? "Remove Deal" : "Make Deal"}
+                                    </button>
+                                    <button
+                                        className="btn btn-success  me-2" 
+                                        onClick={() => handleMakeNewArrival(product.id,product.isNewArrival)}
+                                        style={{cursor:"pointer"}}
+                                     >
+                                        {product.isNewArrival ? "make old" : "make new arrival"}
                                     </button>
 
                                     <button
