@@ -1,27 +1,63 @@
-.tshirtImg{
-    height: 560px;
-}
-.sideView{
-    /* width: 100%; */
-   display: flex;
-   align-items: center;
-   justify-content: space-evenly;
+.carousel {
+  position: relative;
+  height: 450px;
+  max-width: 100%;
 }
 
-@media screen and (max-width:992px) {
-    .tshirtImg{
-        height: 500px;
-    }
-    
-    
+.carousel-slide {
+  background-color: transparent !important;
+  height: 100%;
 }
-    @media screen and (max-width:768px) {
-        .tshirtImg{
-            /* display: none; */
-            height: 200px;
-            /* margin-right: 20px; */
-            /* height: 500px; */
-            /* height: auto; */
-        }
-        
-    }
+
+.carousel-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+}
+
+.carousel-btn.left {
+  left: 10px;
+}
+
+.carousel-btn.right {
+  right: 10px;
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    height: auto;
+  }
+
+  .carousel-slide {
+    flex-direction: column;
+  }
+
+  .carousel-img {
+    height: auto;
+    max-height: 300px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .carousel-btn {
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+  }
+}

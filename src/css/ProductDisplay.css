@@ -20,6 +20,7 @@
     background: #f8f6f9;
     
 }
+
 #productImg{
  
     max-width: 100%;
@@ -62,4 +63,30 @@
         height: 150px;
     } */
      
+}
+
+
+
+.wishList{
+    opacity: 0;
+  /* pointer-events: none; */
+}
+
+
+
+.wishlist-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .wishlist-hover:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Shadow on hover */
+  }
+  
+  .imgContainer:hover .wishList {
+    opacity: 1;
+  transition: opacity 0.8s ease;
+
+ /* border:  5px solid #956565; */
+    /* pointer-events: auto; */
 }

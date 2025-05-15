@@ -40,6 +40,7 @@ const ProductDesc = () => {
                 if (docSnap.exists()) {
                     setProduct({ ...docSnap.data(), id: docSnap.id });
                     console.log("product data is ", docSnap.data());
+                    console.log("id of the product is ",docSnap.id);
                 } else {
                     console.log("No such document!");
                 }
@@ -57,6 +58,7 @@ const ProductDesc = () => {
         if (name === "color") {
             setSelectedColor(value);
         }
+        console.log("purchasing item is ",purchase);
     };
 
     const purchaseSet = () => {
@@ -77,7 +79,18 @@ const ProductDesc = () => {
 
         let cartItem = purchaseSet();
         try {
-            await addDoc(collection(db, `users/${user.uid}/cart`), { ...cartItem });
+            const docRef= doc(db,"users",user.uid,'cart',product.id);
+            const docSnap = await getDoc(docRef);
+            if(docSnap.exists()){
+
+                    const data = docSnap.data();
+                    if(data.size === cartItem.size && data.color === cartItem.color){
+                        alert("Already in Cart");
+                        return;
+            
+            }
+        }
+            await setDoc(doc(db, `users/${user.uid}/cart`,cartItem.productId), { ...cartItem });
             alert("Added to Cart");
         } catch (err) {
             console.log("Error while adding to cart:", err);
@@ -134,8 +147,8 @@ const ProductDesc = () => {
                                                     />
                                                 </div>
                                             ))}
-                                    </div>
-                                            
+                                        </div>
+
                                         <div className="col-lg-6 col-12 ">
                                             <img className="productImg mx-auto d-block" src={product.photo[selectedImageIndex]} alt="Product" />
                                         </div>
@@ -173,8 +186,8 @@ const ProductDesc = () => {
                                     <div>
                                         {product.color?.map((color, index) => (
                                             <div key={index} className="d-inline text-center ms-2">
-                                                <input type="radio" name="color" className="d-none" onChange={(e)=>{
-                                                    handleChange(e); 
+                                                <input type="radio" name="color" className="d-none" onChange={(e) => {
+                                                    handleChange(e);
                                                     setSelectedImageIndex(index)
                                                 }} value={color} id={color} />
                                                 <label htmlFor={color}>
@@ -195,11 +208,37 @@ const ProductDesc = () => {
                             <h2 className="mt-5">Product Description</h2>
                             <div className="container ">
 
-                                <p className="fs-6">{product.desc}</p>
+                                {product.desc.map((section, index) => (
+                                    <div key={index} className="mb-3">
+                                        <h5>{section.title}</h5>
+                                        <p>{section.desc}</p>
+                                    </div>
+                                ))}
+
                             </div>
                         </div>
                     </>
-                ) : <p>Loading...</p>}
+                ) : 
+                     (
+  <div className="container-fluid">
+    <div className="row">
+      <div className="col-xl-5">
+        <div className="skeleton skeleton-img"></div>
+      </div>
+      <div className="col-lg-7">
+        <div className="skeleton skeleton-text"></div>
+        <div className="skeleton skeleton-text"></div>
+        <div className="skeleton skeleton-text skeleton-small"></div>
+        <div className="d-flex mt-3">
+          <div className="skeleton skeleton-text me-2" style={{ width: "100px", height: "30px" }}></div>
+          <div className="skeleton skeleton-text" style={{ width: "100px", height: "30px" }}></div>
+        </div>
+      </div>
+    </div>
+  </div>
+)
+
+                }
             </div>
 
             {/* Terms & Conditions Modal */}
@@ -228,12 +267,12 @@ const ProductDesc = () => {
             </div>
 
 
-                {/* comments section  */}
+            {/* comments section  */}
 
-                <Comments product={product}/>
+            <Comments product={product} />
 
-                {/* more like this  */}
-                <MoreLikeThis product={product}/>
+            {/* more like this  */}
+            <MoreLikeThis product={product} />
 
         </>
     );

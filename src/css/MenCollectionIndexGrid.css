@@ -1,0 +1,117 @@
+/* Full-screen wrapper for the grid */
+.products-scroll-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Horizontal scroll container */
+.horizontal-scroll-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  height: calc(100vh - 80px); /* Adjust height to fit in full screen */
+  overflow: hidden; /* Disable mouse scrolling */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  scrollbar-width: none;  /* For Firefox */
+}
+
+/* Each product card wrapper */
+.product-card-wrapper {
+  flex: 0 0 auto;
+  width: 320px; /* Width for larger cards */
+  height: 100%;
+}
+
+/* Styling for the scroll buttons */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: 40px;
+  height: 40px;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.scroll-btn.left {
+  left: 20px;
+}
+
+.scroll-btn.right {
+  right: 20px;
+}
+
+/* Custom card styling */
+.custom-card {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.custom-card:hover {
+  box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+}
+
+/* Card title styling */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Placeholder for loading state */
+.placeholder-card {
+  background: #f0f0f0;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 200px;
+  background: #e0e0e0;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.placeholder-text {
+  height: 16px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.placeholder-text.short {
+  width: 60%;
+  margin-top: 8px;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Hide scrollbar but still allow scrolling */
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
+  height: calc(100vh - 80px);
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  scrollbar-width: none;  /* For Firefox */
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none;  /* For Chrome, Safari, and Opera */
+}

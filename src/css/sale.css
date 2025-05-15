@@ -1,21 +1,8 @@
-.saleBanner{
-    height: 400px;
+.dropShadow{
 }
 
-.f-1{
-    font-size: 34px;
-}
-@media screen and (max-width: 768px){
-    /* banner of ladies with bags in hand */
-    .saleBanner{
-        height: 160px;
+@media (max-width: 768px) {
+    .dropShadow{
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
     }
-    .f-1{
-        font-size: 20px;
-        margin: auto;
-        
-
-
-    }
-    
 }

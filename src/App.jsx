@@ -50,6 +50,8 @@ import Categories from './components/product/admin/Categories';
 import Links from './components/product/admin/links/Links';
 import ManageNewArrivals from './components/product/admin/ManageNewArrivals';
 import PrivateRoute from './PrivateRoute';
+import AddLink from './components/product/admin/links/AddLink';
+import SearchProducts from './components/necessary/SearchProducts';
 
 
 
@@ -95,6 +97,9 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={ <> <Navbar />
+        <div>
+
+        </div>
          <WebCarousel />  {/*web carousal */}
           <ProductGrid />  {/*scrollable products we offer */}
                     <div>
@@ -160,7 +165,7 @@ function App() {
                     <div className='d-block d-md-flex flex-lg-row'>
                 
                     <Filter  />
-                    <ProductDisplay category={"jogger"}/>
+                    <ProductDisplay category={"joggers"}/>
                     </div>
                     <Footer/>
                   </>}/>
@@ -207,6 +212,7 @@ function App() {
         <Route path='/admin/AddProductsWeOffer' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <AddProductsWeOffer/> <Footer/> </PrivateRoute> </>} />
         <Route path='/admin/categories' element={ <> <PrivateRoute>  <Navbar/>  <AdminPanelDashboard/> <Categories/> <Footer/> </PrivateRoute> </>} />
         <Route path='/admin/links' element={<>  <PrivateRoute> <AdminPanelDashboard/> <Links/> <Footer/> </PrivateRoute>  </>}/>
+        <Route path='/admin/addLink' element={<>  <PrivateRoute> <AdminPanelDashboard/> <AddLink/> <Footer/> </PrivateRoute>  </>}/>
         <Route path='/admin/manageNewArrivals' element={<> <PrivateRoute>  <AdminPanelDashboard/> <ManageNewArrivals/> <Footer/> </PrivateRoute>  </>}/>
 
       

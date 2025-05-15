@@ -1,6 +1,17 @@
-@media (max-width: 768px) {
-    .sportWearImg{
-        height: 200px;
-        margin-right: 15px;
-    }
+/* Prevent horizontal overflow globally */
+body, html {
+  overflow-x: hidden;
+}
+
+/* Optional: Ensure container doesn't exceed width */
+.container-fluid {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Responsive fix if needed */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

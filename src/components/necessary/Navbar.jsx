@@ -13,6 +13,7 @@ import { userContext } from "../context/context";
 import "../../css/navbar.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
+import SearchProducts from "./SearchProducts";
 // import { httpsCallable,getFunctions } from "firebase/functions";
 // import { app } from "../../../firebaseConfig";
 // const functions = getFunctions(app);
@@ -22,10 +23,13 @@ import { db } from "../../../firebaseConfig";
 // });
 
 function NavScrollExample() {
+  
   const [showCart, setShowCart] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
   const [links, setLinks] = useState([]);
   const [expanded, setExpanded] = useState(false); // ✅ Add expanded state
+    const [showSearch, setShowSearch] = useState(false);
+  
   const cartReference = useRef();
   const user = useContext(userContext);
   const navigate = useNavigate();
@@ -42,8 +46,9 @@ function NavScrollExample() {
 
 
   useEffect(() => {
-    fetch("https://helloworld-2lqzdbkk7q-uc.a.run.app").then((response) => { return response.json();
-    }).then((data) => { console.log(data);})
+    // that is a firebase cloud function url fetch request
+    // fetch("https://helloworld-2lqzdbkk7q-uc.a.run.app").then((response) => { return response.json();
+    // }).then((data) => { console.log(data);})
     const fetchLinks = async () => {
       try {
         const adminCollectionRef = collection(db, "admin", "links", "links");
@@ -60,7 +65,14 @@ function NavScrollExample() {
   }, []);
   return (
     <>
-      <Navbar expand="md" className="bg-body-tertiary" expanded={expanded}>
+    <div className="bg-dark">
+      <p className="text-center text-light m-0 p-2 fs-5">
+        
+      Get 10% off on your first order with code <span className="text-danger">WELCOME10</span>
+      </p>
+
+    </div>
+      <Navbar expand="md" className="bg-body-tertiary p-lg-0" expanded={expanded}>
         <Container fluid>
           <Navbar.Brand className="col-xl-1 ms-5">
             <Link to="/">
@@ -69,30 +81,37 @@ function NavScrollExample() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" onClick={() => setExpanded(!expanded)} />
           <Navbar.Collapse id="navbarScroll">
-            <Nav className="mx-auto my-2 my-lg-0" navbarScroll>
+            <Nav className="mx-auto my-2  " navbarScroll>
               {/* <Link to="/jeans" className="nav-link" onClick={() => setExpanded(false)}>Jeans</Link>
               <Link to="/shirts" className="nav-link" onClick={() => setExpanded(false)}>Shirts</Link> */}
               {
               links && links.length>0 ?
                 links.map((link)=>{
-                 return  <Link to={link.path} className="nav-link" onClick={() => setExpanded(false)}>{link.name}</Link>
+                 return  <Link to={link.path} className="nav-link text-uppercase fw-bold " onClick={() => setExpanded(false)}>{link.name}</Link>
                 })
                :"" }
 
             </Nav>
             <div className="d-flex align-items-center justify-content-evenly">
               <div className="d-flex justify-content-center m-2">
+              <div className="d-flex flex-column ms-5 align-items-center justify-content-center" 
+                     onClick={(e) =>{setShowSearch(true) }}
+                     style={{ cursor: "pointer" }}>
+                  <span className="material-icons md-36">search</span>{" "}
+                  {/* Cart */}
+                </div>  
                 <Link to="/profile" className="text-reset text-decoration-none" onClick={() => setExpanded(false)}>
-                  <div className="d-flex flex-column align-items-center justify-content-center">
-                    <span className="material-icons md-36">account_circle</span>{" "}
-                    {user.user ? "Account" : "Login"}
+                  <div className="d-flex flex-column ms-3 align-items-center justify-content-center">
+                    <span className="material-icons md-36">person</span>{" "}
+                    {/* {user.user ? "Account" : "Login"} */}
                   </div>
                 </Link>
-                <div className="d-flex flex-column ms-5 align-items-center justify-content-center" 
+              
+                <div className="d-flex flex-column ms-3 align-items-center justify-content-center" 
                      onClick={(e) =>{ setExpanded(false); toggleCart(e)}}
                      style={{ cursor: "pointer" }}>
                   <span className="material-icons md-36">shopping_cart</span>{" "}
-                  Cart
+                  {/* Cart */}
                 </div>
               </div>
             </div>
@@ -106,6 +125,8 @@ function NavScrollExample() {
       <div ref={cartReference} className="cart-container">
         {showCart && <Cart toggleCart={toggleCart} />}
       </div>
+                      {showSearch && <SearchProducts onClose={() => setShowSearch(false)} />}
+      
     </>
   );
 }

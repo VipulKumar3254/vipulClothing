@@ -10,6 +10,7 @@ import {
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 // import "../../css/links.css"; // optional custom CSS
 
 const Links = () => {
@@ -67,6 +68,11 @@ const Links = () => {
 
   return (
     <div className="container mt-4">
+      <div>
+        <Link to="/admin/addlink" className="btn btn-primary mb-3">
+          Add New Link
+        </Link>
+      </div>
       <h2>Manage Links</h2>
       <div className="row">
         {links.map((link) => (

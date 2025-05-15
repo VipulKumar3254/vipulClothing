@@ -1,66 +1,93 @@
-.mainContainer1{
-    width: 400px;
-
+.ProductCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 6px;
+  margin: 4px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  /* max-width: 160px; */
 }
-.ProductImg{
+
+.ProductCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.ProductImg {
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.ProductCard:hover .ProductImg {
+  transform: scale(1.05);
+}
+
+.title1 {
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  margin-top: 6px;
+}
+
+.title {
+  font-size: 0.9rem;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.ProductCard:hover .title1,
+.ProductCard:hover .title {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .mainContainer1 {
     width: 100%;
-}
-.gridMaker{
+  }
 
-}
-.title1{
-    color: rgb(21, 20, 20);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;  /* Limit to 1 line */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 18px;
-    font-family: inter;
-   font-weight: bold;
-   /* color:blue; */
-    margin: 0;
-}
-.price{
+  .ProductCard {
+    margin: 10px 0;
+  }
 }
 
-@media screen and (max-width:992px) {
-    .mainContainer1{
-        width: 300px;
-    }
-    .ProductImg{
-        width: 150px;
-    }
-    .title1{
-        font-size: 15px;
-
-    }
-    
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@media screen and (max-width:768px) {
-    .mainContainer1{
-        width: 100vw;   
-        width: 100svw;   
-    }
-    
-    .ProductImg{
-        width: 200px;
-       
-    }
+.AnimatedTitle {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
 }
 
-@media screen and (max-width:576px) {
-   
-    .ProductImg{
-        width: 150px;
-        height: 170px;
-    }
+.AnimatedPrice {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
 }
-@media screen and (max-width:300px) {
-   
-    .ProductImg{
-        width: 100px;
-        height: 100px;
-    }
+
+.TodayDealsHeader {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.linearGradient {
+  /* background: linear-gradient(to right, #161717, #171718); */
+background: #2A7B9B;
+background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(52, 140, 150, 1) 0%, rgba(64, 160, 144, 1) 0%, rgba(170, 181, 173, 1) 0%, rgba(32, 33, 32, 1) 49%, rgba(20, 20, 20, 1) 100%);  padding: 20px 10px;
+  border-radius: 10px;
+}
+
+
+
+.fade-in {
+  animation: fadeInUp 0.6s ease;
 }

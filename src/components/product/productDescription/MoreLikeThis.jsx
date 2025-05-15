@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../../firebaseConfig"; // Adjust the import based on your file structure 
+import "../../../css/MoreLikeThis.css"
 
 const MoreLikeThis = ({ product }) => {
   const [related, setRelated] = useState([]);
@@ -46,10 +47,25 @@ const MoreLikeThis = ({ product }) => {
     fetchRelated();
   }, [product]);
 
-  if (loading) return <p>Loading related products...</p>;
+if (loading) {
+  return (
+    <div style={{ minHeight: "400px" }} className="mt-5 p-2">
+      <h4 className="mb-3">More Like This</h4>
+      <div className="d-flex overflow-auto pb-2">
+        {[...Array(4)].map((_, idx) => (
+          <div key={idx} className="me-3">
+            <div className="skeleton skeleton-card"></div>
+            <div className="skeleton skeleton-title"></div>
+            <div className="skeleton skeleton-price"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
   return (
-    <div className="mt-5 p-2">
+    <div  style={{minHeight:"400px"}} className="mt-5 p-2">
       <h4 className="mb-3">More Like This</h4>
       {related.length > 0 ? (
         <div className="d-flex overflow-auto pb-2">
@@ -69,7 +85,7 @@ const MoreLikeThis = ({ product }) => {
           ))}
         </div>
       ) : (
-        <p>No similar products found.</p>
+        <p className="text-center" >No similar products found.</p>
       )}
     </div>
   );

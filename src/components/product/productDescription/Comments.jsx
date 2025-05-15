@@ -12,13 +12,33 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import "../../../css/Reviews.css"
+
 
 const Comments = ({ product }) => {
+  const [loadingComments, setLoadingComments] = useState(true);
 
    const [user, setUser] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
+    useEffect(() => {
+  if (!product?.id) return;
+
+  const commentsRef = collection(db, "products", product.id, "reviews");
+  const q = query(commentsRef, orderBy("createdAt", "desc"));
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const fetched = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setComments(fetched);
+    setLoadingComments(false); // ← update loading state
+  });
+
+  return () => unsubscribe();
+}, [product?.id]);
 
 
     useEffect(() => {
@@ -84,7 +104,7 @@ const Comments = ({ product }) => {
 
     <div style={{ minHeight:"400px"}} className=" min-h p-3  shadow-sm mt-4">
       <hr />
-      <h5>Reviews</h5>
+      <h4>Reviews</h4>
       <div className="d-flex gap-2 mb-3">
         <input
           type="text"
@@ -96,13 +116,24 @@ const Comments = ({ product }) => {
         <button onClick={handlePost} className="btn btn-primary">Post</button>
       </div>
 
-      <ul className="list-group">
-        {comments.map((comment) => (
-          <li key={comment.id} className="list-group-item">
-            <strong>{comment.userName}: </strong> {comment.text}
-          </li>
-        ))}
-      </ul>
+    <ul className="list-group">
+  {loadingComments ? (
+    [...Array(3)].map((_, idx) => (
+      <li key={idx} className="list-group-item">
+        <div className="skeleton skeleton-comment"></div>
+      </li>
+    ))
+  ) : comments.length > 0 ? (
+    comments.map((comment) => (
+      <li key={comment.id} className="list-group-item">
+        <strong>{comment.userName}: </strong> {comment.text}
+      </li>
+    ))
+  ) : (
+    <li className="list-group-item text-muted">No Reviews yet.</li>
+  )}
+</ul>
+
     </div>
   );
 };

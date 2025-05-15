@@ -2,12 +2,14 @@ import React from 'react';
 import SportWear from '../../../SportWear';
 import NewArrivals from '../../../NewArrivalsBanner';
 import Sale from '../../../Sale';
+import MensCollectionIndexGrid from "../../../MenCollectionIndexGrid"
 const Banner = ()=>{
 
     return (
         <>
         <div>
         <SportWear /> 
+        <MensCollectionIndexGrid/>
            {/* sport wear section */}
         <NewArrivals/>   {/* discover new arrivals */}
         <Sale/>    {/*200 rs products */}

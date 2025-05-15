@@ -1,0 +1,29 @@
+.search-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  background: white;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1050;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  width: 40vw;
+}
+
+@media (max-width: 768px) {
+  .search-panel {
+    width: 100vw;
+  }
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
