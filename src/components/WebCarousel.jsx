@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
-import img1 from "../assets/img1.webp";
-import img2 from "../assets/img2.webp";
+import img1 from "../assets/carousel4.png";
+import img3 from "../assets/carousel3.png";
 import "../css/webCarousel.css";
 
 const images = [
-  { src: img1, title: "Elevate Your Style", text: "Fashion that speaks your personality." },
-  { src: img2, title: "Where Fashion Meets Passion", text: "From streetwear to high fashion, we got you." },
+  { src: img3,
+    //  title: "Elevate Your Style", text: "Fashion that speaks your personality." 
+    },
+  { src: img1,
+    //  title: "Where Fashion Meets Passion", text: "From streetwear to high fashion, we got you."
+     },
+
   // { src: img3, title: "Wear the Confidence", text: "Because confidence starts with what you wear." },
 ];
 
@@ -29,7 +34,7 @@ function WebCarousel() {
           style={{ opacity: i === index ? 1 : 0 }}
         >
           <img src={img.src} alt={`Slide ${i}`} />
-          <div className="position-absolute bottom-0 w-100 text-center text-white p-3 bg-dark bg-opacity-50">
+          <div className="position-absolute bottom-0 w-100 text-center text-white p-3  bg-opacity-50">
             <h3 className="fw-bold">{img.title}</h3>
             <p className="mb-0">{img.text}</p>
           </div>

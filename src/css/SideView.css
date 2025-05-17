@@ -2,11 +2,29 @@
   position: relative;
   height: 450px;
   max-width: 100%;
+  overflow: hidden;
+  background: transparent;
 }
 
 .carousel-slide {
-  background-color: transparent !important;
+  display: flex;
+  flex-direction: row;
   height: 100%;
+  width: 100%;
+}
+
+.text-section {
+  width: 35%;
+  padding: 2rem;
+  color: #000;
+}
+
+.image-section {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .carousel-img {
@@ -41,17 +59,26 @@
 
 @media (max-width: 768px) {
   .carousel {
-    height: auto;
+    height: 350px;
   }
 
   .carousel-slide {
-    flex-direction: column;
+    flex-direction: row; /* Always horizontal */
+  }
+
+  .text-section {
+    width: 35%;
+    padding: 1rem;
+  }
+
+  .image-section {
+    width: 65%;
+    height: 100%;
   }
 
   .carousel-img {
-    height: auto;
-    max-height: 300px;
-    width: 100%;
+    height: 100%;
+    width: auto;
     object-fit: contain;
   }
 
