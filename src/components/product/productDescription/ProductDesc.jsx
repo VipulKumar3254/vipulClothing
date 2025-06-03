@@ -1,9 +1,12 @@
+import "@fontsource/archivo"
+
 import { db } from "../../../../firebaseConfig";
 import { useLocation, useParams } from "react-router-dom";
 import { collection, query, where, getDocs, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import "../../../css/ProductDesc.css";
+import { Link } from "react-router-dom";
 
 //desc banner images
 import returnlogo from "../../../assets/DescBanner/return.png";
@@ -11,6 +14,7 @@ import homeDelivery from "../../../assets/DescBanner/homeDelivery.png";
 import cod from "../../../assets/DescBanner/cod.png";
 import Comments from "./Comments";
 import MoreLikeThis from "./MoreLikeThis";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductDesc = () => {
     let { id } = useParams();
@@ -85,13 +89,25 @@ const ProductDesc = () => {
 
                     const data = docSnap.data();
                     if(data.size === cartItem.size && data.color === cartItem.color){
-                        alert("Already in Cart");
+                         toast.custom(
+            <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
+              <span className="text-white  fw-medium  fs-6">Already In cart</span>
+           
+            </div>,
+            { duration: 6000 }
+          );
                         return;
             
             }
         }
             await setDoc(doc(db, `users/${user.uid}/cart`,cartItem.productId), { ...cartItem });
-            alert("Added to Cart");
+            toast.custom(
+            <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
+              <span className="text-white  fw-medium  fs-6">Added to Cart</span>
+            
+            </div>,
+            { duration: 6000 }
+          );
         } catch (err) {
             console.log("Error while adding to cart:", err);
         }
@@ -149,15 +165,15 @@ const ProductDesc = () => {
                                             ))}
                                         </div>
 
-                                        <div className="col-lg-6 col-12 ">
+                                        <div className="col-lg-12 col-12 ">
                                             <img className="productImg mx-auto d-block" src={product.photo[selectedImageIndex]} alt="Product" />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-7  ">
-                                    <p className="fs-3 mt-5 ms-2">{product.title}</p>
-                                    <p className="fs-6 ms-2">{product.subTitle}</p>
-                                    <p className="fs-4 ms-2"><sup style={{ fontSize: "13px" }}> &#8377;</sup>{product.price}</p>
+                                    <p  style={{fontFamily:"archivo"}} className="fs-2 mt-5 ms-2">{product.title}</p>
+                                    <p  style={{fontFamily:"archivo"}} className="fs-5 ms-2">{product.subTitle}</p>
+                                    <p className="fs-3 ms-2 fw-medium"><sup style={{ fontSize: "13px" }}> &#8377;</sup>{product.price}</p>
 
                                     <div className="mt-3 text-center d-flex">
                                         <div className="m-2 mx-3">
@@ -174,7 +190,7 @@ const ProductDesc = () => {
                                         </div>
                                     </div>
 
-                                    <p className="mt-1">Size</p>
+                                    <p className="mt-1 fs-6">Size</p>
                                     <select className="border rounded" name="size" onChange={handleChange}>
                                         <option value="">Select</option>
                                         {product.sizes?.map((size, index) => (
@@ -182,7 +198,7 @@ const ProductDesc = () => {
                                         ))}
                                     </select>
 
-                                    <p className="mt-3">Color</p>
+                                    <p className="mt-3 fs-6">Color</p>
                                     <div>
                                         {product.color?.map((color, index) => (
                                             <div key={index} className="d-inline text-center ms-2">
@@ -191,7 +207,7 @@ const ProductDesc = () => {
                                                     setSelectedImageIndex(index)
                                                 }} value={color} id={color} />
                                                 <label htmlFor={color}>
-                                                    <img src={product.photo[index]} style={{ height: "60px", width: "50px" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
+                                                    <img src={product.photo[index]} style={{ height: "80px", width: "60px" ,objectFit:"cover"}} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
                                                     <p>{color}</p>
                                                 </label>
                                             </div>
@@ -205,13 +221,13 @@ const ProductDesc = () => {
                                 </div>
                             </div>
 
-                            <h2 className="mt-5">Product Description</h2>
+                            <h2  style={{fontFamily:"archivo"}} className="mt-5 fs-1">Product Description</h2>
                             <div className="container ">
 
                                 {product.desc.map((section, index) => (
-                                    <div key={index} className="mb-3">
-                                        <h5>{section.title}</h5>
-                                        <p>{section.desc}</p>
+                                    <div key={index} className="mb-3" style={{fontFamily:"archivo"}}>
+                                        <h4>{section.title}</h4>
+                                        <p className="fs-6">{section.desc}</p>
                                     </div>
                                 ))}
 
@@ -242,7 +258,7 @@ const ProductDesc = () => {
             </div>
 
             {/* Terms & Conditions Modal */}
-            <div className="terms-modal position-absolute   rounded  " style={{ display: showTerms ? "block" : "none" }}>
+            <div className="terms-modal  rounded  " style={{ display: showTerms ? "block" : "none" }}>
 
                 <div>
                     <p className="text-center fs-4 fw-medium">Please read and accept the Terms & Conditions before proceeding.</p>
@@ -273,6 +289,7 @@ const ProductDesc = () => {
 
             {/* more like this  */}
             <MoreLikeThis product={product} />
+        <Toaster position="bottom-left" />
 
         </>
     );

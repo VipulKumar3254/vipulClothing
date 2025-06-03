@@ -52,6 +52,8 @@ import ManageNewArrivals from './components/product/admin/ManageNewArrivals';
 import PrivateRoute from './PrivateRoute';
 import AddLink from './components/product/admin/links/AddLink';
 import SearchProducts from './components/necessary/SearchProducts';
+import PrivacyPolicy from './components/necessary/PrivacyPolicy';
+import TermsConditions from './components/necessary/TermsConditions';
 
 
 
@@ -97,17 +99,13 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={ <> <Navbar />
-        <div>
-
-        </div>
+        
          <WebCarousel />  {/*web carousal */}
-          <ProductGrid />  {/*scrollable products we offer */}
-                    <div>
                     <Deals/>    
+          <ProductGrid />  {/*scrollable products we offer */}
                     {/* top deals  and side sale banner */}
                     
 
-                    </div>
                   <div>
                     <Banner/>
                   </div>
@@ -125,6 +123,8 @@ function App() {
         <Route path='/wishList' element={ <><Navbar/> <WishList/> <Footer/></>}  ></Route>
         <Route path='/newArrivals' element={ <><Navbar/> <NewArrivals/> <Footer/></>}  ></Route>
         <Route path='/rs200Products' element={ <><Navbar/> <ProductDisplay/> <Footer/></>}  ></Route>
+        <Route path='/privayPolicy' element={ <><Navbar/> <PrivacyPolicy/> <Footer/></>}  ></Route>
+        <Route path='/termsConditions' element={ <><Navbar/> <TermsConditions/> <Footer/></>}  ></Route>
 
 
 
@@ -146,7 +146,7 @@ function App() {
                     <div className='d-block d-md-flex flex-lg-row'>
 
                     <Filter  />
-                    <ProductDisplay category={"tshirt"}/>
+                    <ProductDisplay category={"tshirts"}/>
                     </div>
                     <Footer/>
 
@@ -175,6 +175,15 @@ function App() {
                 
                     <Filter  />
                     <ProductDisplay category={"winterCollection"}/>
+                    </div>
+                    <Footer/>
+                  </>}/>
+        <Route path='/sportsWear' element={ <>
+                    <Navbar/>
+                    <div className='d-block d-md-flex flex-lg-row '>
+                
+                    <Filter  />
+                    <ProductDisplay category={"sportsWear"}/>
                     </div>
                     <Footer/>
                   </>}/>
@@ -216,6 +225,7 @@ function App() {
         <Route path='/admin/manageNewArrivals' element={<> <PrivateRoute>  <AdminPanelDashboard/> <ManageNewArrivals/> <Footer/> </PrivateRoute>  </>}/>
 
       
+
 
 
       </Routes>

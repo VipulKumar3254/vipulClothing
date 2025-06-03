@@ -1,3 +1,4 @@
+import "@fontsource/archivo"
 import { useContext, useState, useEffect } from "react";
 import { db } from "../../../firebaseConfig";
 import { collection, query, where, getDocs, orderBy, setDoc, doc, updateDoc } from "firebase/firestore";
@@ -35,9 +36,9 @@ const ProductDisplay = ({ category }) => {
             try {
                 if (category) {
 
-                    q = query(collection(db, "products"));   
+                    q = query(collection(db, "products"),where("category", "array-contains", category) );   
 
-                    //,where("category", "array-contains", category)  
+                    // 
                 }
                 else {
                     q = query(collection(db, "products"));
@@ -70,7 +71,6 @@ const ProductDisplay = ({ category }) => {
     const handleWishList = async(e, product) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("item is ", product);
         let wishListItem = {  title: product.title, price: product.price, photo: product.photo, productId: product.id, userId: user?.uid };
 
         await setDoc(doc(db, `users/${user.uid}/wishList`, wishListItem.productId), { ...wishListItem });
@@ -148,13 +148,13 @@ const ProductDisplay = ({ category }) => {
 
                                 </div>
                                 <div className="d-flex flex-column align-items-start">
-                                    <p className="title">{item.title}</p>
+                                    <p className="title" style={{fontFamily:"archivo"}}>{item.title}</p>
                                     <p className="text-start textBlack mt-1 mb-0" style={{ fontSize: "16px" }}>
-                                        <span style={{ background: "#32CD32" }}> Free delivery</span> within 1 day on &#8377;399 order
+                                        <span style={{ background: "#32CD32" , fontFamily:"archivo"}}> Free delivery</span> within 7 day on &#8377;599 order
                                     </p>
                                 </div>
                                 <div className="d-flex justify-content-start align-items-start">
-                                    <p className="fs-4 textBlack fwMedium"><sup>&#8377;</sup>{item.price}</p>
+                                    <p className="fs-4 textBlack fwMedium" style={{fontFamily:"archivo"}}><sup>&#8377;</sup>{item.price}</p>
                                 </div>
                             </NavLink>
                         ))

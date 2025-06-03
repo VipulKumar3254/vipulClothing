@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import "../../css/searchProducts.css"; // Custom CSS for animations
 import { db } from "../../../firebaseConfig"; // Adjust the import based on your project structure
+import { img } from "motion/react-client";
+import { useNavigate } from "react-router-dom";
 
 const SearchProducts = ({ onClose }) => {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(true); // for fade-out
+  const navigate = useNavigate();
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -63,7 +66,11 @@ const SearchProducts = ({ onClose }) => {
           {products.length > 0 ? (
             <ul className="list-group">
               {products.map((item) => (
-                <li className="list-group-item" key={item.id}>
+                
+                <li className="list-group-item" key={item.id} 
+                onClick={()=>{ navigate(`/product/productDesc/${item.id}`)}}
+                >
+                  <img style={{maxHeight:"200px",width:"30%"}} src={item.photo} alt="" />
                   {item.title} - ₹{item.price}
                 </li>
               ))}

@@ -1,7 +1,8 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, scale } from "framer-motion";
 import bannerImg from "../assets/200Product.png"; // Replace with your image path
 import "../css/sale.css"
+import { Link } from "react-router-dom";
 const HeroSection = () => {
   return (
     <div
@@ -43,15 +44,17 @@ const HeroSection = () => {
                 affordable premium collection.
               </motion.p>
 
-              <motion.a
-                href="#shop"
+              <motion.div
+                href=""
                 className="btn btn-dark btn-lg"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
+              whileHover={{ scale: 1.1 }}
+
               >
-                Shop Now
-              </motion.a>
+                <Link className="text-decoration-none text-white" to="/rs200Products">Buy Now</Link>
+              </motion.div>
             </motion.div>
           </div>
         </div>

@@ -13,6 +13,7 @@
 } 
 
 .scroll-card {
+  font-family: "meriweather";
   flex: 0 0 auto;
   width: 350px;
   scroll-snap-align: start;

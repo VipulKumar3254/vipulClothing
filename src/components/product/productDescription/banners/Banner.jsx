@@ -8,8 +8,8 @@ const Banner = ()=>{
     return (
         <>
         <div>
-        <SportWear /> 
         <MensCollectionIndexGrid/>
+        <SportWear /> 
            {/* sport wear section */}
         <NewArrivals/>   {/* discover new arrivals */}
         <Sale/>    {/*200 rs products */}

@@ -48,8 +48,8 @@ const Contact = () => {
         <h3>We are at</h3>
         <p className="m-0"><strong>Address:</strong> Vill. Gyaspur, Sonipat 131027</p>
         <p className="m-0"><strong>Phone:</strong>+91 8307949189</p>
-        <p className="m-0"><strong>Email:</strong> vipulclothing3254gmail.com</p>
-        <p className="m-0"><strong>Business Hours:</strong> Mon - Fri, 9 AM - 6 PM</p>
+        <p className="m-0"><strong>Email:</strong> vipulkumar3254gmail.com</p>
+        <p className="m-0"><strong>Business Hours:</strong> Mon - Sat, 9 AM - 6 PM</p>
       </div>
     </div>
     {/* form section */}

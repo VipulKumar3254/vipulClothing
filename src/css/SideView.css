@@ -1,6 +1,7 @@
+
 .carousel {
   position: relative;
-  height: 450px;
+  /* height: 450px; */
   max-width: 100%;
   overflow: hidden;
   background: transparent;
@@ -14,6 +15,7 @@
 }
 
 .text-section {
+  font-family: "archivo";
   width: 35%;
   padding: 2rem;
   color: #000;
@@ -35,6 +37,7 @@
 }
 
 .carousel-btn {
+  font-family: "archivo";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -59,21 +62,25 @@
 
 @media (max-width: 768px) {
   .carousel {
-    height: 350px;
+    /* height: 450px; */
   }
 
   .carousel-slide {
-    flex-direction: row; /* Always horizontal */
+    flex-direction: column-reverse; /* Always horizontal */
+    align-items: center;
   }
 
   .text-section {
-    width: 35%;
+    width: 100%;
+    text-align: center;
+
     padding: 1rem;
   }
 
   .image-section {
-    width: 65%;
-    height: 100%;
+    width: 100%;
+    /* height: 100%; */
+    object-fit: cover;
   }
 
   .carousel-img {

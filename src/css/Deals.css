@@ -1,13 +1,15 @@
 .ProductCard {
   border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 6px;
-  margin: 4px;
+  /* margin: 4px; */
   background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   width: 100%;
+  max-height: 200px;
+  overflow-y: hidden;
   /* max-width: 160px; */
 }
 
@@ -17,7 +19,11 @@
 }
 
 .ProductImg {
-  width: 100%;
+  width: 80% ;
+  margin:auto;
+  max-height: 140px;
+  object-fit: cover;;
+  object-position: center top;
   border-radius: 8px;
   transition: transform 0.3s ease;
 }
@@ -46,10 +52,14 @@
 @media (max-width: 768px) {
   .mainContainer1 {
     width: 100%;
+    padding: 0;
   }
 
   .ProductCard {
-    margin: 10px 0;
+    /* margin: 10px 0; */
+  border-radius: 0;
+
+
   }
 }
 
@@ -82,9 +92,7 @@
 .linearGradient {
   /* background: linear-gradient(to right, #161717, #171718); */
 background: #2A7B9B;
-background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(52, 140, 150, 1) 0%, rgba(64, 160, 144, 1) 0%, rgba(170, 181, 173, 1) 0%, rgba(32, 33, 32, 1) 49%, rgba(20, 20, 20, 1) 100%);  padding: 20px 10px;
-  border-radius: 10px;
-}
+background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(52, 140, 150, 1) 0%, rgba(64, 160, 144, 1) 0%, rgba(255, 255, 255, 1) 0%, rgba(227, 227, 193, 1) 25%, rgba(217, 217, 173, 1) 49%, rgba(245, 228, 202, 1) 100%);}
 
 
 

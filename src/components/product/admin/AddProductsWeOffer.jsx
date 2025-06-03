@@ -95,10 +95,10 @@ const AdProductsWeOffer = () => {
     <select className="form-select" name="path" onChange={handleChange} value={product.path} id="category">
       <option value="" key="">Select Product Category</option>
       <option value="/jeans" key="jeans">Jeans</option>
-      <option value="/tshirts" key="Tshirt">T-Shirt</option>
-      <option value="/shirt" key="Shirt">Shirt</option>
-      <option value="/joggers" key="Jogger">Jogger</option>
-      <option value="/winterCollection" key="winter">Winter</option>
+      <option value="/tshirts" key="T-shirts">T-Shirts</option>
+      <option value="/shirts" key="Shirts">Shirts</option>
+      <option value="/joggers" key="Jogger">Joggers</option>
+      <option value="/winterCollection" key="winter Collectin">Winter Collection</option>
     </select>
     <p className="mt-1 danger text-danger " style={{display:'none'}} >Please Select Category Carefully.</p>
   </div>

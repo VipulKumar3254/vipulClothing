@@ -1,8 +1,11 @@
+import "@fontsource/archivo"
+
 import React, { useEffect, useState, useRef } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 import { motion } from 'framer-motion';
 import '../css/MenCollectionIndexGrid.css';
+import { useNavigate } from 'react-router-dom';
 
 const MenCollectionIndexGrid = () => {
   const [products, setProducts] = useState([]);
@@ -13,6 +16,7 @@ const MenCollectionIndexGrid = () => {
 
   const headingRef = useRef(null);
   const [headingVisible, setHeadingVisible] = useState(false);
+  const navigate= useNavigate();
 
   useEffect(() => {
     const headingObserver = new IntersectionObserver(
@@ -28,7 +32,7 @@ const MenCollectionIndexGrid = () => {
       try {
         const q = query(
           collection(db, 'products'),
-          where('category', 'array-contains', 'winterCollection')
+          where('category', 'array-contains', 'mensCollection')
         );
         const snapshot = await getDocs(q);
         const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -105,7 +109,8 @@ const MenCollectionIndexGrid = () => {
   }, [products]);
 
   const handleCardClick = (product) => {
-    console.log('Clicked product:', product);
+        navigate(`/product/productDesc/${product}`)
+
   };
 
   const scroll = (direction) => {
@@ -120,8 +125,8 @@ const MenCollectionIndexGrid = () => {
   return (
     <div className="mt-3 products-scroll-wrapper position-relative">
       <motion.h1
-        ref={headingRef}
-        className="mb-4 text-uppercase text-center fw-bold"
+        ref={headingRef} style={{fontFamily:"archivo"}}
+        className="mb-4 text-uppercase text-center fw-medium"
         initial={{ opacity: 0, y: -20 }}
         animate={headingVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ duration: 0.9 }}
@@ -157,12 +162,12 @@ const MenCollectionIndexGrid = () => {
           ))
         ) : (
           products.map((product, index) => (
-            <motion.div
+            <motion.div 
               key={product.id}
               className="product-card-wrapper"
               ref={el => itemRefs.current[product.id] = el}
               data-id={product.id}
-              onClick={() => handleCardClick(product)}
+              onClick={() => handleCardClick(product.id)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               initial={{ opacity: 0, y: 30 }}

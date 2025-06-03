@@ -20,25 +20,35 @@
   }
   
   /* Adjust height for different screen sizes */
+  @media (max-width: 1400px) {
+    .web-carousel {
+      height: 300px;
+    }
+  }
+  
   @media (max-width: 1200px) {
     .web-carousel {
-      height: 400px;
+      height: 220px;
     }
   }
   
   @media (max-width: 768px) {
     .web-carousel {
-      height: 300px;
+      height: 200px;
     }
     img{
-        object-position: left;
-        object-fit: cover;
+
     }
   }
   
   @media (max-width: 576px) {
     .web-carousel {
-      height: 250px;
+      height: 230px;
+    }
+    img{
+      object-position: left top;
+      object-fit: cover ;
+
     }
   }
   

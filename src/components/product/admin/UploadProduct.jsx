@@ -28,6 +28,7 @@ const UploadProduct = () => {
     color: []
   });
 
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {

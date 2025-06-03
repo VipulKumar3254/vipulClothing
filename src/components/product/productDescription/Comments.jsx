@@ -104,16 +104,16 @@ const Comments = ({ product }) => {
 
     <div style={{ minHeight:"400px"}} className=" min-h p-3  shadow-sm mt-4">
       <hr />
-      <h4>Reviews</h4>
+      <h4  style={{fontFamily:"archivo"}}>Reviews</h4>
       <div className="d-flex gap-2 mb-3">
-        <input
+        <input style={{fontFamily:"archivo"}}
           type="text"
           className="form-control"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Write a Review..."
         />
-        <button onClick={handlePost} className="btn btn-primary">Post</button>
+        <button style={{fontFamily:"archivo"}} onClick={handlePost} className="btn btn-primary">Post</button>
       </div>
 
     <ul className="list-group">
@@ -130,7 +130,7 @@ const Comments = ({ product }) => {
       </li>
     ))
   ) : (
-    <li className="list-group-item text-muted">No Reviews yet.</li>
+    <li style={{fontFamily:"archivo"}} className="list-group-item text-muted">No Reviews yet.</li>
   )}
 </ul>
 

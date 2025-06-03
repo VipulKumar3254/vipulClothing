@@ -1,3 +1,5 @@
+import "@fontsource/archivo"
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -66,7 +68,7 @@ function NavScrollExample() {
   return (
     <>
     <div className="bg-dark">
-      <p className="text-center text-light m-0 p-2 fs-5">
+      <p className="text-center text-light m-0 p-2 fs-5"  style={{fontFamily:"archivo"}}>
         
       Get 10% off on your first order with code <span className="text-danger">WELCOME10</span>
       </p>
@@ -87,7 +89,7 @@ function NavScrollExample() {
               {
               links && links.length>0 ?
                 links.map((link)=>{
-                 return  <Link to={link.path} className="nav-link text-uppercase fw-bold " onClick={() => setExpanded(false)}>{link.name}</Link>
+                 return  <Link to={link.path} style={{fontFamily:"archivo"}} className="nav-link text-uppercase fw-bold " onClick={() => setExpanded(false)}>{link.name}</Link>
                 })
                :"" }
 

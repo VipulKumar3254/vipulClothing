@@ -4,6 +4,8 @@ import { Accordion, CardGroup } from "react-bootstrap";
 import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { getAuth,onAuthStateChanged } from "firebase/auth";
+import { Toaster, toast } from 'react-hot-toast';
+
 
 function Cart({ toggleCart }) {
   
@@ -78,9 +80,12 @@ function Cart({ toggleCart }) {
       console.log(id);
       const cartRef = doc(db,`users/${user.uid}/cart`,id)
       let result = await deleteDoc(cartRef)
-      alert("Product removed successfully")
+          toast.success('Product Removed from Cart', { duration: 4000 });
+
     }catch(err){
       console.log(err);
+          toast.error('Product Removed from Cart', { duration: 4000 });
+
     }
   }
 
@@ -150,6 +155,8 @@ function Cart({ toggleCart }) {
         <button className="btn btn-primary fs-6 fw-bold ms-3" onClick={handleCheckout}>Proceed to Checkout</button>
       </div>
     :""}
+        <Toaster position="bottom-right" />
+
     </div>
    
   );

@@ -1,3 +1,4 @@
+import "@fontsource/archivo"
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../../firebaseConfig"; // Adjust the import based on your file structure 
@@ -50,7 +51,7 @@ const MoreLikeThis = ({ product }) => {
 if (loading) {
   return (
     <div style={{ minHeight: "400px" }} className="mt-5 p-2">
-      <h4 className="mb-3">More Like This</h4>
+      <h4  style={{fontFamily:"archivo"}}className="mb-3">More Like This</h4>
       <div className="d-flex overflow-auto pb-2">
         {[...Array(4)].map((_, idx) => (
           <div key={idx} className="me-3">
@@ -66,7 +67,7 @@ if (loading) {
 
   return (
     <div  style={{minHeight:"400px"}} className="mt-5 p-2">
-      <h4 className="mb-3">More Like This</h4>
+      <h4  style={{fontFamily:"archivo"}} className="mb-3">More Like This</h4>
       {related.length > 0 ? (
         <div className="d-flex overflow-auto pb-2">
           {related.map((item) => (
@@ -78,14 +79,14 @@ if (loading) {
                 style={{ height: "350px", objectFit: "cover top " }}
               />
               <div className="card-body p-2">
-                <h6 className="card-title mb-1">{item.title}</h6>
-                <p className="card-text text-muted mb-0">₹{item.price}</p>
+                <h6  style={{fontFamily:"archivo"}} className="card-title mb-1">{item.title}</h6>
+                <p style={{fontFamily:"archivo"}} className="card-text text-muted mb-0">₹{item.price}</p>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-center" >No similar products found.</p>
+        <p style={{fontFamily:"archivo"}}  className="text-center" >No similar products found.</p>
       )}
     </div>
   );

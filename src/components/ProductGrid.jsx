@@ -1,3 +1,5 @@
+import "@fontsource/archivo"
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDocs, collection } from 'firebase/firestore';
@@ -30,7 +32,7 @@ function ProductGrid() {
 
   return (
     <div className="container mt-4">
-  <h1 className="text-center text-uppercase">Products We Offer</h1>
+  <h1 style={{fontFamily:"archivo"}} className="text-center text-uppercase">Products We Offer</h1>
   <div className="scroll-container mt-0">
     {products.map((product, idx) => (
       <div
@@ -49,7 +51,7 @@ function ProductGrid() {
             zIndex: hoveredIndex === idx ? 1 : 0,
           }}
         />
-        <p className="text-center mt-2 text-uppercase">{product.name}</p>
+        <p  style={{fontFamily:"archivo"}} className="text-center mt-2 text-uppercase">{product.name}</p>
       </div>
     ))}
   </div>

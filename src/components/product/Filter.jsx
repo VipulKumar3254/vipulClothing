@@ -1,3 +1,5 @@
+import "@fontsource/roboto"
+
 import React, { useState, useContext, useRef } from 'react';
 import "../../css/Filter.css"
 import { filterContext, userContext } from '../context/context';
@@ -21,7 +23,7 @@ const Filter = () => {
 
   return (
     <>
-      <div className={`mainContainer d-md-block ${filter.filterShow?"d-block":"d-none"} text-md-start text-center `}>
+      <div  style={{fontFamily:"roboto",fontSize:"15px"}}  className={`mainContainer d-md-block ${filter.filterShow?"d-block":"d-none"} text-md-start text-center `}>
         <form action="#" ref={formRef} className=' position-sticky ' style={{top:"20px"}}>
 
 
@@ -30,16 +32,16 @@ const Filter = () => {
         <div>
 
           <input type="radio" name="priceCriteria" value="500" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
-          <label htmlFor="500">under 500</label>
+          <label htmlFor="500">Under 500</label>
         </div>
 
         <div>
           <input type="radio" name="priceCriteria" value="600" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
-          <label htmlFor="500">under 600</label>
+          <label htmlFor="500">Under 600</label>
         </div>
         <div>
           <input type="radio" name="priceCriteria" value="800" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }} />
-          <label htmlFor="500">under 800</label>
+          <label htmlFor="500">Under 800</label>
         </div>
 
         <hr />

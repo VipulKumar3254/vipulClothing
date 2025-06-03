@@ -123,6 +123,20 @@ function UserOrders() {
           </button>
         </div>
       )}
+
+      <div>
+        
+      </div>
+
+        <div style={{marginTop:"200px"}}>
+          <div >
+            <h1 className="text-center">Important Information</h1>
+          </div>
+        <div className="mt-4 text-center">
+          <p>If you need any help with your order, our support team is here for you.</p>
+          <p>Contact us at <a href="mailto:vipulkumar3254@gmail.com">vipulkumar3254@gmail.com</a> or call +918307949189.</p>
+          <p>We’re happy to assist with order status, cancellations, or any other queries.</p>
+        </div></div>
     </div>
   );
 }

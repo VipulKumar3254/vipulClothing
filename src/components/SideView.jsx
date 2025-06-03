@@ -1,5 +1,8 @@
+import "@fontsource/archivo"
 import "../css/SideView.css";
+
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import img1 from "../assets/img7.png";
 import img2 from "../assets/img6.png";
@@ -10,16 +13,19 @@ const slides = [
     img: img1,
     title: "Summer Vibes",
     desc: "Light and breezy fits for the season.",
+    link:"joggers"
   },
   {
     img: img2,
     title: "Beach Ready",
     desc: "Look great while staying cool.",
+    link:"tshirts"
   },
   {
     img: img3,
     title: "Street Style",
     desc: "Trendy picks for your daily grind.",
+    link:"shirts"
   },
 ];
 
@@ -62,7 +68,7 @@ function SideView() {
           exit="exit"
         >
           {/* Text Section */}
-          <div className="text-section d-flex flex-column justify-content-center px-4 py-4">
+          <div className="text-section d-flex flex-column justify-content-center align-items-center px-4 py-4 ">
             <motion.h3
               className="fw-bold"
               initial={{ y: 20, opacity: 0 }}
@@ -79,14 +85,13 @@ function SideView() {
             >
               {slides[index].desc}
             </motion.p>
-            <motion.button
-              className="btn btn-dark text-uppercase px-4 mt-3 text-center"
+            <motion.div 
+              className="btn btn-dark  px-4 mt-3 text-center"
                 style={{ maxWidth: "200px", width: "100%" }}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-            >
-              Buy Now
-            </motion.button>
+            > <Link to={`/${slides[index].link}`} className="text-decoration-none text-white text-uppercase"> Buy Now</Link>
+            </motion.div>
           </div>
 
           {/* Image Section */}
@@ -100,6 +105,7 @@ function SideView() {
               transition={{ delay: 0.6 }}
             />
           </div>
+          
         </motion.div>
       </AnimatePresence>
 

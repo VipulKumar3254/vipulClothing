@@ -2,17 +2,17 @@
     /* height: 600px; */
     height: 730px;
     width: 540px;
+    object-fit: cover;
     background-color: rgb(247, 247, 247);
 }   
 .terms-modal{
-        top: 50%;
-        left:50%;
-        transform: translate(-50%, -70%); 
-        width: 50%;
-        background:#F8FAFC;
-        z-index: 1050; 
-        /* min-height: 500px; */
-        width: 60%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  width: 60%;
+  background: #F8FAFC;
+  z-index: 1050;
 }
 .highlighedImage
 {
@@ -22,11 +22,16 @@
 }
 @media screen and (max-width:768px) {
     .terms-modal{
-        top: 0;
-        left: 0;
-        transform: translate(0,0);
-        width: 100%;
-
+           position: fixed; /* Ensure it's positioned relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transform: none; /* Remove centering transform */
+    margin: 0;
+    padding: 16px; /* Optional: adjust for padding */
+    overflow-y: auto; /* Ensure scroll if content is long */
+    border-radius: 0; /* Remove any modal rounding for full-screen */
     }
     .productImg{
         width: 100%;

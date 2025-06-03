@@ -18,3 +18,4 @@ review of products -> I have to make sure that only user order delieverd can wri
 
 banner of the product images -> Also add the two or three photos or banners of the product like the amazon product description. 
 
+add loading animation on the product display jsx
