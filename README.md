@@ -11,11 +11,25 @@ Currently, two official plugins are available:
 I have to refector the user and setuser such that i will set user once and consume every time using useContext hook .
 
 also add button to cancel the order for user.
-also add from which user this order is in admin orders.
 
 
 review of products -> I have to make sure that only user order delieverd can write the review. 
 
 banner of the product images -> Also add the two or three photos or banners of the product like the amazon product description. 
 
+
+
+order return karne option bhi nahi hai wo bhi banana hai  ---> done
+
+
+
+
+
+Reminder *******************   importent    also add from which user this order is in admin orders.
 add loading animation on the product display jsx
+admin panel me pending returns ka bhi card add karna hai
+
+Long term goals 
+
+user order operations make handled on sever side(client will request to change the status and server will check.)
+

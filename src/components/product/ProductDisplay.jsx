@@ -1,172 +1,231 @@
-import "@fontsource/archivo"
+import "@fontsource/archivo";
 import { useContext, useState, useEffect } from "react";
 import { db } from "../../../firebaseConfig";
-import { collection, query, where, getDocs, orderBy, setDoc, doc, updateDoc } from "firebase/firestore";
-import "../../css/ProductDisplay.css";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  startAfter,
+  endBefore,
+  limit
+} from "firebase/firestore";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { filterContext } from "../context/context";
 import Spinner from "react-bootstrap/Spinner";
-import wishList from "../../assets/wishList1.png";
-import { Toaster, toast } from 'react-hot-toast';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import wishList from "../../assets/wishList1.png";
+import { toast, Toaster } from "react-hot-toast";
 
 const ProductDisplay = ({ category }) => {
-    const rs200Products = useLocation();
+  const filter = useContext(filterContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    // const price =state?.price;
-    // console.log("and the price is ",price);
+  const [user, setUser] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lastDoc, setLastDoc] = useState(null);
+  const [firstDoc, setFirstDoc] = useState(null);
+  const [prevDocs, setPrevDocs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-    const filter = useContext(filterContext);
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState({});
-    const navigate = useNavigate();
+  const productsPerPage = 8;
 
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (usr) => setUser(usr || null));
+  }, []);
 
-     useEffect(() => {
-            const auth = getAuth();
-            onAuthStateChanged(auth, (user) => {
-                setUser(user ? user : null);
-            });
-        }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, [filter, category, location.state]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            let q;
-            try {
-                if (category) {
+  const buildQuery = (startPoint = null, direction = "next") => {
+    let q = collection(db, "products");
 
-                    q = query(collection(db, "products"),where("category", "array-contains", category) );   
+    if (location.state?.search) return null; // handled separately
 
-                    // 
-                }
-                else {
-                    q = query(collection(db, "products"));
-                }
-                if (filter.lessThan) q = query(q, where("price", "<", filter.lessThan));
-                if (filter.orderBy) q = query(q, orderBy("price", filter.orderBy));
-                // this is for rs 200 products 
-                console.log("rs200Products", rs200Products.state);
-                if (rs200Products.state == "200") {
-                    q = query(collection(db, "products"), where("price", "<", 200));
-                    console.log("less than 200", rs200Products.state);
-
-                }
-                console.log("query is", q);
-                const querySnapshot = await getDocs(q);
-
-                const productarray = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-                setProducts(productarray);
-                console.log("products are", productarray);
-            } catch (e) {
-                console.log(e);
-            }
-            setLoading(false);
-        };
-
-        fetchData();
-    }, [filter, category]);
-
-
-    const handleWishList = async(e, product) => {
-        e.preventDefault();
-        e.stopPropagation();
-        let wishListItem = {  title: product.title, price: product.price, photo: product.photo, productId: product.id, userId: user?.uid };
-
-        await setDoc(doc(db, `users/${user.uid}/wishList`, wishListItem.productId), { ...wishListItem });
-        // toast.success('Added to Wishlist',{duration:4000})
-        toast.custom(
-            <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
-              <span className="text-white  fw-medium  fs-6">Added to Wishlist</span>
-              <Link
-               onClick={(e) => {  e.preventDefault(); e.stopPropagation(); navigate("/wishList")  }}
-                
-                className="ml-auto bg-blue-600 text-white px-3  rounded-md hover:bg-blue-700 transition"
-              >
-                See 
-              </Link>
-            </div>,
-            { duration: 6000 }
-          );
-        //   toast.success('Added to cart', { duration: 4000 });
-
-
-
-
+    if (location.pathname === "/rs200Products") {
+      q = query(q, where("price", "<", 900));
+    } else if (category) {
+      q = query(q, where("category", "array-contains", category));
     }
 
-    return (
-        <>
-            
-            <div className="mt-1 d-block d-md-none text-center">
-                <div className="btn btn-secondary px-3" onClick={() => { filter.setFilterShow(!filter.filterShow); }}>Filters</div>
-            </div>
+    if (filter.lessThan) {
+      q = query(q, where("price", "<", filter.lessThan));
+    }
 
-            {loading ? (
-                <div className="p-2 gridMaker">
-                    {/* Placeholder skeleton loaders */}
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <div key={index} className="product-placeholder">
-                            <div className="skeleton-img"></div>
-                            <div className="skeleton-text"></div>
-                            <div className="skeleton-price"></div>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div className="p-2 gridMaker">
-                    {products.length > 0 ? (
-                        products.map((item) => (
-                            <NavLink style={{ position: "relative" }}
-                                key={item.id}
-                                to="/product/productDesc"
-                                state={[item.id, category]}
-                                className="product text-decoration-none"
-                                id={item.id}
-                            >
+    if (filter.orderBy) {
+      q = query(q, orderBy("price", filter.orderBy));
+    } else {
+      q = query(q, orderBy("price", "asc"));
+    }
 
+    if (startPoint) {
+      q = direction === "next"
+        ? query(q, startAfter(startPoint))
+        : query(q, endBefore(startPoint));
+    }
 
-                                <div className="imgContainer">
-                                    <img src={item.photo} className="mx-auto d-block" id="productImg" alt="picture of garment" />
-                                    <img
-                                        onClick={(e) => { handleWishList(e, item) }}
-                                        className=" wishList  wishListIcon wishlist-hover"
-                                        src={wishList}
-                                        alt="Wishlist"
-                                        style={{
-                                            position: 'absolute',
-                                            top: 9,
-                                            left: 9,
-                                            width: '30px',
-                                            height: '30px',
-                                            cursor: 'pointer',
-                                            zIndex: 10,
-                                        }}
-                                    />
+    q = query(q, limit(productsPerPage));
+    return q;
+  };
 
+  const fetchProducts = async (startPoint = null, direction = "next") => {
+    setLoading(true);
 
+    if (location.state?.search) {
+      await searchProducts(location.state.search);
+      return;
+    }
 
-                                </div>
-                                <div className="d-flex flex-column align-items-start">
-                                    <p className="title" style={{fontFamily:"archivo"}}>{item.title}</p>
-                                    <p className="text-start textBlack mt-1 mb-0" style={{ fontSize: "16px" }}>
-                                        <span style={{ background: "#32CD32" , fontFamily:"archivo"}}> Free delivery</span> within 7 day on &#8377;599 order
-                                    </p>
-                                </div>
-                                <div className="d-flex justify-content-start align-items-start">
-                                    <p className="fs-4 textBlack fwMedium" style={{fontFamily:"archivo"}}><sup>&#8377;</sup>{item.price}</p>
-                                </div>
-                            </NavLink>
-                        ))
-                    ) : (
-                        <div className="text-center fs-5">No products available.</div>
-                    )}
-                </div>
-            )}
-        <Toaster position="bottom-left" />
+    const q = buildQuery(startPoint, direction);
+    if (!q) return;
 
-        </>
+    const snapshot = await getDocs(q);
+    const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    if (direction === "next") {
+      if (startPoint) setPrevDocs(prev => [...prev, startPoint]);
+      setCurrentPage(prev => prev + 1);
+    } else if (direction === "prev") {
+      setPrevDocs(prev => prev.slice(0, -1));
+      setCurrentPage(prev => Math.max(1, prev - 1));
+    }
+
+    setProducts(items);
+    setFirstDoc(snapshot.docs[0]);
+    setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+    setLoading(false);
+  };
+
+  const searchProducts = async (term) => {
+    const map = new Map();
+    const underMatch = term.match(/under\s+(\d+)/);
+    const aboveMatch = term.match(/above\s+(\d+)/);
+    const price = parseInt(underMatch?.[1] || aboveMatch?.[1]);
+    const condition = underMatch ? "<=" : ">=";
+    const filteredWords = term.replace(/under\s+\d+|above\s+\d+/g, "")
+      .split(/\s+/).filter(Boolean);
+
+    try {
+      if (!isNaN(price) && filteredWords.length) {
+        const snap = await getDocs(query(collection(db, "products"), where("price", condition, price)));
+        snap.docs.forEach(doc => {
+          const data = doc.data();
+          const title = data.title?.toLowerCase() || "";
+          const tags = (data.tags || []).map(t => t.toLowerCase());
+          if (filteredWords.some(w => title.includes(w) || tags.includes(w))) {
+            map.set(doc.id, { id: doc.id, ...data });
+          }
+        });
+      } else {
+        const snap = await getDocs(query(collection(db, "products"), where("title", ">=", term), where("title", "<=", term + "\uf8ff")));
+        snap.docs.forEach(doc => map.set(doc.id, { id: doc.id, ...doc.data() }));
+
+        const tagSearches = term.split(/\s+/).map(w =>
+          getDocs(query(collection(db, "products"), where("tags", "array-contains", w)))
+        );
+
+        const results = await Promise.all(tagSearches);
+        results.forEach(snap => snap.docs.forEach(doc => map.set(doc.id, { id: doc.id, ...doc.data() })));
+
+        const exact = await getDocs(query(collection(db, "products"), where("price", "==", parseInt(term))));
+        exact.docs.forEach(doc => map.set(doc.id, { id: doc.id, ...doc.data() }));
+      }
+
+      setProducts(Array.from(map.values()));
+      setCurrentPage(1);
+      setLoading(false);
+    } catch (err) {
+      console.error("Search error", err);
+    }
+  };
+
+  const handleWishList = async (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const wishListItem = {
+      title: product.title,
+      price: product.price,
+      photo: product.photo,
+      productId: product.id,
+      userId: user?.uid,
+    };
+
+    await setDoc(doc(db, `users/${user.uid}/wishList`, product.id), wishListItem);
+
+    toast.custom(
+      <div className="bg-success text-white px-3 py-2 rounded-pill shadow-sm d-flex align-items-center gap-2">
+        Added to Wishlist
+        <a href="/wishList" className="btn btn-sm btn-light ms-auto">See</a>
+      </div>,
+      { duration: 5000 }
     );
+  };
+
+  return (
+    <>
+      <div className="mt-1 d-block d-md-none text-center">
+        <div className="btn btn-secondary px-3" onClick={() => filter.setFilterShow(!filter.filterShow)}>Filters</div>
+      </div>
+
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
+          <Spinner animation="border" variant="primary" style={{ width: "3rem", height: "3rem" }} />
+        </div>
+      ) : (
+        <div className="container mt-3">
+          <div className="row g-4">
+            {products.length > 0 ? (
+              products.map((item) => (
+                <div className="col-6 col-md-3" key={item.id}>
+                  <NavLink to="/product/productDesc" state={[item.id, category]} className="card h-100 text-decoration-none" style={{ backgroundColor: "#F7F7F7" }}>
+                    <div className="position-relative">
+                      <img src={item.photo} className="card-img-top" alt={item.title} />
+                      <img
+                        onClick={(e) => handleWishList(e, item)}
+                        src={wishList}
+                        className="position-absolute top-0 start-0 m-2"
+                        style={{ width: "30px", height: "30px", cursor: "pointer", zIndex: 10 }}
+                        alt="Wishlist"
+                      />
+                    </div>
+                    <div className="card-body">
+                      <h5 className="card-title text-dark">{item.title}</h5>
+                      <p className="card-text text-muted" style={{ fontSize: "14px" }}>
+                        <span className="badge bg-success">Free delivery</span> on ₹599+
+                      </p>
+                      <p className="fw-bold text-dark fs-5">₹{item.price}</p>
+                    </div>
+                  </NavLink>
+                </div>
+              ))
+            ) : (
+              <div className="col-12 text-center fs-5">No products available.</div>
+            )}
+          </div>
+
+          {/* Pagination */}
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-4">
+            <button className="btn btn-outline-secondary" onClick={() => fetchProducts(prevDocs[prevDocs.length - 1], "prev")} disabled={currentPage === 1}>
+              Prev
+            </button>
+            <span>Page {currentPage}</span>
+            <button className="btn btn-outline-primary" onClick={() => fetchProducts(lastDoc)} disabled={products.length < productsPerPage}>
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+
+      <Toaster position="bottom-left" />
+    </>
+  );
 };
 
 export default ProductDisplay;

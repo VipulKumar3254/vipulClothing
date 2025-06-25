@@ -9,6 +9,7 @@ import {
   serverTimestamp,
   doc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -96,13 +97,19 @@ const Comments = ({ product }) => {
 
 
     console.log(product.id, "product id is here");
-    await addDoc(collection(db, "products", product.id, "reviews"), commentData);
-    setNewComment("");
+    const productReviewRef = await addDoc(collection(db, "products", product.id, "reviews"), commentData);
+    await setDoc(doc(db, "recentReviews", productReviewRef.id), {
+    productId:product.id,
+    reviewId: productReviewRef.id,
+    createdAt: serverTimestamp(),
+  });
+    // setNewComment("");
+    
   };
 
   return (
 
-    <div style={{ minHeight:"400px"}} className=" min-h p-3  shadow-sm mt-4">
+    <div style={{ minHeight:"400px"}} className=" container min-h p-3  shadow-sm mt-4">
       <hr />
       <h4  style={{fontFamily:"archivo"}}>Reviews</h4>
       <div className="d-flex gap-2 mb-3">
@@ -130,7 +137,8 @@ const Comments = ({ product }) => {
       </li>
     ))
   ) : (
-    <li style={{fontFamily:"archivo"}} className="list-group-item text-muted">No Reviews yet.</li>
+    <li style={{fontFamily:"archivo"}}
+     className="list-group-item text-muted">No Reviews yet.</li>
   )}
 </ul>
 

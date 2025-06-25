@@ -72,7 +72,7 @@ const handleDelete = async (productId, imgSrc) => {
                     src={product.imgSrc}
                     className="card-img-top"
                     alt={product.name}
-                    style={{ height: "200px", width: "300px" }}
+                    style={{ height: "200px", width: "300px" ,objectFit:"contain"}}
                   />
                   <div className="card-body ">
 

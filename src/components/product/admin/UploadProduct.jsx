@@ -1,22 +1,19 @@
-// Updated UploadProduct with dynamic desc, colors, sizes, and images
+// Updated UploadProduct with dynamic desc, colors, sizes, images, and tags
 import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { db, storage } from "../../../../firebaseConfig.js"
+import { db, storage } from "../../../../firebaseConfig.js";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 as uuidv4 } from 'uuid';
 
 const UploadProduct = () => {
   const spinner = useRef(null);
   const alert1 = useRef(null);
   const categoryMessage = useRef(null);
+
   const [alertMessage, setalertMessage] = useState("");
   const [size, setSize] = useState("");
   const [colorLength, setColorLength] = useState(1);
   const [imagesLength, setImagesLength] = useState(1);
-  const [descLength, setDescLength] = useState(1);
   const [categories, setCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
   const [product, updateProduct] = useState({
     title: "",
     subTitle: "",
@@ -25,9 +22,9 @@ const UploadProduct = () => {
     photo: [],
     category: [],
     sizes: [],
-    color: []
+    color: [],
+    tags: [] // ✅ new field
   });
-
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -47,36 +44,28 @@ const UploadProduct = () => {
     const { name, options } = event.target;
     const selectedValues = Array.from(options).filter(option => option.selected).map(option => option.value);
     updateProduct(prevState => ({ ...prevState, [name]: selectedValues }));
-    console.log(product);
-
   };
 
   const handleDescChange = (index, field, value) => {
     const newDesc = [...product.desc];
     newDesc[index][field] = value;
     updateProduct(prev => ({ ...prev, desc: newDesc }));
-    console.log(product);
-
   };
 
   const handlearrayChange = (index, value) => {
     const newColors = [...product.color];
     newColors[index] = value;
     updateProduct({ ...product, color: newColors });
-    console.log(product);
-
   };
 
   const handleSelectChange = (e) => {
     const selectedValues = Array.from(e.target.selectedOptions).map(option => option.value);
     updateProduct({ ...product, sizes: selectedValues });
-    console.log(product);
   };
 
   const handleInputChange = (e) => {
     updateProduct({ ...product, [e.target.name]: e.target.value });
     console.log(product);
-
   };
 
   const handleFileChange = (e) => {
@@ -85,13 +74,11 @@ const UploadProduct = () => {
     let newProduct = { ...product };
     const fileexists = newProduct.photo.some((file) => file.name === newFile.name);
     if (fileexists) {
-      alert("file already exists, choose another file.");
+      alert("File already exists, choose another file.");
       return;
     }
     newProduct.photo.push(newFile);
     updateProduct(newProduct);
-    console.log(product);
-
   };
 
   const handleSubmit = async (e) => {
@@ -116,21 +103,24 @@ const UploadProduct = () => {
         await uploadBytes(photoRef, file);
         photoURL.push(await getDownloadURL(photoRef));
       }
+
       const productData = {
         title: product.title,
         subTitle: product.subTitle,
         price: parseInt(product.price),
-        desc: product.desc, 
+        desc: product.desc,
         sizes: product.sizes,
         color: product.color,
         photo: photoURL,
-        category: product.category
+        category: product.category,
+        tags: product.tags // ✅ include tags
       };
+
       await addDoc(collection(db, "products"), productData);
       alert1.current.style.display = "block";
       setalertMessage("Product has been uploaded.");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert1.current.style.display = "block";
       setalertMessage("Error while uploading product.");
     }
@@ -139,12 +129,15 @@ const UploadProduct = () => {
 
   return (
     <>
+      <h2 className="mt-5 text-center">Add Product</h2>
       <div ref={alert1} style={{ display: "none" }} className="alert alert-success alert-dismissible fade show" role="alert">
         {alertMessage}
         <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       <div className="container">
         <form className="m-3" onSubmit={handleSubmit}>
+
+          {/* Category */}
           <div className="mb-3">
             <label className="form-label">Product Category</label>
             <select className="form-select" multiple name="category" onChange={handleCategoryChange} value={product.category}>
@@ -154,33 +147,23 @@ const UploadProduct = () => {
             <p className="text-danger" ref={categoryMessage} style={{ display: 'none' }}>Please Select Category Carefully.</p>
           </div>
 
+          {/* Title & SubTitle */}
           <div className="mb-3">
             <label className="form-label">Product Title</label>
             <input required type="text" name="title" value={product.title} onChange={handleInputChange} className="form-control" />
           </div>
-
           <div className="mb-3">
             <label className="form-label">Product Sub Title</label>
             <input required type="text" name="subTitle" value={product.subTitle} onChange={handleInputChange} className="form-control" />
           </div>
 
+          {/* Description */}
           <div className="mb-3">
             <label className="form-label">Product Description</label>
             {product.desc.map((item, index) => (
               <div key={index} className="mb-2">
-                <input
-                  type="text"
-                  placeholder="Section Title"
-                  value={item.title}
-                  onChange={(e) => handleDescChange(index, 'title', e.target.value)}
-                  className="form-control mb-1"
-                />
-                <textarea
-                  placeholder="Section Description"
-                  value={item.desc}
-                  onChange={(e) => handleDescChange(index, 'desc', e.target.value)}
-                  className="form-control"
-                />
+                <input type="text" placeholder="Section Title" value={item.title} onChange={(e) => handleDescChange(index, 'title', e.target.value)} className="form-control mb-1" />
+                <textarea placeholder="Section Description" value={item.desc} onChange={(e) => handleDescChange(index, 'desc', e.target.value)} className="form-control" />
                 {product.desc.length > 1 && (
                   <button type="button" className="btn btn-danger mt-2" onClick={() => {
                     const newDesc = product.desc.filter((_, i) => i !== index);
@@ -194,11 +177,13 @@ const UploadProduct = () => {
             }}>Add One More</button>
           </div>
 
+          {/* Price */}
           <div className="mb-3">
             <label className="form-label">Product Price</label>
             <input required type="number" name="price" value={product.price} onChange={handleInputChange} className="form-control" />
           </div>
 
+          {/* Sizes */}
           <div className="mb-3">
             <label className="form-label">Select Size Type</label>
             <div>
@@ -221,6 +206,7 @@ const UploadProduct = () => {
             )}
           </div>
 
+          {/* Colors */}
           <div>
             <p>Select Product Color</p>
             <button type="button" className="btn btn-primary me-2" onClick={() => setColorLength(colorLength + 1)}>Add Color</button>
@@ -235,6 +221,7 @@ const UploadProduct = () => {
             </div>
           </div>
 
+          {/* Photos */}
           <div className="mb-3">
             <label className="form-label mt-3">Product Photos</label>
             <button type="button" className="btn btn-primary me-2" onClick={() => setImagesLength(imagesLength + 1)}>Add Image</button>
@@ -247,10 +234,43 @@ const UploadProduct = () => {
             ))}
           </div>
 
+          {/* ✅ Tags */}
+          <div className="mb-3">
+            <label className="form-label">Product Tags</label>
+            <div className="mb-2">
+              {product.tags.map((tag, index) => (
+                <span key={index} className="badge bg-secondary me-2 mb-2" style={{ cursor: 'pointer' }}
+                  onClick={() => updateProduct(prev => ({ ...prev, tags: prev.tags.filter((_, i) => i !== index) }))}>
+                  {tag} &times;
+                </span>
+              ))}
+            </div>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Type and press space or enter..."
+              onKeyDown={(e) => {
+              if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            const tag = e.target.value.trim();
+            if (tag) {
+                setProduct(prev => ({
+                    ...prev,
+                    tags: [...(prev.tags || []), ...(!prev.tags?.includes(tag) ? [tag] : [])]
+                }));
+            }
+            e.target.value = "";
+        }
+              }}
+            />
+          </div>
+
+          {/* Submit */}
           <button type="submit" className="btn btn-success">Submit</button>
         </form>
       </div>
 
+      {/* Spinner */}
       <div ref={spinner} className="text-center position-absolute top-50 start-50 translate-middle" style={{ display: "none" }}>
         <div className="spinner-border" style={{ height: "5rem", width: "5rem" }} role="status">
           <span className="sr-only"></span>
@@ -259,5 +279,4 @@ const UploadProduct = () => {
     </>
   );
 };
-
 export default UploadProduct;

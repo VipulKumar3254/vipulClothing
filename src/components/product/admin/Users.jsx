@@ -1,94 +1,95 @@
-import React, { useContext, useEffect, useState } from 'react';
+import profileAvatar from "../../../assets/profileAvatar.jpg"
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { auth, db, collection, getDocs } from './firebase'; // Import necessary Firebase functions
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { auth, db } from '../../../../firebaseConfig';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const Users = () => {
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(null); // State to track admin status
-  const [users, setUsers] = useState(null); // State to track admin status
+  const [isAdmin, setIsAdmin] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
 
-  // Check if the user is an admin when the component mounts
   useEffect(() => {
-     const auth= getAuth();
-         onAuthStateChanged(auth,async (user)=>{
-           const docRef = doc(db,"users",user.uid);
-           const docSnap = await getDoc(docRef)
-           if(docSnap.exists())
-           {
-           if(docSnap.data().isAdmin)
-           {
-               setIsAdmin(true); 
-               fetchUsers()
-              
-           }
-           }
-           else{
-               console.log("no data found")
-           }
-   
-         })
+    const checkAdminAndFetchUsers = async () => {
+      const authInstance = getAuth();
+      onAuthStateChanged(authInstance, async (user) => {
+        if (!user) {
+          setIsAdmin(false);
+          navigate("/apLogin");
+          return;
+        }
 
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists() && userDoc.data().isAdmin) {
+            setIsAdmin(true);
+            await fetchUsers();
+          } else {
+            setIsAdmin(false);
+            navigate("/apLogin");
+          }
+        } catch (error) {
+          console.error("Error checking admin:", error);
+          setIsAdmin(false);
+        }
+      });
+    };
+
+    checkAdminAndFetchUsers();
   }, [navigate]);
 
-  // Function to fetch all users from Firestore
   const fetchUsers = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'users')); // Retrieve all documents from the 'users' collection
-      const usersList = querySnapshot.docs.map((doc) => doc.data()); // Map to get user data
-      setUsers(usersList); // Update state with user data
-      console.log(usersList);
+      const snapshot = await getDocs(collection(db, 'users'));
+      const userList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setUsers(userList);
+      console.log(userList);
     } catch (error) {
-      console.error('Error fetching users: ', error);
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoadingUsers(false);
     }
   };
 
-  // If we are still checking admin status, show a loading spinner
-  if (isAdmin === null) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  // If the user is not an admin, return null (user is redirected)
-  if (isAdmin === false) {
-    return null;
-  }
-
   return (
-    <>
-      {/* Welcome Texts */}
+    <div className="container-fluid">
+      {/* Sticky Header */}
+      <div className="bg-white mt-5  px-2  position-sticky top-0" style={{ zIndex: 999 }}>
+        <h2 className="text-center m-0">Customers</h2>
+      </div>
 
-      {/* Users List */}
-      <div className="container-fluid">
-        <h3 className="text-center mt-3">All Users</h3>
-        {
-            
-        }
-        <div className="row">
-          { users? users.map((user, index) => (
+      {/* Loading State */}
+      {isAdmin === null || loadingUsers ? (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <div className="row mt-3">
+          {users.map((user, index) => (
             <div key={index} className="col-md-2 mb-3">
-              <div className="card p-3">
-                <img src={user.profilePhotoUrl?user.profilePhotoUrl:""} alt="" style={{height:"100px", width:"100px"}} />
-                <h5>{user.name}</h5>
-                <p>Email: {user.email}</p>
-                <p>name: {user.name}</p>
-                <p>phone: {user.phone}</p>
-                <p>pincode: {user.pincode}</p>
-                <p>Admin: {user.isAdmin ? 'Yes' : 'No'}</p>
+              <div className="card p-3 shadow-sm h-100">
+                <img
+                  src={ user.profilePhotoUrl.length>4 ? user.profilePhotoUrl :profileAvatar}
+                  
+                  className="img-fluid rounded-circle mx-auto d-block mb-2"
+                  style={{ height: "100px", width: "100px", objectFit: "cover" }}
+                />
+                <h6 className="text-center">{user.name || "Unnamed"}</h6>
+                <p className="mb-1"><strong>Email:</strong> {user.email}</p>
+                <p className="mb-1"><strong>Phone:</strong> {user.phone || "-"}</p>
+                <p className="mb-1"><strong>Pincode:</strong> {user.pincode || "-"}</p>
+                <p className="mb-1"><strong>Admin:</strong> {user.isAdmin ? 'Yes' : 'No'}</p>
               </div>
             </div>
-          )) :""}
+          ))}
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

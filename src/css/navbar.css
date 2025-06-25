@@ -11,3 +11,10 @@
 .height{
     height: 34px;
 }
+.custom-search-input {
+  height: 48px; /* Increase as needed */
+  /* width: 300px; */
+  font-size: 1.1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}

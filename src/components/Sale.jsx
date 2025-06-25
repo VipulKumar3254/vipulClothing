@@ -2,8 +2,10 @@ import React from "react";
 import { motion, scale } from "framer-motion";
 import bannerImg from "../assets/200Product.png"; // Replace with your image path
 import "../css/sale.css"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import e from "cors";
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <div
       className="d-flex align-items-center "
@@ -53,7 +55,11 @@ const HeroSection = () => {
               whileHover={{ scale: 1.1 }}
 
               >
-                <Link className="text-decoration-none text-white" to="/rs200Products">Buy Now</Link>
+                <Link className="text-decoration-none text-white" onClick={(e)=>{
+                  e.preventDefault();
+    navigate("/rs200Products")
+
+                }}>Buy Now</Link>
               </motion.div>
             </motion.div>
           </div>

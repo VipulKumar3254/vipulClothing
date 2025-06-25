@@ -8,7 +8,11 @@ const Banner = ()=>{
     return (
         <>
         <div>
-        <MensCollectionIndexGrid/>
+        <MensCollectionIndexGrid title={"Men's Collection"} categoryTag={"mensCollection"}/>
+        <div className='mt-3'>
+
+        <MensCollectionIndexGrid title={"Summer Collection"} categoryTag={"summerCollection"}/>
+        </div>
         <SportWear /> 
            {/* sport wear section */}
         <NewArrivals/>   {/* discover new arrivals */}

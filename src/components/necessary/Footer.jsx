@@ -17,18 +17,17 @@ const Footer = () => {
           <div className="col-md-3 ">
 
             <h4>Product Categories</h4>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Jeans</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Shirts</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>T-Shirts</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Joggers</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Formal Pents</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"/jeans"}>Jeans</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"/shirts"}>Shirts</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"/tshirts"}>T-Shirts</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"/joggers"}>Joggers</Link> </li>
 
           </div>
             <div className="col-md-3">
               <h4>Join Our Community</h4>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Instagram</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Collab with Us</Link> </li>
-              <li><Link className='link-underline-dark link-secondary' to={"/"}>Get Sponsored</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"https://www.instagram.com/vipulkumar_3254/"}>Instagram</Link> </li>
+              {/* <li><Link className='link-underline-dark link-secondary' to={"/"}>Collab with Us</Link> </li>
+              <li><Link className='link-underline-dark link-secondary' to={"/"}>Get Sponsored</Link> </li> */}
               {/* <li><Link className='link-underline-dark link-secondary' to={"/"}>Get Sponsored</Link> </li> */}
 
 

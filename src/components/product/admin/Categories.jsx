@@ -49,10 +49,10 @@ const Categories = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Categories</h2>
+        <div className="container mt-5 mt-4">
+            <h2 className="text-center">Categories</h2>
             
-            <div className="mb-3 d-flex">
+            <div className="my-3 d-flex">
                 <input
                     type="text"
                     className="form-control me-2"

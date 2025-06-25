@@ -4,7 +4,7 @@ import { Accordion, CardGroup } from "react-bootstrap";
 import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { getAuth,onAuthStateChanged } from "firebase/auth";
-import { Toaster, toast } from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 
 function Cart({ toggleCart }) {
@@ -12,6 +12,7 @@ function Cart({ toggleCart }) {
  const [cart,setCart]=useState([]);
  const [totalPrice,setTotalPrice]= useState(0);
  const [user,setUser]= useState({});
+ const navigate = useNavigate();
  
 
 //  setting the user
@@ -21,7 +22,6 @@ function Cart({ toggleCart }) {
       if(user){
         
         setUser(user)
-        console.log("user set",user);
       }
       else{
         setUser(null)
@@ -43,12 +43,10 @@ function Cart({ toggleCart }) {
         orderId: doc.id,
         ...doc.data(),
       }));
-      console.log( "cart is ",cartList);
       setCart(cartList)
       let total = cartList.reduce((acc,item)=>{
       return acc+ parseInt(item.price,10);
     },0)
-    console.log(total);
     setTotalPrice(total)
     });
 
@@ -77,7 +75,6 @@ function Cart({ toggleCart }) {
   // removing the product from cart
   const removeProduct = async (id)=>{
     try{
-      console.log(id);
       const cartRef = doc(db,`users/${user.uid}/cart`,id)
       let result = await deleteDoc(cartRef)
           toast.success('Product Removed from Cart', { duration: 4000 });
@@ -92,7 +89,13 @@ function Cart({ toggleCart }) {
   const handleCheckout =async  ()=>{
     try{
       const userRef = doc(db,"users",user.uid)
-      console.log("hii",cart);
+        navigate(`/checkout`, {
+            state: { orderDetails: cart ,},
+            });
+            toggleCart();
+            return;
+
+
       cart.map(async(item)=>{
         delete item.orderId
         console.log("actual order sent from cart to  db is",item);
@@ -155,7 +158,6 @@ function Cart({ toggleCart }) {
         <button className="btn btn-primary fs-6 fw-bold ms-3" onClick={handleCheckout}>Proceed to Checkout</button>
       </div>
     :""}
-        <Toaster position="bottom-right" />
 
     </div>
    

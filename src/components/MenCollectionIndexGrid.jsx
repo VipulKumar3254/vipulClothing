@@ -7,7 +7,8 @@ import { motion } from 'framer-motion';
 import '../css/MenCollectionIndexGrid.css';
 import { useNavigate } from 'react-router-dom';
 
-const MenCollectionIndexGrid = () => {
+const MenCollectionIndexGrid = ({categoryTag,title}) => {
+  console.log("from mens collection",categoryTag);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleItems, setVisibleItems] = useState({});
@@ -32,7 +33,7 @@ const MenCollectionIndexGrid = () => {
       try {
         const q = query(
           collection(db, 'products'),
-          where('category', 'array-contains', 'mensCollection')
+          where('category', 'array-contains',categoryTag)
         );
         const snapshot = await getDocs(q);
         const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -85,7 +86,7 @@ const MenCollectionIndexGrid = () => {
         scrollContainer.removeEventListener('touchmove', handleTouchMove);
       }
     };
-  }, []);
+  }, [collection]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -131,7 +132,7 @@ const MenCollectionIndexGrid = () => {
         animate={headingVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ duration: 0.9 }}
       >
-        Men's Collection
+       {title}
       </motion.h1>
 
       <button className="scroll-btn left" onClick={() => scroll('left')}>
@@ -141,10 +142,10 @@ const MenCollectionIndexGrid = () => {
         ➡
       </button>
 
-      <div className="horizontal-scroll-container" ref={scrollRef}>
+      <div className="horizontal-scroll-container  " ref={scrollRef}>
         {loading ? (
           Array.from({ length: 4 }).map((_, idx) => (
-            <motion.div
+            <motion.div 
               key={idx}
               className="product-card-wrapper"
               initial={{ opacity: 0.5 }}
@@ -162,7 +163,7 @@ const MenCollectionIndexGrid = () => {
           ))
         ) : (
           products.map((product, index) => (
-            <motion.div 
+            <motion.div style={{backgroundColor:"#F7F7F7"}}
               key={product.id}
               className="product-card-wrapper"
               ref={el => itemRefs.current[product.id] = el}
@@ -176,13 +177,13 @@ const MenCollectionIndexGrid = () => {
             >
               <div className="card h-100 custom-card">
                 {product.photo && (
-                  <img
+                  <img style={{backgroundColor:"#F7F7F7"}}
                     src={product.photo}
                     alt={product.title}
                     className="card-img-top img-fluid"
                   />
                 )}
-                <div className="card-body">
+                <div className="card-body" style={{backgroundColor:"#F7F7F7"}}>
                   <motion.h5
                     className="card-title"
                     animate={visibleItems[product.id] ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}

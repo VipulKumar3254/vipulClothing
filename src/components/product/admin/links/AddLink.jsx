@@ -28,13 +28,20 @@ export default function AddLink() {
   };
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex flex-column justify-content-center align-items-center">
+      <div className="mt-5">
+        <h2>
+
+        Add Navbar Link
+        </h2>
+        </div>
+      
       <form 
         onSubmit={handleSubmit}
-        className="flex-column border p-2 rounded col-12 col-md-8"
+        className=" mt-2 flex-column border p-2 rounded col-12 col-md-8 "
       >
-        <div>
-          <label className="block">Name:</label>
+        <div className="d-flex justify-content-center align-items-center">
+          <label className="block">Name: </label>
           <input
             type="text"
             name="name"
@@ -44,8 +51,8 @@ export default function AddLink() {
             required
           />
         </div>
-        <div className="mt-2">
-          <label className="block">Path:</label>
+        <div className="mt-2 d-flex justify-content-center align-items-center ">
+          <label className="block">Path: </label>
           <input
             type="text"
             name="path"
@@ -57,7 +64,7 @@ export default function AddLink() {
         </div>
         <button 
           type="submit" 
-          className="mt-2 btn btn-primary px-4 py-2 d-flex align-items-center justify-content-center"
+          className="mt-2 mx-auto  btn btn-primary px-4 py-2 d-flex align-items-center justify-content-center"
           disabled={loading}
         >
           {loading ? (

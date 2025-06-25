@@ -27,9 +27,9 @@ export default function NewArrivalsBanner() {
   }
 
   return (
-    <div
+    <div style={{backgroundColor:"#F7F7F7"}}
       ref={ref}
-      className="d-flex flex-column flex-md-row align-items-center justify-content-between px-3 px-md-5 py-5 gap-4"
+      className=" mt-2 d-flex flex-column flex-md-row align-items-center justify-content-between px-3 px-md-5 py-5 gap-4"
     >
       {/* Left Text */}
       <div className="w-100 w-md-60 text-center text-md-start">

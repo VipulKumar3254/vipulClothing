@@ -1,65 +1,122 @@
-import "@fontsource/roboto"
+import "@fontsource/roboto";
+import React, { useState, useContext, useRef } from "react";
+import "../../css/Filter.css";
+import { filterContext, userContext } from "../context/context";
 
-import React, { useState, useContext, useRef } from 'react';
-import "../../css/Filter.css"
-import { filterContext, userContext } from '../context/context';
-import { orderBy } from 'firebase/firestore';
 const Filter = () => {
-  const formRef= useRef(null);
+  const formRef = useRef(null);
   const user = useContext(userContext);
   const filter = useContext(filterContext);
-  const [lessThanCheckbox,setLessThanCheckbox] = useState(0)
-  const [orderByCheckbox,setOrderByCheckobx]  = useState("");
-  const handleCheckbox = (e) => {
-    console.log(parseInt(e.target.value));
-    filter.setLessThan(parseInt(e.target.value))
-    console.log(filter);
 
-  }
+  const handleCheckbox = (e) => {
+    filter.setLessThan(parseInt(e.target.value));
+    filter.setFilterShow(false);
+  };
+
   const handleOrder = (e) => {
-    filter.setOrderBy(e.target.value)
-    console.log(filter);
-  }
+    filter.setOrderBy(e.target.value);
+    filter.setFilterShow(false);
+  };
 
   return (
     <>
-      <div  style={{fontFamily:"roboto",fontSize:"15px"}}  className={`mainContainer d-md-block ${filter.filterShow?"d-block":"d-none"} text-md-start text-center `}>
-        <form action="#" ref={formRef} className=' position-sticky ' style={{top:"20px"}}>
+      <div
+        className={`mainContainer d-md-block ${filter.filterShow ? "d-block" : "d-none"} text-md-start text-center px-3 py-3 bg-light rounded shadow-sm`}
+        style={{ fontFamily: "Roboto", fontSize: "15px", maxWidth: "300px" }}
+      >
+        <form action="#" ref={formRef} className="position-sticky" style={{ top: "20px" }}>
+          <h5 className="mb-3 text-dark">Filter by Price</h5>
 
+          <div className="form-check mb-2">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceCriteria"
+              id="under500"
+              value="500"
+              onChange={handleCheckbox}
+            />
+            <label className="form-check-label" htmlFor="under500">
+              Under ₹500
+            </label>
+          </div>
 
+          <div className="form-check mb-2">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceCriteria"
+              id="under600"
+              value="600"
+              onChange={handleCheckbox}
+            />
+            <label className="form-check-label" htmlFor="under600">
+              Under ₹600
+            </label>
+          </div>
 
+          <div className="form-check mb-3">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="priceCriteria"
+              id="under800"
+              value="800"
+              onChange={handleCheckbox}
+            />
+            <label className="form-check-label" htmlFor="under800">
+              Under ₹800
+            </label>
+          </div>
 
-        <div>
+          <hr className="my-3" />
+          <h5 className="mb-3 text-dark">Sort by</h5>
 
-          <input type="radio" name="priceCriteria" value="500" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
-          <label htmlFor="500">Under 500</label>
-        </div>
+          <div className="form-check mb-2">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="itemOrder"
+              id="lowToHigh"
+              value="asc"
+              onClick={handleOrder}
+            />
+            <label className="form-check-label" htmlFor="lowToHigh">
+              Price: Low to High
+            </label>
+          </div>
 
-        <div>
-          <input type="radio" name="priceCriteria" value="600" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }}/>
-          <label htmlFor="500">Under 600</label>
-        </div>
-        <div>
-          <input type="radio" name="priceCriteria" value="800" onChange={handleCheckbox}  onClick={() => { filter.setFilterShow(!filter.filterShow); }} />
-          <label htmlFor="500">Under 800</label>
-        </div>
+          <div className="form-check mb-3">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="itemOrder"
+              id="highToLow"
+              value="desc"
+              onClick={handleOrder}
+            />
+            <label className="form-check-label" htmlFor="highToLow">
+              Price: High to Low
+            </label>
+          </div>
 
-        <hr />
-        <input type="radio" onClick={(e)=>{ handleOrder(e); filter.setFilterShow(!filter.filterShow);}} name='itemOrder' value={"asc"}   />
-        <label htmlFor="">Price low to high</label>
-        <div>
-          <input type="radio"onClick={(e)=>{ handleOrder(e); filter.setFilterShow(!filter.filterShow);}} name='itemOrder' value={"desc"}  />
-          <label htmlFor="">Price high to low</label>
-        </div>
-        <div className="btn btn-light mt-3" onClick={() => { filter.setLessThan(0); filter.setOrderBy(""); formRef.current.reset(); filter.setFilterShow(!filter.filterShow); }}>Clear Filters</div>
-
-
+          <div className="d-grid">
+            <button
+              type="button"
+              className="btn btn-outline-dark mt-2"
+              onClick={() => {
+                filter.setLessThan(0);
+                filter.setOrderBy("");
+                formRef.current.reset();
+                filter.setFilterShow(false);
+              }}
+            >
+              Clear Filters
+            </button>
+          </div>
         </form>
       </div>
-      <div>
-      </div>
     </>
-
   );
 };
 

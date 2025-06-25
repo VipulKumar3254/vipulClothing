@@ -10,13 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fontsource/archivo": "^5.2.5",
     "@fontsource/merriweather": "^5.2.7",
+    "@fontsource/poppins": "^5.2.6",
     "@fontsource/quicksand": "^5.2.7",
     "@fontsource/roboto": "^5.2.5",
+    "@mui/icons-material": "^7.1.1",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "firebase": "^10.12.2",
     "motion": "^12.10.4",
     "node-localstorage": "^3.0.5",
@@ -28,6 +33,7 @@
     "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^6.23.0",
     "react-select": "^5.9.0",
+    "recharts": "^2.15.3",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

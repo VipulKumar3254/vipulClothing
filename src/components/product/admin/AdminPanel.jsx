@@ -1,102 +1,94 @@
-import React, { useContext, useEffect, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";  // Import Bootstrap CSS
-import { Link, useNavigate } from "react-router-dom";
-import { auth, db } from "../../../../firebaseConfig";
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
+import { auth, db, app } from "../../../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import { userContext } from "../../context/context";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import AdminPanelDashboard from "./AdminPanelDashBoard";
-import TotalUsersCard from "./TotalUsersCard";
-
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import AdminStats from "./AdminStats";
+import Charts from "./Charts";
+import AdminPanelLinks from "./AdminPanelLinks";
 
 const AdminPanel = () => {
-  const [isAdmin, setIsAdmin] = useState(null); // State to track admin status
+  const [isAdmin, setIsAdmin] = useState(null);
   const navigate = useNavigate();
+  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [userCount, setUserCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
 
-  const handleLogout = async () => {
+  const fetchCounts = async () => {
     try {
-      await auth.signOut();
-      navigate('/apLogin'); // Redirect to the login page after logout
+      const functions = getFunctions(app);
+      const getTotalUsers = httpsCallable(functions, 'getTotalUsers');
+      const getTotalOrders = httpsCallable(functions, 'getTotalOrders');
+      const getTotalProducts = httpsCallable(functions, 'getTotalProducts');
+
+      const [usersRes, ordersRes, productsRes] = await Promise.all([
+        getTotalUsers(),
+        getTotalOrders(),
+        getTotalProducts(),
+      ]);
+
+      setUserCount(usersRes.data.totalUsers);
+      setOrderCount(ordersRes.data.totalOrders);
+      setProductCount(productsRes.data.totalProducts);
     } catch (error) {
-      console.error('Error logging out: ', error.message);
+      console.error("Error fetching counts:", error.message);
+    } finally {
+      setLoadingUsers(false);
+      setLoadingOrders(false);
+      setLoadingProducts(false);
     }
   };
-
-
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
       const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        if (docSnap.data().isAdmin) {
-          setIsAdmin(true);
-
-        }
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists() && docSnap.data().isAdmin) {
+        setIsAdmin(true);
+        fetchCounts();
+      } else {
+        navigate("/apLogin");
       }
-      else {
-        console.log("no data found")
-      }
-
-    })
+    });
   }, []);
 
-
-
-  // If we are still checking admin status, show a loading spinner
-  if (isAdmin === null) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-
-
-  // If the user is not an admin, we won't render the admin panel
-  if (isAdmin === false) {
-    return null; // Redirecting already happens via navigate in useEffect
-  }
   return (
-    <>
-    <TotalUsersCard/>
-      {/* welcome texts */}
-      <div className="container py-4">
-        {/* Logout Button */}
-        <button
-          className="btn btn-danger mb-4"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-
-        {/* Admin Panel Content */}
-        {/* <AdminPanelDashboard/> */}
+    <div className="row" style={{ backgroundColor: "#F9FAFB" }}>
+      {/* Sidebar always visible */}
+      <div className="col-12 col-md-2 bg-white border-end">
+        <AdminPanelLinks />
       </div>
-      {/* main action buttons */}
-      <div className="container-fluid d-flex justify-content-center align-items-center ">
-        <div className="text-center mb-md-3">
-          <div className="d-flex   justify-content-center gap-3 flex-column flex-md-column">
-            <Link to={"/admin/orders"} className="btn btn-primary mb-3 mb-md-0">All orders</Link>
-            <Link to={"/admin/upload"} className="btn btn-primary mb-3 mb-md-0">Add Product</Link>
-            <Link to={"/admin/users"} className="btn btn-primary mb-3 mb-md-0">All Users</Link>
-            <Link to={"/admin/allProducts"} className="btn btn-primary mb-3 mb-md-0">All Products</Link>
-            <Link to={"/admin/productsWeOffer"} className="btn btn-primary mb-3 mb-md-0">Products we offer</Link>
-            <Link to={"/admin/categories"} className="btn btn-primary mb-3 mb-md-0">Categories</Link>
-            <Link to={"/admin/links"} className="btn btn-primary mb-3 mb-md-0">Links</Link>
-            <button className="btn btn-primary mb-3 mb-md-0">Deals</button>
-            <Link to={"/admin/manageNewArrivals"} className="btn btn-primary mb-3 mb-md-0">New Arrivals</Link>
 
-            <button className="btn btn-primary mb-3 mb-md-0">200 Rupees Products</button>
-            <button className="btn btn-primary mb-3 mb-md-0">Sale</button>
+      {/* Right side: loading or admin content */}
+      <div className="col-12 col-md-10">
+        {isAdmin === null ? (
+          <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Checking admin access...</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <AdminStats
+              userCount={userCount}
+              orderCount={orderCount}
+              productCount={productCount}
+              loadingUsers={loadingUsers}
+              loadingOrders={loadingOrders}
+              loadingProducts={loadingProducts}
+            />
+            <Charts />
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

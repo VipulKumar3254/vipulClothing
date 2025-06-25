@@ -69,6 +69,7 @@ const UpdateProduct = () => {
 
     const handleInputChange = (e) => {
         setProduct({ ...product, [e.target.name]: e.target.value });
+        console.log(product);
     };
 
     const handleCategoryChange = (event) => {
@@ -199,6 +200,35 @@ const UpdateProduct = () => {
                     </div>
                 </div>
 
+                        
+          {/* ✅ Tags */}
+          <div className="mb-3">
+            <label className="form-label">Product Tags</label>
+            <div className="mb-2">
+              { product.tags.map((tag, index) => (
+                <span key={index} className="badge bg-secondary me-2 mb-2" style={{ cursor: 'pointer' }}
+                  onClick={() => setProduct(prev => ({ ...prev, tags: prev.tags.filter((_, i) => i !== index) }))}>
+                  {tag} &times;
+                </span>
+              ))}
+            </div>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Type and press space or enter..."
+              onKeyDown={(e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                  e.preventDefault();
+                  console.log("hi");
+                  const tag = e.target.value.trim();
+                  if (tag && !product.tags.includes(tag)) {
+                    setProduct(prev => ({ ...prev, tags: [...prev.tags, tag] }));
+                  }
+                  e.target.value = "";
+                }
+              }}
+            />
+          </div>
                 <div className="mb-3">
                     <label className="form-label">Product Title</label>
                     <input

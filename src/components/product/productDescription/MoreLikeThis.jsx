@@ -66,23 +66,26 @@ if (loading) {
 }
 
   return (
-    <div  style={{minHeight:"400px"}} className="mt-5 p-2">
+    <div  style={{minHeight:"400px"}} className="mt-5 p-5">
       <h4  style={{fontFamily:"archivo"}} className="mb-3">More Like This</h4>
       {related.length > 0 ? (
         <div className="d-flex overflow-auto pb-2">
           {related.map((item) => (
-            <div className="card me-3" key={item.id} style={{ minWidth: "200px" }}>
-              <img
-                src={item.photo}
-                className="card-img-top cover"
-                alt={item.name}
-                style={{ height: "350px", objectFit: "cover top " }}
-              />
-              <div className="card-body p-2">
-                <h6  style={{fontFamily:"archivo"}} className="card-title mb-1">{item.title}</h6>
-                <p style={{fontFamily:"archivo"}} className="card-text text-muted mb-0">₹{item.price}</p>
-              </div>
-            </div>
+            <div className="card me-3 shadow-sm border-0" key={item.id} style={{ minWidth: "180px", maxWidth: "250px" }}>
+  <div style={{ height: "350px", overflow: "hidden", borderRadius: "8px" }}>
+    <img
+      src={item.photo}
+      className="img-fluid w-100 h-100"
+      alt={item.name}
+      style={{ objectFit: "cover", borderRadius: "8px" }}
+    />
+  </div>
+  <div className="card-body p-2">
+    <h6 style={{ fontFamily: "archivo", fontSize: "0.95rem" }} className="card-title mb-1">{item.title}</h6>
+    <p style={{ fontFamily: "archivo", fontSize: "0.9rem" }} className="card-text text-muted mb-0">₹{item.price}</p>
+  </div>
+</div>
+
           ))}
         </div>
       ) : (

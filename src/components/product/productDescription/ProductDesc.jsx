@@ -7,6 +7,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import "../../../css/ProductDesc.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "@fontsource/poppins"
+
 
 //desc banner images
 import returnlogo from "../../../assets/DescBanner/return.png";
@@ -24,6 +27,8 @@ const ProductDesc = () => {
     const [product, setProduct] = useState(null);
     const [showTerms, setShowTerms] = useState(false); // Controls the visibility of Terms & Conditions
     const [selectedColor, setSelectedColor] = useState("");
+    const navigate = useNavigate();
+
 
     const location = useLocation();
     id = location.state ? location.state[0] : id;
@@ -44,7 +49,7 @@ const ProductDesc = () => {
                 if (docSnap.exists()) {
                     setProduct({ ...docSnap.data(), id: docSnap.id });
                     console.log("product data is ", docSnap.data());
-                    console.log("id of the product is ",docSnap.id);
+                    console.log("id of the product is ", docSnap.id);
                 } else {
                     console.log("No such document!");
                 }
@@ -62,7 +67,7 @@ const ProductDesc = () => {
         if (name === "color") {
             setSelectedColor(value);
         }
-        console.log("purchasing item is ",purchase);
+        console.log("purchasing item is ", purchase);
     };
 
     const purchaseSet = () => {
@@ -83,31 +88,31 @@ const ProductDesc = () => {
 
         let cartItem = purchaseSet();
         try {
-            const docRef= doc(db,"users",user.uid,'cart',product.id);
+            const docRef = doc(db, "users", user.uid, 'cart', product.id);
             const docSnap = await getDoc(docRef);
-            if(docSnap.exists()){
+            if (docSnap.exists()) {
 
-                    const data = docSnap.data();
-                    if(data.size === cartItem.size && data.color === cartItem.color){
-                         toast.custom(
-            <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
-              <span className="text-white  fw-medium  fs-6">Already In cart</span>
-           
-            </div>,
-            { duration: 6000 }
-          );
-                        return;
-            
+                const data = docSnap.data();
+                if (data.size === cartItem.size && data.color === cartItem.color) {
+                    toast.custom(
+                        <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
+                            <span className="text-white  fw-medium  fs-6">Already In cart</span>
+
+                        </div>,
+                        { duration: 6000 }
+                    );
+                    return;
+
+                }
             }
-        }
-            await setDoc(doc(db, `users/${user.uid}/cart`,cartItem.productId), { ...cartItem });
+            await setDoc(doc(db, `users/${user.uid}/cart`, cartItem.productId), { ...cartItem });
             toast.custom(
-            <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
-              <span className="text-white  fw-medium  fs-6">Added to Cart</span>
-            
-            </div>,
-            { duration: 6000 }
-          );
+                <div className="bg-success px-4 py-2 rounded-lg shadow-md border rounded-pill border-gray-200 flex items-center space-x-1    text-sm">
+                    <span className="text-white  fw-medium  fs-6">Added to Cart</span>
+
+                </div>,
+                { duration: 6000 }
+            );
         } catch (err) {
             console.log("Error while adding to cart:", err);
         }
@@ -130,6 +135,17 @@ const ProductDesc = () => {
 
         let cartItem = purchaseSet();
         try {
+            const orderData = {
+                ...cartItem,
+                userId: user.uid, // Use user ID instead of document reference
+                status: "Order Requested",
+                date: new Date().toISOString(), // Serialize date
+            };
+            navigate(`/checkout`, {
+                state: { orderDetails: orderData },
+            });
+            return;
+
             const userRef = doc(db, "users", user.uid);
             const docRef = await addDoc(collection(db, "orders"), { ...cartItem, user: userRef, status: "Order Requested", date: new Date() });
 
@@ -171,8 +187,11 @@ const ProductDesc = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-7  ">
-                                    <p  style={{fontFamily:"archivo"}} className="fs-2 mt-5 ms-2">{product.title}</p>
-                                    <p  style={{fontFamily:"archivo"}} className="fs-5 ms-2">{product.subTitle}</p>
+                                    <p style={{ fontFamily: "archivo" }} className="fs-2 mt-5 ms-2">{product.title}</p>
+                                    <div className="pe-5">
+
+                                    <p style={{ fontFamily: "archivo" }} className="fs-5 ms-2 pe-5">{product.subTitle}</p>
+                                    </div>
                                     <p className="fs-3 ms-2 fw-medium"><sup style={{ fontSize: "13px" }}> &#8377;</sup>{product.price}</p>
 
                                     <div className="mt-3 text-center d-flex">
@@ -207,7 +226,7 @@ const ProductDesc = () => {
                                                     setSelectedImageIndex(index)
                                                 }} value={color} id={color} />
                                                 <label htmlFor={color}>
-                                                    <img src={product.photo[index]} style={{ height: "80px", width: "60px" ,objectFit:"cover"}} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
+                                                    <img src={product.photo[index]} style={{ height: "80px", width: "60px", objectFit: "cover" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
                                                     <p>{color}</p>
                                                 </label>
                                             </div>
@@ -221,38 +240,41 @@ const ProductDesc = () => {
                                 </div>
                             </div>
 
-                            <h2  style={{fontFamily:"archivo"}} className="mt-5 fs-1">Product Description</h2>
-                            <div className="container ">
+                            <h2 style={{ fontFamily: "arial" }} className="mt-5 fs-1 fw-semibold text-center">Product Description</h2>
+                            <div className="container row  mx-auto mt-5 ">
+                                <div className="col-12  ">
 
-                                {product.desc.map((section, index) => (
-                                    <div key={index} className="mb-3" style={{fontFamily:"archivo"}}>
-                                        <h4>{section.title}</h4>
-                                        <p className="fs-6">{section.desc}</p>
-                                    </div>
-                                ))}
+
+                                    {product.desc.map((section, index) => (
+                                        <div key={index} className="mb-3" style={{ fontFamily: "poppins" }}>
+                                            <h4>{section.title}</h4>
+                                            <p className="fs-6">{section.desc}</p>
+                                        </div>
+                                    ))}
+                                </div>
 
                             </div>
                         </div>
                     </>
-                ) : 
-                     (
-  <div className="container-fluid">
-    <div className="row">
-      <div className="col-xl-5">
-        <div className="skeleton skeleton-img"></div>
-      </div>
-      <div className="col-lg-7">
-        <div className="skeleton skeleton-text"></div>
-        <div className="skeleton skeleton-text"></div>
-        <div className="skeleton skeleton-text skeleton-small"></div>
-        <div className="d-flex mt-3">
-          <div className="skeleton skeleton-text me-2" style={{ width: "100px", height: "30px" }}></div>
-          <div className="skeleton skeleton-text" style={{ width: "100px", height: "30px" }}></div>
-        </div>
-      </div>
-    </div>
-  </div>
-)
+                ) :
+                    (
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-xl-5">
+                                    <div className="skeleton skeleton-img"></div>
+                                </div>
+                                <div className="col-lg-7">
+                                    <div className="skeleton skeleton-text"></div>
+                                    <div className="skeleton skeleton-text"></div>
+                                    <div className="skeleton skeleton-text skeleton-small"></div>
+                                    <div className="d-flex mt-3">
+                                        <div className="skeleton skeleton-text me-2" style={{ width: "100px", height: "30px" }}></div>
+                                        <div className="skeleton skeleton-text" style={{ width: "100px", height: "30px" }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
 
                 }
             </div>
@@ -289,7 +311,7 @@ const ProductDesc = () => {
 
             {/* more like this  */}
             <MoreLikeThis product={product} />
-        <Toaster position="bottom-left" />
+            <Toaster position="bottom-left" />
 
         </>
     );

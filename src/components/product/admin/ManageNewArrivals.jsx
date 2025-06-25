@@ -50,7 +50,7 @@ const ManageNewArrivals = () => {
           {products.map(product => (
             <Col key={product.id}>
               <Card className="shadow-sm h-100 text-center">
-                <Card.Img
+                <Card.Img className="mx-auto"
                   variant="top"
                   src={product.photo}
                   alt={product.title}
@@ -58,7 +58,6 @@ const ManageNewArrivals = () => {
                 />
                 <Card.Body>
                   <Card.Title>{product.title}</Card.Title>
-                  <Card.Text>{product.subTitle}</Card.Text>
                   <p><strong>₹{product.price}</strong></p>
                   <Button
                     variant="danger"

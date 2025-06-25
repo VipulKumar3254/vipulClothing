@@ -20,7 +20,7 @@ const Links = () => {
 
   const fetchLinks = async () => {
     try {
-      const linksRef = collection(db, "admin","links", "links");
+      const linksRef = collection(db, "admin", "links", "links");
       const snapshot = await getDocs(linksRef);
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setLinks(data);
@@ -47,8 +47,8 @@ const Links = () => {
 
   const handleUpdate = async () => {
     try {
-        console.log("Editing ID:", editingId);
-        console.log("Editing data:", editedData);
+      console.log("Editing ID:", editingId);
+      console.log("Editing data:", editedData);
       const docRef = doc(db, "admin", "links", "links", editingId);
       await updateDoc(docRef, editedData);
       setLinks(prev =>
@@ -68,18 +68,18 @@ const Links = () => {
 
   return (
     <div className="container mt-4">
-      <div>
+      <div className="d-flex justify-content-end me-3">
         <Link to="/admin/addlink" className="btn btn-primary mb-3">
-          Add New Link
+          Add Navbar Link
         </Link>
       </div>
-      <h2>Manage Links</h2>
+      <h2 className="text-center"> Manage Navbar Links</h2>
       <div className="row">
         {links.map((link) => (
           <div key={link.id} className="col-md-4 mb-3">
             <Card>
               <Card.Body>
-                  {/* <p className="text-primary">Name:  {link.name}</p>
+                {/* <p className="text-primary">Name:  {link.name}</p>
                   <p className="text-primary">Path:  {link.path}</p> */}
 
                 {editingId === link.id ? (

@@ -1,111 +1,128 @@
-import { getAuth,onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../../firebaseConfig';
-import { collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc } from 'firebase/firestore';
-
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from 'firebase/firestore';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Orders = () => {
-    const [admin,setAdmin]= useState(false);
-    const [orders,setOrders]= useState([]);
-    useEffect(()=>{
-        const auth= getAuth();
-      onAuthStateChanged(auth,async (user)=>{
-        const docRef = doc(db,"users",user.uid);
-        const docSnap = await getDoc(docRef)
-        if(docSnap.exists())
-        {
-        if(docSnap.data().isAdmin)
-        {
-            setAdmin(true); 
-           
-        }
-        }
-        else{
-            console.log("no data found")
-        }
+  const [admin, setAdmin] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      })
-    },[])
-
-   
-
-    const setOrderStatus=async (id,msg)=>{
-      console.log(id);
-      const orderRef = doc(db,"orders",id);
-      console.log(id);
-      const orderSnap = await getDoc(orderRef)
-      if(orderSnap.exists())
-      { console.log(orderSnap.data());
-        await updateDoc(orderRef,{status:msg})
-        console.log("Order status updated successfully.");
+  // Check if user is admin
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists() && docSnap.data().isAdmin) {
+        setAdmin(true);
+      } else {
+        console.log('No admin privileges');
       }
-      else{ console.log("no data found")} 
-      
+    });
+  }, []);
+
+  // Update order status
+  const setOrderStatus = async (id, msg) => {
+    const orderRef = doc(db, 'orders', id);
+    const orderSnap = await getDoc(orderRef);
+    if (orderSnap.exists()) {
+      await updateDoc(orderRef, { status: msg });
+      console.log('Order status updated to:', msg);
+    } else {
+      console.log('Order not found');
     }
-    useEffect(()=>{
-      if(!admin) return;
-      
+  };
 
-      const orderCollectionRef = collection(db,"orders")
-      const unsubscribe = onSnapshot(orderCollectionRef, (snapshot) => {
-        const orderList = snapshot.docs.map((doc) => ({
-          orderId: doc.id,
-          ...doc.data(),
-        }));
-        console.log(orderList);
-        setOrders(orderList)
-  
-        // Update the state with the new order list
-        // setOrders(orderList);
-      });
-      return ()=>{
-        unsubscribe();
-      }
+  // Fetch orders in real-time
+  useEffect(() => {
+    if (!admin) return;
 
-    },[admin])
-    return (
-        <div>
-            
-            <div style={{minHeight:"500px"}} className='d-flex flex-column'>
-                {admin? 
-                <div id="mainContent" className="cart-content flex-grow-1 overflow-auto ">
-                {/* Your cart items go here */}
-                { orders.length>0?
-                  orders.map((order)=>{
-                    console.log(order);
-                    return (
-                        
-                      <div className=" m-1 d-flex ">
-                        <div className=""  ><img src={order.photo} style={{height:"200px", width:"200px"}} alt="cart item photo" /></div>
-                        <div className="ms-2 ">
-        
-                        
-                        <div className="fs-6">
-                          <p className='m-0 fs-4'> {order.title}</p>
-                         <p className=" m-0" style={{fontSize:"12px"}}> <span className="fw-medium"> Color:</span> {order.color}</p>
-                          <p className=" m-0" style={{fontSize:"12px"}}><span className="fw-medium"> Size:</span>{order.size}</p>
-                          <p className="text-success m-0  fs-6" >Status: {order.status}</p>
-                          <button className="btn btn-primary" onClick={()=>{setOrderStatus(order.orderId, "Reject")}}>Reject</button>
-                          <button className="btn btn-primary ms-2" onClick={()=>{setOrderStatus(order.orderId, "Order Requested")}}>Requested</button>
-                          <button className="btn btn-primary ms-2" onClick={()=>{setOrderStatus(order.orderId, "Order Accepted")}}>Accept</button>
-                          <button className="btn btn-primary ms-2" onClick={()=>{setOrderStatus(order.orderId, "Order Processing")}}>Processing</button>
-                          <button className="btn btn-primary ms-2" onClick={()=>{setOrderStatus(order.orderId, "Out For Delievery")}}>Our for Delievery</button>
-                          <button className="btn btn-primary ms-2" onClick={()=>{setOrderStatus(order.orderId, "Order Complete")}}>Complete</button>
-                          <p className="fs-6 fw-bold"><sup>&#x20B9;</sup>{order.price}</p>
-                        </div>
-                      </div>
-                     
-                        </div>
-                      
-                    )
-                  })
-                : <div className=" "> <p className="fs-5 text-center ">You got no orders</p></div>       
-                }
-              </div>
-                :"be the admin first"}
+    const orderCollectionRef = collection(db, 'orders');
+    const unsubscribe = onSnapshot(orderCollectionRef, (snapshot) => {
+      const orderList = snapshot.docs.map((doc) => ({
+        orderId: doc.id,
+        ...doc.data(),
+      }));
+      setOrders(orderList);
+      setLoading(false); // Stop spinner after data fetched
+    });
+
+    return () => unsubscribe();
+  }, [admin]);
+
+  return (
+    <div className="container mt-4">
+      <h2 className="text-center mb-4 mt-5">Orders</h2>
+      {admin ? (
+        loading ? (
+          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
-        </div>
-    );
+          </div>
+        ) : orders.length > 0 ? (
+          <div className="row">
+            {orders.map((order) => (
+              <div className="col-md-6 col-lg-3 mb-4" key={order.orderId}>
+                <div className="card h-100 shadow-sm">
+                  <img
+                    src={order.photo}
+                    className="card-img-top"
+                    style={{ height: '200px', objectFit: 'contain' }}
+                    alt={order.title}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{order.title}</h5>
+                    <p className="mb-1"><strong>Color:</strong> {order.color}</p>
+                    <p className="mb-1"><strong>Size:</strong> {order.size}</p>
+                    <p className="mb-1"><strong>Status:</strong> <span className="text-success">{order.status}</span></p>
+                    <p className="fw-bold"><sup>&#8377;</sup>{order.price}</p>
+
+                    {/* Status dropdown */}
+                    <div className="dropdown mt-2">
+                      <button
+                        className="btn btn-outline-primary dropdown-toggle w-100"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Update Status
+                      </button>
+                      <ul className="dropdown-menu w-100">
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Reject')}>Reject</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Order Requested')}>Requested</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Order Accepted')}>Accepted</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Order Processing')}>Processing</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Out For Delievery')}>Out for Delivery</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Order Complete')}>Complete</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Return Requested')}>Return Requested</button></li>
+                        <li><button className="dropdown-item" onClick={() => setOrderStatus(order.orderId, 'Return Complete')}>Return Complete</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center">No orders found.</p>
+        )
+      ) : (
+        ""
+        // <p className="text-center text-danger">You must be an admin to view this page.</p>
+      )}
+    </div>
+  );
 };
 
 export default Orders;

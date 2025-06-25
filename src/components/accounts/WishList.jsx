@@ -70,7 +70,7 @@ const WishList = () => {
       <div className="row">
         {wishlistItems.length > 0 ? (
           wishlistItems.map((item) => (
-            <div onClick={()=>{ handleClick(item.productId)}}  className="col-md-4 col-sm-6 mb-4" key={item.productId}>
+            <div onClick={()=>{ handleClick(item.productId)}}  className="col-md-3 col-sm-6 mb-4" key={item.productId}>
               <div className="card">
                 <img src={item.photo} alt={item.title} className="card-img-top" />
                 <div className="card-body">
@@ -78,7 +78,7 @@ const WishList = () => {
                   <p className="card-text">{item.price}</p>
                 </div>
               <div className='pb-3 ms-2'>
-              <button onClick={(e)=>{handleRemoveFromWishlist(item.productId)}} className="btn btn-primary">remove</button>
+              <button onClick={(e)=>{ e.stopPropagation(); handleRemoveFromWishlist(item.productId)}} className="btn btn-primary">remove</button>
               </div>
               </div>
             </div>

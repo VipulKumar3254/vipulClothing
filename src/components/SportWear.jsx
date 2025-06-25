@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const SportsWear = () => {
   const navigate = useNavigate();
   return (
-    <div className="container-fluid  mt-5">
+    <div className="container-fluid  mt-2" style={{backgroundColor:"#F7F7F7"}}>
       <div className="row align-items-center">
         {/* Left Side - Image (40%) */}
         <div className="col-md-5">
