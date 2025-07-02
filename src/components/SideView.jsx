@@ -1,5 +1,7 @@
-import "@fontsource/archivo"
 import "../css/SideView.css";
+// Supports weights 100-900
+import '@fontsource-variable/jost';
+import "@fontsource-variable/eb-garamond"
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -36,6 +38,8 @@ function SideView() {
   const paginate = (newDirection) => {
     setDirection(newDirection);
     setIndex((prev) => (prev + newDirection + slides.length) % slides.length);
+
+    
   };
 
   const variants = {
@@ -70,7 +74,8 @@ function SideView() {
           {/* Text Section */}
           <div className="text-section d-flex flex-column justify-content-center align-items-center px-4 py-4 ">
             <motion.h3
-              className="fw-bold"
+            style={{fontWeight:"500"}}
+              className="text-title "
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -85,12 +90,12 @@ function SideView() {
             >
               {slides[index].desc}
             </motion.p>
-            <motion.div 
-              className="btn btn-dark  px-4 mt-3 text-center"
+            <motion.div  
+              className="btn btn-outline-dark  bg-white px-4 mt-3 text-center bg-transparent"
                 style={{ maxWidth: "200px", width: "100%" }}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-            > <Link to={`/${slides[index].link}`} className="text-decoration-none text-white text-uppercase"> Buy Now</Link>
+            > <Link to={`/${slides[index].link}`} className="  text-decoration-none text-dark text-uppercase"> Buy Now</Link>
             </motion.div>
           </div>
 

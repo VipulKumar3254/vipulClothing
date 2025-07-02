@@ -1,4 +1,5 @@
 import "@fontsource/archivo"
+import "@fontsource-variable/jost"
 
 import { db } from "../../../../firebaseConfig";
 import { useLocation, useParams } from "react-router-dom";
@@ -186,15 +187,15 @@ const ProductDesc = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-lg-7  ">
-                                    <p style={{ fontFamily: "archivo" }} className="fs-2 mt-5 ms-2">{product.title}</p>
+                                <div className="col-lg-7  " style={{ fontFamily: "Jost Variable" }}>
+                                    <p style={{ fontFamily: "" }} className="fs-2 mt-5 ms-2">{product.title}</p>
                                     <div className="pe-5">
 
-                                    <p style={{ fontFamily: "archivo" }} className="fs-5 ms-2 pe-5">{product.subTitle}</p>
+                                        <p style={{ fontFamily: "" }} className=" d-none d-md-block fs-5 ms-2 pe-5">{product.subTitle}</p>
                                     </div>
                                     <p className="fs-3 ms-2 fw-medium"><sup style={{ fontSize: "13px" }}> &#8377;</sup>{product.price}</p>
 
-                                    <div className="mt-3 text-center d-flex">
+                                    <div className="mt-3 text-center d-flex" style={{ fontFamily: "Jost Variable" }}>
                                         <div className="m-2 mx-3">
                                             <img style={{ height: "30px" }} src={returnlogo} alt="Return Policy" />
                                             <p style={{ fontSize: "12px" }}>10 Day Return</p>
@@ -209,15 +210,15 @@ const ProductDesc = () => {
                                         </div>
                                     </div>
 
-                                    <p className="mt-1 fs-6">Size</p>
-                                    <select className="border rounded" name="size" onChange={handleChange}>
+                                    <p style={{ fontFamily: "Jost Variable" }} className="mt-1 fs-6">Size</p>
+                                    <select style={{ fontFamily: "Jost Variable" }} className="border rounded" name="size" onChange={handleChange}>
                                         <option value="">Select</option>
                                         {product.sizes?.map((size, index) => (
                                             <option key={index} value={size}>{size}</option>
                                         ))}
                                     </select>
 
-                                    <p className="mt-3 fs-6">Color</p>
+                                    <p style={{ fontFamily: "Jost Variable" }} className="mt-3 fs-6">Color</p>
                                     <div>
                                         {product.color?.map((color, index) => (
                                             <div key={index} className="d-inline text-center ms-2">
@@ -233,21 +234,27 @@ const ProductDesc = () => {
                                         ))}
                                     </div>
 
-                                    <div className="row mt-3">
-                                        <button className="col-lg-2 btn btn-warning" onClick={addToCart}>Add to Cart</button>
-                                        <button className="col-lg-2 btn btn-success ms-0 mt-1 ms-md-2 mt-md-0" onClick={handleBuyClick}>Buy Now</button>
+                                    <div className="row mt-3 px-3" style={{ fontFamily: "Jost Variable" }}>
+                                        <button className="col-lg-2 btn btn-warning rounded-0 py-2" onClick={addToCart}>Add to Cart</button>
+                                        <button className="col-lg-2 btn btn-success rounded-0 ms-0 py-2 mt-2 ms-md-2 mt-md-0" onClick={handleBuyClick}>Buy Now</button>
                                     </div>
                                 </div>
                             </div>
+                            <div style={{fontFamily:"Jost Variable"}}>
+                                {/* decision is be taken ,whether to show this or not */}
+                                {/* <p  className="  d-md-none fs-5 ms-2 pe-5">{product.subTitle}</p> */}
 
-                            <h2 style={{ fontFamily: "arial" }} className="mt-5 fs-1 fw-semibold text-center">Product Description</h2>
+                            </div>
+
+                            <h2 style={{ fontFamily: "Jost Variable" }} className="mt-5 fs-1 fw-normal text-center">Product Description</h2>
                             <div className="container row  mx-auto mt-5 ">
+
                                 <div className="col-12  ">
 
 
                                     {product.desc.map((section, index) => (
-                                        <div key={index} className="mb-3" style={{ fontFamily: "poppins" }}>
-                                            <h4>{section.title}</h4>
+                                        <div key={index} className="mb-3 " style={{ fontFamily: "Jost Variable" }}>
+                                            <h4 style={{fontWeight:"400"}}>{section.title}</h4>
                                             <p className="fs-6">{section.desc}</p>
                                         </div>
                                     ))}

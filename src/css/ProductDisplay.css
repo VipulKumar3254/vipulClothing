@@ -1,3 +1,4 @@
+
 .gridMaker{
     display: grid;
     width: 100%;
@@ -64,7 +65,11 @@
         height: 150px;
     } */
      
+    .toaster{
+    width: 100%;
 }
+}
+
 
 
 

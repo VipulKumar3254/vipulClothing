@@ -3,22 +3,30 @@ import SportWear from '../../../SportWear';
 import NewArrivals from '../../../NewArrivalsBanner';
 import Sale from '../../../Sale';
 import MensCollectionIndexGrid from "../../../MenCollectionIndexGrid"
-const Banner = ()=>{
+import Deals from '../../../Deals';
+
+const Banner = () => {
 
     return (
         <>
-        <div>
-        <MensCollectionIndexGrid title={"Men's Collection"} categoryTag={"mensCollection"}/>
-        <div className='mt-3'>
+            <div className='d-flex  flex-md-column flex-column-reverse'>
 
-        <MensCollectionIndexGrid title={"Summer Collection"} categoryTag={"summerCollection"}/>
-        </div>
-        <SportWear /> 
-           {/* sport wear section */}
-        <NewArrivals/>   {/* discover new arrivals */}
-        <Sale/>    {/*200 rs products */}
-        </div>
+                  <div>
 
+                    <Deals />
+                        <MensCollectionIndexGrid title={"Men's Collection"} categoryTag={"mensCollection"} />
+
+                        <MensCollectionIndexGrid title={"Summer Collection"} categoryTag={"summerCollection"} />
+                    </div>
+                <div>
+                  
+
+                    <SportWear />
+                        <NewArrivals />   
+                </div>
+
+            </div>
+                        <Sale />    {/*200 rs products */}
         </>
     )
 }

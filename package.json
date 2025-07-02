@@ -12,7 +12,10 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fontsource-variable/eb-garamond": "^5.2.6",
+    "@fontsource-variable/jost": "^5.2.6",
     "@fontsource/archivo": "^5.2.5",
+    "@fontsource/dm-mono": "^5.2.6",
     "@fontsource/merriweather": "^5.2.7",
     "@fontsource/poppins": "^5.2.6",
     "@fontsource/quicksand": "^5.2.7",

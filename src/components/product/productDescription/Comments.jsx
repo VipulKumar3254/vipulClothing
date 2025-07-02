@@ -1,4 +1,6 @@
+import "@fontsource-variable/jost"
 import { useEffect, useState } from "react";
+
 import { db, auth } from "../../../../firebaseConfig";
 import {
   collection,
@@ -109,18 +111,18 @@ const Comments = ({ product }) => {
 
   return (
 
-    <div style={{ minHeight:"400px"}} className=" container min-h p-3  shadow-sm mt-4">
+    <div style={{ minHeight:"400px",fontFamily:"Jost Variable"}} className=" container min-h p-3  shadow-sm mt-4">
       <hr />
-      <h4  style={{fontFamily:"archivo"}}>Reviews</h4>
+      <h4  style={{fontFamily:"Jost Variable"}}>Reviews</h4>
       <div className="d-flex gap-2 mb-3">
-        <input style={{fontFamily:"archivo"}}
+        <input style={{fontFamily:"Jost Variable"}}
           type="text"
           className="form-control"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Write a Review..."
         />
-        <button style={{fontFamily:"archivo"}} onClick={handlePost} className="btn btn-primary">Post</button>
+        <button style={{fontFamily:"Jost Variable"}} onClick={handlePost} className="btn btn-primary">Post</button>
       </div>
 
     <ul className="list-group">
@@ -137,7 +139,7 @@ const Comments = ({ product }) => {
       </li>
     ))
   ) : (
-    <li style={{fontFamily:"archivo"}}
+    <li style={{fontFamily:"Jost Variable"}}
      className="list-group-item text-muted">No Reviews yet.</li>
   )}
 </ul>

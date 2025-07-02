@@ -1,0 +1,23 @@
+.title2{
+
+    font-size: 1.25rem;
+}
+
+#btnn{
+            border: 1px solid white !important;
+        padding: 7px 12px;
+        background-color: black;
+        color: white;
+}
+@media  (max-width:768px) {
+    #subTitle{
+        font-size: .9rem;
+        padding: 0 38px;
+    }
+    #btnn{
+        border: 1px solid white !important;
+        padding: 7px 12px;
+        background-color: black;
+        color: white;
+    }
+}

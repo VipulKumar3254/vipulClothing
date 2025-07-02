@@ -101,8 +101,7 @@ function App() {
               <Route path="/" element={<> <Navbar />
 
                 <WebCarousel />  {/*web carousal */}
-                <Deals />
-                <ProductGrid />  {/*scrollable products we offer */}
+                {/* <Deals /> */}
                 {/* top deals  and side sale banner */}
 
 

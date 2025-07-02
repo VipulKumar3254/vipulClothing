@@ -1,4 +1,5 @@
 import React from "react";
+import "@fontsource-variable/jost"
 import { motion, scale } from "framer-motion";
 import bannerImg from "../assets/200Product.png"; // Replace with your image path
 import "../css/sale.css"
@@ -27,17 +28,17 @@ const HeroSection = () => {
               transition={{ duration: 0.6 }}
               className=" bg-opacity-75 p-4 rounded-4 dropShadow"
             >
-              <motion.h1
-                className="display-5 fw-bold mb-3 text-dark text-uppercase text-shadow1"
+              <motion.h2 style={{ fontFamily: "Jost Variable" }}
+                className=" mb-3  fw-normal text-shadow1"
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
                 Get any Product at 250/- only
-              </motion.h1>
+              </motion.h2>
 
-              <motion.p
-                className="lead text-secondary mb-4 text-shadow "
+              <motion.p style={{ fontFamily: "Jost Variable" , wordSpacing:"3px"}}
+                className="fs   mb-4 text-shadow "
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -47,19 +48,19 @@ const HeroSection = () => {
               </motion.p>
 
               <motion.div
-                href=""
-                className="btn btn-dark btn-lg"
+                className=""
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
-              whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.1 }}
 
               >
-                <Link className="text-decoration-none text-white" onClick={(e)=>{
+                <button className=" fw-normal  btn btn-dark" onClick={(e) => {
                   e.preventDefault();
-    navigate("/rs200Products")
+                  navigate("/rs200Products") 
 
-                }}>Buy Now</Link>
+                }}
+                >Buy Now</button>
               </motion.div>
             </motion.div>
           </div>

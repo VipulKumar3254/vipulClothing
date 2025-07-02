@@ -1,4 +1,6 @@
 import Card from "react-bootstrap/Card";
+// Supports weights 100-900
+import '@fontsource-variable/jost';
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { useState, useEffect } from "react";
@@ -11,7 +13,9 @@ import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 
 
-function ProductGrid() {
+function Deals() {
+  const [loadedImages, setLoadedImages] = useState({});
+
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [deals, setDeals] = useState([]); // Store deals from Firestore
   const navigate = useNavigate();
@@ -48,44 +52,77 @@ function ProductGrid() {
   return (
     <div
       //  style={{ background: "#F5F5F5" }}
-      className="   mt-5 d-md-flex d-sm-block justify-content-between align-items-center ">
+      className="   mt-2 d-md-flex d-sm-block justify-content-between align-items-center ">
       <div ref={dealsRef} className={`mainContainer1 col-md-3 ${inView ? "fade-in" : ""}`}>
 
-        <div className={`d-flex justify-content-center align-items-baseline ${inView ? "TodayDealsHeader" : ""}`}>
+        <div className={`d-flex justify-content-start justify-content-md-center align-items-baseline ${inView ? "TodayDealsHeader" : ""}`}>
 
 
 
-          <h3 style={{fontFamily:"archivo"}} className="m-0  ms-2 d-flex align-items-center">Today's Deals</h3>
+          <h3 style={{ fontFamily: "Jost Variable", fontWeight:"500" }} className="m-0  ms-2 d-flex align-items-start">Today's Deals</h3>
           <p className="m-0 ms-3 d-flex align-items-center text-secondary    " onClick={() => {
             navigate("/allDeals")
           }}
-            style={{ cursor: "pointer", textDecoration: "underline" ,fontFamily:"archivo"}}
+            style={{ cursor: "pointer", textDecoration: "underline", fontFamily: "Jost Variable" }}
           >See all deals</p>
         </div>
 
         <div className="mt-2">
-          <Row style={{ width: "100%" }} xs={2} sm={2} md={2} lg={2} className="gx-2 gy-2">
-            {deals.map((product, idx) => (
-              <Col key={product.id} className="m-0 p-1">
-                <div
-                  className="ProductCard"
-                  onClick={() => navigate(`/product/productDesc/${product.id}`)}
-                >
-                  <img
-                    className="ProductImg"
-                    src={product.photo[0]}
-                    alt={product.title}
-                  />
-                  <p style={{fontFamily:"archivo"}} className={`p-0 m-0 title1 fw-medium text-center ${inView ? "AnimatedTitle" : ""}`}>
-                    {product.title}
-                  </p>
-                  <p  style={{fontFamily:"archivo"}}className={`p-0 m-0 title text-center ${inView ? "AnimatedPrice" : ""}`}>
-                    <sup>&#8377;</sup>{product.price}
-                  </p>
-                </div>
-              </Col>
+          <Row style={{ width: "100%" }} xs={2} sm={2} md={2} lg={2} className="gx-1 gy-2">
+            {deals.length === 0
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                <Col key={idx} className="mt-2 p-1">
+                  <div className="ProductCard placeholder-card">
+                    <div className="ProductImg placeholder-img"></div>
+                    <p className="placeholder-text mt-1"></p>
+                    <p className="placeholder-text short"></p>
+                  </div>
+                </Col>
+              ))
+              : deals.map((product, idx) => (
+                <Col key={product.id} className="mt-2 p-1">
+                  <div
+                    className="ProductCard"
+                    onClick={() => navigate(`/product/productDesc/${product.id}`)}
+                  >
+                    <div className="image-wrapper" > 
+                      {!loadedImages[product.id] && <div className="img-placeholder" />}
 
-            ))}
+                      <img
+                        className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
+                        src={product.photo[0]}
+                        alt={product.title}
+                        onLoad={() =>
+                          setLoadedImages((prev) => ({ ...prev, [product.id]: true }))
+                        }
+                      />
+                    </div>
+
+
+                    <p
+                      style={{
+                        fontFamily: "Jost Variable",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                      className={`p-0 m-0 title1  text-center text-uppercase ${inView ? "AnimatedTitle" : ""
+                        }`}
+                    >
+                      {product.title}
+                    </p>
+
+                    <p
+                      style={{ fontFamily: "Jost Variable" }}
+                      className={`p-0 m-0 fs-6 title text-start ${inView ? "AnimatedPrice" : ""
+                        }`}
+                    >
+                      Rs. {product.price}
+                    </p>
+                  </div>
+                </Col>
+              ))}
+
           </Row>
         </div>
       </div>
@@ -97,4 +134,4 @@ function ProductGrid() {
   );
 }
 
-export default ProductGrid;
+export default Deals;

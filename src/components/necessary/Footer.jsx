@@ -1,5 +1,5 @@
   import React from 'react';
-
+import "@fontsource-variable/jost"
 import { Link } from 'react-router-dom';
 import "@fontsource/archivo"
 import "@fontsource/roboto"
@@ -7,7 +7,7 @@ import "@fontsource/roboto"
 
 const Footer = () => {
   return (
-    <footer className="footer bg-dark pt-5  " style={{color:"white",minHeight:"400px"}} >
+    <footer className="footer bg-dark pt-5  " style={{color:"white",minHeight:"400px", fontFamily:"Jost Variable"}} >
       <div className="container">
         <div className="row">
           {/* <div className="col-md-6">

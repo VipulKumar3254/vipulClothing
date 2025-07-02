@@ -1,18 +1,31 @@
+import cartImg from "../../assets/white.png";
 import "@fontsource/archivo";
+import "@fontsource-variable/eb-garamond"
+import "@fontsource/dm-mono"
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+// Supports weights 100-900
+import '@fontsource-variable/jost';
+import instagram from "../../assets/social/instagram.png"
+import youtube from "../../assets/social/youtube.png"
+import facebook from "../../assets/social/facebook.png"
 import SearchIcon from '@mui/icons-material/Search';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import logo from "../../assets/logo.webp";
+// import logo from "../../assets/logo1.png";
 import Cart from "../product/cart";
 import Account from "../accounts/Account";
 import OfferNavBanner from "./OfferNavBanner";
 import { userContext } from "../context/context";
 import "../../css/navbar.css";
+import SearchProducts from "./SearchProducts";
 
 function NavScrollExample() {
+  const [showSearch,setShowSearch]= useState(true);
   const [showCart, setShowCart] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
   const [links, setLinks] = useState([]);
@@ -39,17 +52,17 @@ function NavScrollExample() {
     setShowDropdown(false);
   };
 
- const handleSuggestionClick = (text) => {
-  setSearch(text);
-  setSuggestions([]);
+  const handleSuggestionClick = (text) => {
+    setSearch(text);
+    setSuggestions([]);
 
-  // 🔁 delay dropdown close after DOM settles
-  setTimeout(() => {
-    setShowDropdown(false);
-  }, 1); // 100ms delay works fine
+    // 🔁 delay dropdown close after DOM settles
+    setTimeout(() => {
+      setShowDropdown(false);
+    }, 1); // 100ms delay works fine
 
-  navigate("/search", { state: { fromSearch: true, search: text } });
-};
+    navigate("/search", { state: { fromSearch: true, search: text } });
+  };
 
   const handleOutsideClick = (e) => {
     if (
@@ -160,15 +173,28 @@ function NavScrollExample() {
 
   return (
     <>
-      <OfferNavBanner />
-      <Navbar expand="md" className="bg-body-tertiary p-lg-0" expanded={expanded}>
-        <Container fluid>
+      {/* <OfferNavBanner /> */}
+      <Navbar expand="md" className="bg-body p-lg-0   " expanded={expanded}>
+        <Container fluid className=" ">
+          <Navbar.Toggle aria-controls="navbarScroll" className="border-0" onClick={() =>{  setShowSearch(!showSearch); setExpanded(!expanded)}}  />
           <Navbar.Brand className="col-xl-1 ms-5">
             <Link to="/"><img className="img-fluid rounded logoImg" src={logo} alt="logo" /></Link>
           </Navbar.Brand>
+          <div className="d-flex d-md-none">
 
-          <Navbar.Toggle aria-controls="navbarScroll" onClick={() => setExpanded(!expanded)} />
-          <Navbar.Collapse id="navbarScroll">
+            <Link to="/profile" className="text-reset text-decoration-none">
+              <div className="d-flex flex-column ms-3 align-items-center justify-content-center">
+                <span className="material-icons md-36">person</span>
+              </div>
+            </Link>
+            <div className="d-flex flex-column ms-3 align-items-center justify-content-center" onClick={(e) => {
+              setExpanded(false);
+              toggleCart(e);
+            }} style={{ cursor: "pointer" }}>
+              <span className="material-icons md-36">shopping_cart</span>
+            </div>
+          </div>
+          <Navbar.Collapse id="navbarScroll"   className="mobile-full-height">
             <Nav className="mx-auto w-100 my-2" navbarScroll>
               {inlineSearchMode ? (
                 <div className="w-100 px-3 position-relative" ref={searchContainerRef}>
@@ -192,20 +218,7 @@ function NavScrollExample() {
                     }}
                   />
                   <div className="d-flex justify-content-end mt-2">
-                    {/* <button className="btn btn-primary me-2" onClick={handleSearch}>
-    Search
-  </button> */}
-                    {/* <button
-    className="btn btn-outline-secondary"
-    onClick={() => {
-      setSearch("");
-      setSuggestions([]);
-      setProducts([]);
-      setShowDropdown(false);
-    }}
-  >
-    Clear
-  </button> */}
+
                   </div>
 
 
@@ -216,8 +229,8 @@ function NavScrollExample() {
                     <Link
                       key={link.id}
                       to={link.path}
-                      style={{ fontFamily: "archivo" }}
-                      className="nav-link text-uppercase fw-bold px-2 py-1"
+                      className=" link nav-link"
+                      id="link"
                       onClick={() => setExpanded(false)}
                     >
                       {link.name}
@@ -229,17 +242,17 @@ function NavScrollExample() {
 
             <div className="d-flex align-items-center justify-content-evenly">
               <div className="d-flex justify-content-center m-2">
-                <div className="d-flex flex-column ms-5 align-items-center justify-content-center" onClick={handleSearchClick} style={{ cursor: "pointer" }}>
+                {/* <div className="d-flex flex-column ms-5 align-items-center justify-content-center" onClick={handleSearchClick} style={{ cursor: "pointer" }}>
                   <span className="material-icons md-36">search</span>
-                </div>
+                </div> */}
 
                 <Link to="/profile" className="text-reset text-decoration-none">
-                  <div className="d-flex flex-column ms-3 align-items-center justify-content-center">
+                  <div className="d-md-flex d-none  flex-column ms-3 align-items-center justify-content-center">
                     <span className="material-icons md-36">person</span>
                   </div>
                 </Link>
 
-                <div className="d-flex flex-column ms-3 align-items-center justify-content-center" onClick={(e) => {
+                <div className="d-md-flex d-none  flex-column ms-3 align-items-center justify-content-center" onClick={(e) => {
                   setExpanded(false);
                   toggleCart(e);
                 }} style={{ cursor: "pointer" }}>
@@ -247,9 +260,24 @@ function NavScrollExample() {
                 </div>
               </div>
             </div>
+            {/* <div style={{}} className="  ms-3 mb-3 d-sm-inline d-md-none  position-fixed bottom-0 start-0">
+
+                <div className="d-flex  align-items-start">
+                  <img  className="ms-2" src={facebook} alt="" />
+                  <img  className="ms-2" src={instagram} alt="" />
+                  <img  className="ms-2" src={youtube} alt="" />
+                </div>
+
+
+            </div> */}
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div className={`${showSearch? "show":"hide"}`} style={{ backgroundColor: "" }}>
+
+        < SearchProducts />
+      </div>
+
 
       {showDropdown && suggestions.length > 0 && (
         <div className="bg-white shadow p-3 w-100" style={{ maxWidth: "800px", margin: "0 auto", zIndex: 1050, position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
@@ -261,13 +289,13 @@ function NavScrollExample() {
                   className="list-group-item list-group-item-action"
                   style={{ cursor: "pointer", fontSize: "0.95rem" }}
                   // onClick={(e) => { }}
-                  onClick={(e)=>{
+                  onClick={(e) => {
                     e.preventDefault();
-                     handleSuggestionClick(s)
+                    handleSuggestionClick(s)
                   }}
                 >
-                  <SearchIcon/>
-                   {s}
+                  <SearchIcon />
+                  {s}
 
                 </li>
               ))}

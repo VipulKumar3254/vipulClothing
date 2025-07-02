@@ -4,7 +4,10 @@
   animation: loading 1.2s infinite ease-in-out;
   border-radius: 4px;
 }
-
+#fontSize
+{
+  font-size: 13px;
+}
 @keyframes loading {
   0% {
     background-position: -800px 0;
@@ -29,4 +32,14 @@
   height: 14px;
   width: 50%;
   margin: 0 auto;
+}
+
+@media (max-width:768px)
+{
+  #fontSize{
+    font-size: 11px;
+  }
+  .price{
+    padding: 0;
+  }
 }

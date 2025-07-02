@@ -3,6 +3,7 @@ import img1 from "../assets/carousel1.png"; // Mobile version
 import img1mobile from "../assets/carousel1mobile.png"; // Desktop version of img1
 import img2 from "../assets/carousel2.png"; // Mobile version
 import img2mobile from "../assets/carousel2mobile.png"; // Desktop version of img3
+import mobileCarousel from "../assets/mobilecarousel.png"; // Desktop version of img3
 import "../css/webCarousel.css";
 
 function WebCarousel() {
@@ -34,7 +35,8 @@ function WebCarousel() {
   }, [images]);
 
   return (
-    <div className="web-carousel d-flex align-items-center justify-content-center">
+    <>
+    <div className="web-carousel d-md-flex align-items-center justify-content-center d-none">
       {images.map((img, i) => (
         <div
           key={i}
@@ -48,7 +50,7 @@ function WebCarousel() {
           </div>
         </div>
       ))}
-      <button
+      {/* <button
         className="position-absolute start-0 top-50 translate-middle-y btn btn-dark btn-sm"
         onClick={() => setIndex((index - 1 + images.length) % images.length)}
       >
@@ -59,8 +61,12 @@ function WebCarousel() {
         onClick={() => setIndex((index + 1) % images.length)}
       >
         ▶
-      </button>
+      </button> */}
     </div>
+    <div className="mobileCarousel d-sm-block d-md-none" >
+      <img src={mobileCarousel} className="" alt="" />
+    </div>
+    </>
   );
 }
 

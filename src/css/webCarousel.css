@@ -4,7 +4,15 @@
     height: 450px; /* Default height */
     overflow: hidden;
   }
-  
+  .mobileCarousel{
+    max-height: 400px;
+    /* overflow: hidden; */
+  }
+  .mobileCarousel img{
+    /* object-position: center; */
+    /* object-fit: cover; */
+    
+  }
   .web-carousel .carousel-slide {
     position: absolute;
     width: 100%;
@@ -43,12 +51,12 @@
   
   @media (max-width: 576px) {
     .web-carousel {
-      height: 230px;
+      height:230px;
+      width: 100%;
     }
-    img{
-      object-position: left top;
-      object-fit: cover ;
-
+    .web-carousel img{
+      object-fit: fill;
     }
+   
   }
   

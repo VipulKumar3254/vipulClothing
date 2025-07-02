@@ -1,4 +1,5 @@
-import "@fontsource/archivo"
+// Supports weights 100-900
+import '@fontsource-variable/jost';
 
 import React, { useEffect, useState, useRef } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
@@ -7,8 +8,8 @@ import { motion } from 'framer-motion';
 import '../css/MenCollectionIndexGrid.css';
 import { useNavigate } from 'react-router-dom';
 
-const MenCollectionIndexGrid = ({categoryTag,title}) => {
-  console.log("from mens collection",categoryTag);
+const MenCollectionIndexGrid = ({ categoryTag, title }) => {
+  console.log("from mens collection", categoryTag);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleItems, setVisibleItems] = useState({});
@@ -17,7 +18,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
 
   const headingRef = useRef(null);
   const [headingVisible, setHeadingVisible] = useState(false);
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const headingObserver = new IntersectionObserver(
@@ -33,7 +34,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
       try {
         const q = query(
           collection(db, 'products'),
-          where('category', 'array-contains',categoryTag)
+          where('category', 'array-contains', categoryTag)
         );
         const snapshot = await getDocs(q);
         const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -69,7 +70,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
       const dx = e.touches[0].clientX - touchStartX;
       const dy = e.touches[0].clientY - touchStartY;
       if (Math.abs(dx) > Math.abs(dy)) {
-        e.preventDefault();
+        // e.preventDefault();
       }
     };
 
@@ -110,7 +111,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
   }, [products]);
 
   const handleCardClick = (product) => {
-        navigate(`/product/productDesc/${product}`)
+    navigate(`/product/productDesc/${product}`)
 
   };
 
@@ -124,15 +125,15 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
   };
 
   return (
-    <div className="mt-3 products-scroll-wrapper position-relative">
+    <div className=" products-scroll-wrapper position-relative">
       <motion.h1
-        ref={headingRef} style={{fontFamily:"archivo"}}
-        className="mb-4 text-uppercase text-center fw-medium"
+        ref={headingRef} style={{ fontFamily: "Jost Variable" , fontWeight:"400"}}
+        className="  text-center "
         initial={{ opacity: 0, y: -20 }}
         animate={headingVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
         transition={{ duration: 0.9 }}
       >
-       {title}
+        {title}
       </motion.h1>
 
       <button className="scroll-btn left" onClick={() => scroll('left')}>
@@ -145,7 +146,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
       <div className="horizontal-scroll-container  " ref={scrollRef}>
         {loading ? (
           Array.from({ length: 4 }).map((_, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               className="product-card-wrapper"
               initial={{ opacity: 0.5 }}
@@ -163,7 +164,7 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
           ))
         ) : (
           products.map((product, index) => (
-            <motion.div style={{backgroundColor:"#F7F7F7"}}
+            <motion.div style={{ backgroundColor: "#F7F7F7" }}
               key={product.id}
               className="product-card-wrapper"
               ref={el => itemRefs.current[product.id] = el}
@@ -175,25 +176,33 @@ const MenCollectionIndexGrid = ({categoryTag,title}) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <div className="card h-100 custom-card">
+              <div className="card  custom-card">
                 {product.photo && (
-                  <img style={{backgroundColor:"#F7F7F7"}}
+                  <img style={{ backgroundColor: "#F7F7F7", }}
                     src={product.photo}
                     alt={product.title}
-                    className="card-img-top img-fluid"
+
+                    className=""
                   />
                 )}
-                <div className="card-body" style={{backgroundColor:"#F7F7F7"}}>
+                <div className="card-body" style={{ backgroundColor: "#F7F7F7" }}>
                   <motion.h5
                     className="card-title"
+                    style={{
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      fontFamily:"Jost Variable"
+                    }}
                     animate={visibleItems[product.id] ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.9 }}
                   >
                     {product.title || 'Untitled'}
                   </motion.h5>
+
                   <motion.p
                     animate={visibleItems[product.id] ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.9, delay: 0.1 }}
+                    transition={{ duration: 0.9, delay: 0.1 }} style={{fontFamily:"Jost Variable"}}
                   >
                     Rs. {product.price}
                   </motion.p>

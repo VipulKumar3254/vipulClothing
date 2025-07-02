@@ -15,7 +15,7 @@
 .scroll-card {
   font-family: "meriweather";
   flex: 0 0 auto;
-  width: 350px;
+  width: 250px;
   scroll-snap-align: start;
   cursor: pointer;
   transition: transform 0.3s;
@@ -31,7 +31,7 @@
 
 @media screen and (max-width: 768px) {
   .scroll-card {
-    width: 200px;
+    width: 100px;
   }
 
   .cardImg {

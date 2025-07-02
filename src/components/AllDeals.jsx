@@ -52,7 +52,7 @@ const AllDeals = () => {
                                 />
                                 <Card.Body className="text-center">
                                     <Card.Title>{product.title}</Card.Title>
-                                    <Card.Text className="text-muted">{product.subTitle}</Card.Text>
+                                    {/* <Card.Text className="text-muted">{product.subTitle}</Card.Text> */}
                                     <h6 className="text-dark fs-5">
                                         Price: <sup>&#8377;</sup>{product.price}
                                     </h6>

@@ -1,4 +1,5 @@
 import "@fontsource/archivo";
+import "@fontsource-variable/jost"
 import { useContext, useState, useEffect } from "react";
 import { db } from "../../../firebaseConfig";
 import {
@@ -18,6 +19,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import wishList from "../../assets/wishList1.png";
 import { toast, Toaster } from "react-hot-toast";
+import "../../css/productDisplay.css"
 
 const ProductDisplay = ({ category }) => {
   const filter = useContext(filterContext);
@@ -144,33 +146,70 @@ const ProductDisplay = ({ category }) => {
       console.error("Search error", err);
     }
   };
+const handleWishList = async (e, product) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-  const handleWishList = async (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const wishListItem = {
+    title: product.title,
+    price: product.price,
+    photo: product.photo,
+    productId: product.id,
+    userId: user?.uid,
+  };
 
-    const wishListItem = {
-      title: product.title,
-      price: product.price,
-      photo: product.photo,
-      productId: product.id,
-      userId: user?.uid,
-    };
+  try {
+    if (!user) {
+      throw new Error("User not logged in");
+    }
 
     await setDoc(doc(db, `users/${user.uid}/wishList`, product.id), wishListItem);
+ toast.custom((t) => (
+      <div
+        className="toaster bg-success text-white px-5 py-2  shadow-sm d-flex justify-content-between align-items-center "
+        style={{ fontFamily: "Jost Variable", fontSize: "12px",width:"" }}
+      >
+        <span className="text-center">Added to WishList</span>
+      
+        <button
+          className="btn btn-sm btn-light ms-3"
+          onClick={() => toast.dismiss(t.id)}
+          style={{ fontSize: "12px" }}
+        >
+          Close
+        </button>
+      </div>
+    ), { duration: 5000 });
+  
 
-    toast.custom(
-      <div className="bg-success text-white px-3 py-2 rounded-pill shadow-sm d-flex align-items-center gap-2">
-        Added to Wishlist
-        <a href="/wishList" className="btn btn-sm btn-light ms-auto">See</a>
-      </div>,
-      { duration: 5000 }
-    );
-  };
+  } catch (err) {
+    console.error(err);
+
+    const message = err.message === "User not logged in"
+      ? "Please login to add items to wishlist"
+      : "Something went wrong";
+
+    toast.custom((t) => (
+      <div
+        className=" toaster bg-danger text-white px-5 py-2  shadow-sm d-flex justify-content-between align-items-center"
+        style={{ fontFamily: "Jost Variable", fontSize: "12px" }}
+      >
+        <span>{message}</span>
+        <button
+          className="btn btn-sm btn-light ms-3"
+          onClick={() => toast.dismiss(t.id)}
+          style={{ fontSize: "12px" }}
+        >
+          Close
+        </button>
+      </div>
+    ), { duration: 5000 });
+  }
+};
 
   return (
     <>
-      <div className="mt-1 d-block d-md-none text-center">
+      <div className="mt-1 d-block d-md-none text-center" style={{ fontFamily: "Jost Variable" }}>
         <div className="btn btn-secondary px-3" onClick={() => filter.setFilterShow(!filter.filterShow)}>Filters</div>
       </div>
 
@@ -179,28 +218,42 @@ const ProductDisplay = ({ category }) => {
           <Spinner animation="border" variant="primary" style={{ width: "3rem", height: "3rem" }} />
         </div>
       ) : (
-        <div className="container mt-3">
-          <div className="row g-4">
+        <div className="container mt-3 px-1">
+          <div className="row g-0 g-md-4">
             {products.length > 0 ? (
               products.map((item) => (
-                <div className="col-6 col-md-3" key={item.id}>
-                  <NavLink to="/product/productDesc" state={[item.id, category]} className="card h-100 text-decoration-none" style={{ backgroundColor: "#F7F7F7" }}>
+                <div className="col-6 col-md-3 " key={item.id}>
+                  <NavLink to="/product/productDesc" state={[item.id, category]} className="card h-100 text-decoration-none rounded-0 border-0 " style={{ backgroundColor: "#F7F7F7" }}>
                     <div className="position-relative">
-                      <img src={item.photo} className="card-img-top" alt={item.title} />
-                      <img
+                      <img src={item.photo} className="card-img-top" alt={item.title}
+
+                      />
+
+                      {/* <img
                         onClick={(e) => handleWishList(e, item)}
                         src={wishList}
                         className="position-absolute top-0 start-0 m-2"
                         style={{ width: "30px", height: "30px", cursor: "pointer", zIndex: 10 }}
                         alt="Wishlist"
-                      />
+                      /> */}
                     </div>
-                    <div className="card-body">
-                      <h5 className="card-title text-dark">{item.title}</h5>
-                      <p className="card-text text-muted" style={{ fontSize: "14px" }}>
-                        <span className="badge bg-success">Free delivery</span> on ₹599+
+                    <div className="card-body mt-1 px-1" style={{ fontFamily: "Jost Variable" }}>
+                      <h5 className="card-title fw-normal text-dark"
+                      >{item.title}</h5>
+                      <p className="card-text text-muted p-0 mb-0 " style={{ fontSize: "12px" }}>
+                        <span className="badge bg-success text-start ">Free delivery</span> on ₹599+
                       </p>
-                      <p className="fw-bold text-dark fs-5">₹{item.price}</p>
+                    <div className="mt-2  ">
+                      <p
+                        style={{ backgroundColor: "#FFCE12", fontSize: "11px" }}
+                        className=" d-inline  px-3 py-1  border rounded-5 cursor-pointer"
+                        onClick={(e) => handleWishList(e, item)}
+
+                        >
+                        Add to Wishlist
+                      </p>
+                    </div>
+                      <p className="fw-medium text-dark fs-6 mb-0 mt-2 ms-0 " >Rs. {item.price}</p>
                     </div>
                   </NavLink>
                 </div>
