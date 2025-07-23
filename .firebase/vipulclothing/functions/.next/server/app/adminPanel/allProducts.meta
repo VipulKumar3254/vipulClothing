@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/adminPanel/layout,_N_T_/adminPanel/allProducts/layout,_N_T_/adminPanel/allProducts/page,_N_T_/adminPanel/allProducts"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/adminPanel/allProducts/__PAGE__",
+    "/adminPanel/allProducts",
+    "/adminPanel",
+    "/_index",
+    "/_head"
+  ]
+}

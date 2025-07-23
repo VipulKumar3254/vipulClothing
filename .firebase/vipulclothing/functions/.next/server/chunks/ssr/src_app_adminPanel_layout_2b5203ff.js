@@ -1,0 +1,3 @@
+module.exports=[71923,a=>{"use strict";var b=a.i(7997),c=a.i(66838);function d({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{children:(0,b.jsx)(c.UserProvider,{children:a})})})}a.s(["default",()=>d,"metadata",0,{title:"Admin Panel - Kumar Fashion Store",description:"Manage products, orders, and customers from the Admin Panel"}])}];
+
+//# sourceMappingURL=src_app_adminPanel_layout_2b5203ff.js.map
