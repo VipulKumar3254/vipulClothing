@@ -1,0 +1,136 @@
+
+.gridMaker{
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(321px,1fr) );
+    gap: 10px;
+    min-height: 100vh;
+}
+#noProducts{
+    grid-column: 1/-1;
+    display: flex;
+    justify-content: center;
+    
+}
+.product{
+    /* border: 1px solid rgb(245, 244, 244); */
+   
+    
+}
+.imgContainer{
+    background: #f8f6f9;
+    
+    
+}
+
+#productImg{
+ 
+    max-width: 100%;
+    height:auto;
+    /* object-fit: contain; */
+    border-radius: 3px;
+}
+.title{
+    color: rgb(21, 20, 20);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  /* Limit to 1 line */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-family: inter;
+    font-weight: 400;
+    margin: 0;
+}
+.textBlack{
+    color: rgb(21, 20, 20);
+}
+.fwMedium{
+    font-weight:500;
+    color: #262626;
+}
+@media (max-width:768px){
+    .gridMaker{
+        gap: 1px;
+    grid-template-columns: repeat(auto-fill, minmax(150px,1fr) );
+
+    }
+    #productImg{
+        width: 100%;
+    }
+    /* .title{
+        font-size: 14px;
+    }
+    .imgContainer{
+        height: 150px;
+    } */
+     
+    .toaster{
+    width: 100%;
+}
+}
+
+
+
+
+.wishList{
+    opacity: 0;
+  /* pointer-events: none; */
+}
+
+
+
+.wishlist-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .wishlist-hover:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Shadow on hover */
+  }
+  
+  .imgContainer:hover .wishList {
+    opacity: 1;
+  transition: opacity 0.8s ease;
+
+ /* border:  5px solid #956565; */
+    /* pointer-events: auto; */
+}
+
+/* Skeleton placeholder styles */
+.placeholder-card {
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.placeholder-img {
+  height: 220px;
+  background: #e0e0e0;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.placeholder-text {
+  height: 14px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.placeholder-text.short {
+  width: 60%;
+  margin-top: 8px;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.card-img-top {
+  aspect-ratio: 3 / 4;  /* typical product image */
+  width: 100%;
+  object-fit: cover;
+  background-color: #e0e0e0;
+  display: block;
+}

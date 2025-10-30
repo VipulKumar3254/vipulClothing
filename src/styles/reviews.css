@@ -1,0 +1,21 @@
+.skeleton {
+  background: linear-gradient(100deg, #f0f0f0 30%, #e0e0e0 38%, #f0f0f0 44%);
+  background-size: 800px 104px;
+  animation: loading 1.2s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -800px 0;
+  }
+  100% {
+    background-position: 800px 0;
+  }
+}
+
+.skeleton-comment {
+  height: 20px;
+  margin: 10px 0;
+  width: 100%;
+}

@@ -1,0 +1,85 @@
+"use client";
+
+import { useState } from "react";
+import { db } from "@/firebaseConfig"; // adjust path based on your project
+import { collection, addDoc, doc } from "firebase/firestore";
+
+export default function AddLink() {
+  const [formData, setFormData] = useState({ name: "", path: "" });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      // Correct Firestore path: admin/{docId}/links
+      const adminDocRef = doc(db, "admin", "links");
+      const linksCollectionRef = collection(adminDocRef, "links");
+      await addDoc(linksCollectionRef, formData);
+
+      alert("Link added successfully!");
+      setFormData({ name: "", path: "" });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Error adding link. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center">
+      <div className="mt-5">
+        <h2>Add Navbar Link</h2>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="mt-2 flex-column border p-2 rounded col-12 col-md-8"
+      >
+        <div className="d-flex justify-content-center align-items-center">
+          <label className="block me-2">Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="mt-2 d-flex justify-content-center align-items-center">
+          <label className="block me-2">Path:</label>
+          <input
+            type="text"
+            name="path"
+            value={formData.path}
+            onChange={handleChange}
+            className="w-full p-2 rounded"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="mt-2 mx-auto btn btn-primary px-4 py-2 d-flex align-items-center justify-content-center"
+          disabled={loading}
+        >
+          {loading && (
+            <span
+              className="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          )}
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+      </form>
+    </div>
+  );
+}

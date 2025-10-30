@@ -1,0 +1,80 @@
+.show{
+  display: block;
+}
+.hide{
+  display: none;
+}
+.fontSize{
+  font-size: 19px;
+  padding: 8px 0;
+}
+.logoImg{
+    width: 90px;
+}
+
+
+#link{
+    /* font-weight: bold; */
+    font-weight: 500;
+    color: rgb(53, 52, 52);
+    font-size: 20px;
+
+    /* text-transform: uppercase; */
+    font-family: "Jost Variable";
+    font-family: 'EB Garamond Variable', serif;
+
+}
+@media (max-width: 767.98px) {
+  
+    
+    .mobile-full-height {
+      max-height: 0;
+      /* height: 90vh ; */
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+
+.navbar-collapse.collapsing,
+.navbar-collapse.show {
+  max-height: 100vh !important; /* or more if needed */
+  overflow-y: auto;
+}
+
+  .fontSize{
+    font-size: 15px;
+    padding:10px 0px;
+  }
+  #link{
+    font-family:  sans-serif;
+    font-family: "Jost Variable";
+    padding:10px 0;
+    text-transform: capitalize;
+    /* font-weight:normal; */
+    font-size: 17px;
+    border-bottom: 1px solid rgb(225, 215, 215);
+    width: 100%;
+    font-weight: 500;
+  }
+}
+
+@media screen and (max-width:768px) {
+    .logoImg{
+        width: 70px;    
+        
+    }
+    
+}
+.height{
+    height: 34px;
+}
+.custom-search-input {
+  height: 48px; /* Increase as needed */
+  /* width: 300px; */
+  font-size: 1.1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+
+a{
+}

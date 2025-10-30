@@ -1,0 +1,213 @@
+.ProductCard {
+  /* border: 1px solid #e0e0e0; */
+  /* border-radius: 8px; */
+  /* padding: 6px; */
+  /* margin: 4px; */
+  background-color: white;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07); */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* max-width: 160px; */
+}
+
+.ProductCard:hover {
+  transform: translateY(-5px);
+  /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); */
+}
+
+.ProductImg {
+  width: 100% ;
+  margin:auto;
+  max-height: 200px;
+  object-fit: cover;;
+  object-position: center top;
+  /* border-radius: 8px; */
+  transition: transform 0.3s ease;
+}
+
+.ProductCard:hover .ProductImg {
+  transform: scale(1.05);
+}
+
+.title1 {
+  font-size: .9rem;
+  transition: color 0.3s ease;
+  
+  margin-top: 6px;
+}
+
+.title {
+  font-size: 1rem;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+.ProductCard:hover .title1,
+.ProductCard:hover .title {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .mainContainer1 {
+    width: 100%;
+    padding: 0;
+  }
+
+  .ProductCard {
+    /* margin: 10px 0; */
+  border-radius: 0;
+
+
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.AnimatedTitle {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+.AnimatedPrice {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+.TodayDealsHeader {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.linearGradient {
+  /* background: linear-gradient(to right, #161717, #171718); */
+  background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(52, 140, 150, 1) 0%, rgba(64, 160, 144, 1) 0%, rgba(255, 255, 255, 1) 0%, rgba(227, 227, 193, 1) 25%, rgba(217, 217, 173, 1) 49%, rgba(245, 228, 202, 1) 100%);
+}
+
+@media (max-width: 768px) {
+  .linearGradient{
+    /* background: linear-gradient( rgba(245, 228, 202, 1) 100%); */
+    /* background: linear-gradient( rgba(245, 228, 202, 1) 100%); */
+    background: white;
+
+  }
+
+}
+
+
+.fade-in {
+  animation: fadeInUp 0.6s ease;
+}
+
+/* Placeholder card animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.placeholder-card {
+  background-color: #f0f0f0;
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  height: 180px;
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 120px;
+  background-color: #e0e0e0;
+  /* border-radius: 0.5rem; */
+}
+
+.placeholder-text {
+  height: 16px;
+  background-color: #ddd;
+  /* border-radius: 4px; */
+  margin-top: 0.5rem;
+}
+
+.placeholder-text.short {
+  width: 60%;
+}
+
+
+/* Make image initially invisible */
+.invisible {
+  opacity: 0;
+}
+
+/* Fade-in animation when image loads */
+.fade-in {
+  animation: fadeInImage 0.6s ease forwards;
+}
+
+@keyframes fadeInImage {
+  0% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px; /* Set consistent height */
+  overflow: hidden;
+  border-radius: 0.2rem;
+}
+
+/* Placeholder gray block while image loads */
+.img-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 0.5rem;
+  animation: pulse 1.5s infinite ease-in-out;
+  z-index: 1;
+}
+
+/* Image styles */
+.ProductImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  /* border-radius: 0.5rem; */
+  transition: opacity 0.4s ease;
+  z-index: 2;
+  opacity: 0;
+}
+
+/* Show image when loaded */
+.ProductImg.loaded {
+  opacity: 1;
+}

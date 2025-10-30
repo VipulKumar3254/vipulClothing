@@ -1,0 +1,128 @@
+.cart-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    z-index: 1050;
+    transform: translateX(100%);
+   
+    transition: transform .4s ease-in-out;
+}
+
+.hamburger-btn,.close-btn{
+  color: black;
+}
+
+.slide-in {
+    transform: translateX(0);
+}
+  
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .cart-content {
+    padding: 1rem;
+  }
+  
+
+  @media screen and (max-width:768px) {
+    .cart-container{
+      width: 100%;
+    }
+    
+  }.delete-icon-btn {
+  background-color: #fbe9e7;
+  border: none;
+  border-radius: 50%;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e53935;
+  transition: background 0.3s ease;
+}
+
+.delete-icon-btn:hover {
+  background-color: #ffcdd2;
+  cursor: pointer;
+}
+
+.cart-action-btn {
+  background: none;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #28a745;
+  cursor: pointer;
+  /* padding: 4px 10px; */
+  transition: all 0.2s ease;
+  /* padding: 0; */
+}
+
+.cart-action-btn:hover {
+  background-color: #e6f4ea;
+}
+.cart-action-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* gap: 8px; */
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  padding: 4px 10px;
+  width: fit-content;
+  height: 35px;
+  background-color: #f9f9f9;
+}
+
+.delete-icon-btn,
+.cart-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.delete-icon-btn:hover {
+  color: #dc3545;
+}
+
+.cart-action-btn {
+  font-weight: 500;
+  color: #198754; /* Bootstrap success green */
+}
+
+.cart-action-btn:hover {
+  color: #0f5132;
+}
+
+.quantity{
+ background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
