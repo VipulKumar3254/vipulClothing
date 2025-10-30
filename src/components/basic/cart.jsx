@@ -1,0 +1,173 @@
+"use client";
+import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useEffect, useState } from "react";
+import "@fontsource-variable/jost";
+import "@/styles/cart.css";
+import { Accordion, CardGroup } from "react-bootstrap";
+import { addDoc, collection, deleteDoc, doc, onSnapshot,} from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+function Cart({ toggleCart }) {
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [user, setUser] = useState({});
+  const router = useRouter();
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+        console.log("user not logged in ");
+      }
+    });
+  }, []);
+  useEffect(() => {
+    if (user) {
+      const cartCollectionRef = collection(db, `users/${user.uid}/cart`);
+      const unsubscribe = onSnapshot(cartCollectionRef, (snapshot) => {
+        const cartList = snapshot.docs.map((doc) => ({
+          orderId: doc.id,
+          ...doc.data(),
+        }));
+        setCart(cartList);
+        let total = cartList.reduce((acc, item) => {
+          return acc + parseInt(item.price, 10);
+        }, 0);
+        setTotalPrice(total);
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
+  const removeProduct = async (id) => {
+    try {
+      const cartRef = doc(db, `users/${user.uid}/cart`, id);
+      await deleteDoc(cartRef);
+      toast.success("Product Removed from Cart", { duration: 4000 });
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to Remove Product from Cart", { duration: 4000 });
+    }
+  };
+  const handleCheckout = async () => {
+    try {
+      const userRef = doc(db, "users", user.uid);
+        sessionStorage.removeItem("buyNow");
+      router.push(`/checkout`);
+      toggleCart();
+      return;
+      cart.map(async (item) => {
+        delete item.orderId;
+        console.log("actual order sent from cart to db is", item);
+        const docRef = await addDoc(collection(db, "orders"), {
+          ...item,
+          user: userRef,
+          status: "Order Requested",
+          date: new Date(),
+        });
+        await addDoc(collection(db, `users/${user.uid}/orders`), { docRef });
+        console.log(
+          "and the id of the doc sent to global order is ",
+          docRef.id
+        );
+        const cartCollectionRef = collection(db, `users/${user.uid}/cart`);
+        await deleteDoc(doc(cartCollectionRef, item.orderId));
+      });
+      alert("Purchase successful");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  return (
+    <div
+      id="header"
+      className="d-flex flex-column h-100"
+      style={{ fontFamily: "Jost Variable" }}
+    >
+      <div className="cart-header">
+        <h4 className="fw-normal">Your Cart</h4>
+        <button className="close-button" onClick={toggleCart}>
+          &times;
+        </button>
+      </div>
+      <div id="mainContent" className="cart-content flex-grow-1 overflow-auto">
+        {cart.length > 0 ? (
+          cart.map((item) => (
+            <div className="m-1 d-flex" key={item.orderId}>
+              <div>
+                <img
+                  src={item.photo}
+                  style={{ height: "200px", width: "200px" }}
+                  alt="cart item photo"
+                />
+              </div>
+              <div className="ms-2">
+                <div className="fs-5 fw-normal">{item.title}</div>
+                <div className="fs-6">
+                  <p className="m-0" style={{ fontSize: "12px" }}>
+                    <span className="fw-medium"> Color:</span> {item.color}
+                  </p>
+                  <p className="m-0" style={{ fontSize: "12px" }}>
+                    <span className="fw-medium"> Size:</span> {item.size}
+                  </p>
+                  <p className="text-success m-0" style={{ fontSize: "12px" }}>
+                    In Stock
+                  </p>
+                  <p className="fs-6 fw-bold m-0">
+                    <sup>&#x20B9;</sup>
+                    {item.price}
+                  </p>
+                  <div className="cart-action-container mt-2">
+                    <button
+                      className="delete-icon-btn"
+                      onClick={() => removeProduct(item.orderId)}
+                    >
+                      <DeleteIcon fontSize="medium" />
+                    </button>
+                    <p className="pt-3 px-1 quantity">1</p>
+                    <button
+                      className="cart-action-btn text-success"
+                      onClick={() => handleIncrement(item.id)}
+                    >
+                      +1
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p className="fs-5 text-center">Your Cart is Empty</p>
+          </div>
+        )}
+      </div>
+      {totalPrice > 0 && (
+        <div
+          id="navfooter"
+          className="d-flex p-3 bg-dark align-items-center position-sticky"
+        >
+          <p className="text-secondary fw-normal fs-4 mb-0">
+            Your Total is{" "}
+            <span className="fw-medium text-light">
+              <sup>&#x20B9;</sup>
+              {totalPrice}
+            </span>
+          </p>
+          <button
+            className="btn btn-primary fs-6 fw-medium rounded-0 ms-3"
+            onClick={handleCheckout}
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+export default Cart;

@@ -1,0 +1,28 @@
+.placeholder-card {
+  animation: pulse 1.5s infinite ease-in-out;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.placeholder-img {
+  height: 250px;
+  background: #e0e0e0;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.placeholder-text {
+  height: 14px;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.placeholder-text.short {
+  width: 60%;
+  margin-top: 8px;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}

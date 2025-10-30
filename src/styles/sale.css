@@ -1,0 +1,45 @@
+
+.title2{
+    font-size: 30px;
+}
+.subTitle2{
+    /* color: #dacbcb; */
+    /* font-weight: normal; */
+}
+
+.padding{
+    padding: 1.2rem;
+}
+
+.bgDiv{
+     
+        background-image: url("/200Product.png");
+        background-size: cover;
+        background-position: top;
+        min-height: 48vh;
+}
+@media (max-width: 768px) {
+    .padding{
+        padding: 0px  40px;
+
+       
+    }
+    .title2{
+        font-size: 30px;
+        padding: 0 12px;
+        text-transform:capitalize;
+        text-align: center;
+
+    }
+    .subTitle2{
+        font-size: 12px;
+        padding: 0 12px;
+        text-align: center;
+    }
+    .bgDiv{
+        background: #ffffff;
+    }
+    .btn1{
+        text-align: center;
+    }
+}

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.kumarfashion.com
+
+# Sitemaps
+Sitemap: https://www.kumarfashion.com/sitemap.xml
