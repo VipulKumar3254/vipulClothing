@@ -9,7 +9,7 @@ import { ShoppingCart, Person } from "@mui/icons-material";
 import { db } from "@/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import CartClient from "./CartClient";
-
+export const dynamic = "force-dynamic";
 // ✅ Server Component
 export default async function Navbarr() {
   // Fetch links on server side
@@ -32,7 +32,7 @@ export default async function Navbarr() {
           <ul className="navbar-center">
             {links.map((link) => (
               <li key={link.id}>
-                <Link href={link.path}>{link.name}</Link>
+                <Link href={link.path}> {link.name}</Link>
               </li>
             ))}
           </ul>

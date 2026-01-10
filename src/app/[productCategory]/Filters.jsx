@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import TuneIcon from "@mui/icons-material/Tune";
-import 'bootstrap/dist/js/bootstrap.bundle'; // Ensure Bootstrap JS is imported
+// import 'bootstrap/dist/js/bootstrap.bundle'; // Ensure Bootstrap JS is imported
 
 export default function Filters() {
   const router = useRouter();
@@ -32,20 +32,36 @@ export default function Filters() {
   };
 
   // Listen to offcanvas events
+  // useEffect(() => {
+  //   const offcanvasEl = offcanvasRef.current;
+
+  //   const handleShow = () => setIsOpen(true);
+  //   const handleHide = () => setIsOpen(false);
+
+  //   offcanvasEl.addEventListener("show.bs.offcanvas", handleShow);
+  //   offcanvasEl.addEventListener("hidden.bs.offcanvas", handleHide);
+
+  //   return () => {
+  //     offcanvasEl.removeEventListener("show.bs.offcanvas", handleShow);
+  //     offcanvasEl.removeEventListener("hidden.bs.offcanvas", handleHide);
+  //   };
+  // }, []);
   useEffect(() => {
-    const offcanvasEl = offcanvasRef.current;
+  const offcanvasEl = offcanvasRef.current;
+  if (!offcanvasEl) return;
 
-    const handleShow = () => setIsOpen(true);
-    const handleHide = () => setIsOpen(false);
+  const handleShow = () => setIsOpen(true);
+  const handleHide = () => setIsOpen(false);
 
-    offcanvasEl.addEventListener("show.bs.offcanvas", handleShow);
-    offcanvasEl.addEventListener("hidden.bs.offcanvas", handleHide);
+  offcanvasEl.addEventListener("show.bs.offcanvas", handleShow);
+  offcanvasEl.addEventListener("hidden.bs.offcanvas", handleHide);
 
-    return () => {
-      offcanvasEl.removeEventListener("show.bs.offcanvas", handleShow);
-      offcanvasEl.removeEventListener("hidden.bs.offcanvas", handleHide);
-    };
-  }, []);
+  return () => {
+    offcanvasEl.removeEventListener("show.bs.offcanvas", handleShow);
+    offcanvasEl.removeEventListener("hidden.bs.offcanvas", handleHide);
+  };
+}, []);
+
 
   return (
     <>

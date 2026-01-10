@@ -1,35 +1,51 @@
 import "@fontsource-variable/jost";
-import { db } from "@/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
-import Image from "next/image";
-import Comments from "./Comments";
+import { adminDb } from "@/lib/firebaseAdmin";
+import ProductDescClient from "./ProductDescClient";
+import Comments from "./comments";
 import MoreLikeThis from "./MoreLikeThis";
-import toast, { Toaster } from "react-hot-toast";
-import ProductDescClient from "./ProductDescClient"; // Client component for interactivity
 
-// Fetch data on the server
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+
+// 🔥 SERVER-SAFE FIRESTORE FETCH
 async function getProductData(id) {
-  const docRef = doc(db, "products", id);
-  const docSnap = await getDoc(docRef);
+  if (!id) return null;
 
+  const docSnap = await adminDb
+    .collection("products")
+    .doc(id)
+    .get();
 
-  if (!docSnap.exists()) return null;
-  return { id: docSnap.id, ...docSnap.data() };
-}
+  if (!docSnap.exists) return null;
 
-export async function generateMetadata({ params }) {
-  const product = await getProductData(params.id);
   return {
-    title: product ? `${product.title} | Kumar Fashion Store` : "Product Not Found",
-    description: product?.subTitle || "Premium product from Kumar Fashion Store",
+    id: docSnap.id,
+    ...docSnap.data(),
   };
 }
 
-export default async function ProductDescPage({params }) {
+// ✅ FIXED: params must be awaited
+export async function generateMetadata({ params }) {
+  const { id } = await params;
 
+  const product = await getProductData(id);
 
-  console.log(await params);
-  const product = await getProductData(params.id);
+  return {
+    title: product
+      ? `${product.title} | Kumar Fashion Store`
+      : "Product Not Found | Kumar Fashion Store",
+    description:
+      product?.subTitle ||
+      "Premium fashion product from Kumar Fashion Store",
+  };
+}
+
+// ✅ FIXED: params must be awaited
+export default async function ProductDescPage({ params }) {
+  const { id } = await params;
+
+  const product = await getProductData(id);
 
   if (!product) {
     return <div className="text-center mt-5">Product not found</div>;
@@ -40,7 +56,6 @@ export default async function ProductDescPage({params }) {
       <ProductDescClient product={product} />
       <Comments product={product} />
       <MoreLikeThis product={product} />
-      <Toaster position="bottom-left" />
     </>
   );
 }

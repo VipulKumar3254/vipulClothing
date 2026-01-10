@@ -1,0 +1,61 @@
+.webCarousel {
+  position: relative;
+  width: 100%;
+  height: 450px; /* Default height */
+  overflow: hidden;
+}
+
+.mobileCarousel {
+  max-height: 400px;
+}
+
+.carouselSlide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Image styling scoped to slide */
+.carouselSlide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile carousel images */
+.mobileCarousel img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Adjust height for different screen sizes */
+@media (max-width: 1400px) {
+  .webCarousel {
+    height: 380px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .webCarousel {
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .webCarousel {
+    height: 200px;
+}
+
+@media (max-width: 576px) {
+  .webCarousel {
+    height: 230px;
+    width: 100%;
+  }
+
+  .carouselSlide img {
+    object-fit: fill;
+  }
+}
+}

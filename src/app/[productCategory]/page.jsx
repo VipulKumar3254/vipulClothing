@@ -12,7 +12,7 @@ const categoryDesc = (category) =>
     ? "High quality joggers: NS fabric, NS terry, four-way, lycra (stretchable) and more."
     : "Kumar Fashion Store offers a wide variety of garments like lowers, T‑shirts, shirts, jeans and more.";
 
-// ✅ This pre-builds all category pages for static export
+// Pre-build all category pages
 export async function generateStaticParams() {
   return [
     { productCategory: "jeans" },
@@ -22,27 +22,23 @@ export async function generateStaticParams() {
   ];
 }
 
+// Metadata
 export async function generateMetadata({ params }) {
-  const { productCategory } = params;
+  const { productCategory } = await params; // OK here
   return {
     title: `${productCategory} from Kumar Fashion Store`,
     description: categoryDesc(productCategory),
   };
 }
 
+// Page component
 export default async function Page({ params, searchParams }) {
-  const { productCategory } =  await params;
-  const searchTerm = await  searchParams?.sort ?? null  // 
-  console.log(searchTerm);
+  const { productCategory } = await  params;  // ✅ remove await
+  const searchTerm = searchParams?.sort ?? null;  // ✅ remove await
+
+  console.log(params);
+
   return (
-    // <ProductDisplay
-    //   category={productCategory}
-    //   searchTerm={searchTerm}
-    //   categoryDesc={categoryDesc(productCategory)}
-    // />
-    
-
-<ProductsPage category={productCategory} searchParams={searchParams} />
-
+    <ProductsPage category={productCategory} searchParams={searchParams} />
   );
 }

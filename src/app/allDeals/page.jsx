@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/firebaseConfig";
 import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
 import Link from "next/link";
-import "@/styles/productDisplay.css";
+import "@/styles/productDisplay.module.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import Image from "next/image";
