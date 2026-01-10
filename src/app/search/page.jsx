@@ -5,10 +5,11 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import "@/styles/productDisplay.css";
+import "@/styles/productDisplay.module.css";
 import Link from "next/link";
 import Filters from "../[productCategory]/Filters";
 import ProductCardClient from "../[productCategory]/ProductCardClient";
+import { Suspense } from "react";
 
 // 🔹 Unified search function (server-side)
 async function getProducts(term) {
@@ -94,7 +95,9 @@ export default async function SearchPage({ searchParams }) {
         <div className="btn btn-secondary px-3">Filters</div>
       </div>
 
-      <Filters />
+         <Suspense fallback={null}>
+        <Filters />
+      </Suspense>
 
       <div className="container mt-3 px-1">
         <div className="row g-0 g-md-4">

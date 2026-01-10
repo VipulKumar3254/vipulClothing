@@ -1,12 +1,14 @@
 import { db } from "@/firebaseConfig";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import Filters from "./Filters";
-import "@/styles/productDisplay.css";
+import "@/styles/productDisplay.module.css"
 import Link from "next/link";
 import ProductCardClient from "./ProductCardClient";
+import { Suspense } from "react";
 
 // 🔹 Fetch products from Firestore with proper handling
-async function getProducts(category, filters = {}) {
+async function getProducts(params, filters = {}) {
+   const category = params?.category;
   const constraints = [];
 
   if (category) {
@@ -50,7 +52,10 @@ export default async function ProductsPage({ category, searchParams }) {
     <>
       <div className="row ">
         <div className="col-12" >
-          <Filters />
+             <Suspense fallback={null}>
+        <Filters />
+      </Suspense>
+          {/* <Filters /> */}
         </div>
         {/* Filters component */}
 

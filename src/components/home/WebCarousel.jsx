@@ -1,26 +1,22 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import Image from "next/image"; // ✅ Next.js Image
-import img1 from "/public/carousel1.webp";
-import img1mobile from "/public/carousel1mobile.webp";
-import img2 from "/public/carousel2.webp";
-import img2mobile from "/public/carousel2mobile.webp";
-import mobileCarousel from "/public/mobilecarousel.webp";
-import "@/styles/WebCarousel.css";
+import Image from "next/image";
+import styles from "@/styles/WebCarousel.module.css";
 
 function WebCarousel() {
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [images, setImages] = useState([]);
 
-  // Handle window resizing safely
   useEffect(() => {
     const updateIsMobile = () => {
       const mobile = window.innerWidth <= 576;
       setIsMobile(mobile);
+
       setImages([
-        { src: mobile ? img1mobile : img1 },
-        { src: mobile ? img2mobile : img2 },
+        mobile ? "/carousel1mobile.webp" : "/carousel1.webp",
+        mobile ? "/carousel2mobile.webp" : "/carousel2.webp",
       ]);
     };
 
@@ -29,39 +25,50 @@ function WebCarousel() {
     return () => window.removeEventListener("resize", updateIsMobile);
   }, []);
 
-  // Carousel index rotation
   useEffect(() => {
     if (images.length > 0) {
       const interval = setInterval(() => {
-        setIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setIndex((prev) => (prev + 1) % images.length);
       }, 4000);
+
       return () => clearInterval(interval);
     }
   }, [images]);
 
   return (
     <>
-      <div className="web-carousel d-md-flex align-items-center justify-content-center d-none">
-        {images.map((img, i) => (
+      {/* Desktop Carousel */}
+      <div
+        className={`${styles.webCarousel} d-md-flex align-items-center justify-content-center d-none`}
+      >
+        {images.map((src, i) => (
           <div
             key={i}
-            className="carousel-slide position-absolute w-100 h-100"
+            className={`${styles.carouselSlide} position-absolute w-100 h-100`}
             style={{
               opacity: i === index ? 1 : 0,
               transition: "opacity 1s ease-in-out",
             }}
           >
             <Image
-              src={img.src}
+              src={src}
               alt={`Slide ${i}`}
               fill
-              style={{ objectFit: "cover" }}
+              priority={i === 0}
             />
           </div>
         ))}
       </div>
-      <div className="mobileCarousel d-sm-block d-md-none">
-        <Image src={mobileCarousel} alt="Mobile Carousel" />
+
+      {/* Mobile Carousel */}
+      <div className={styles.mobileCarousel + " d-sm-block d-md-none"}>
+        <Image
+          src="/mobilecarousel.webp"
+          alt="Mobile Carousel"
+          width={1200}
+          height={600}
+          priority
+        />
       </div>
     </>
   );

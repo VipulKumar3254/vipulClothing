@@ -6,7 +6,7 @@ import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import "@/styles/productDisplay.css"; // using same style as ProductDisplay
+import "@/styles/productDisplay.module.css"; // using same style as ProductDisplay
 
 const WishList = () => {
   const [wishlistItems, setWishlistItems] = useState([]);

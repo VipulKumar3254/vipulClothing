@@ -60,7 +60,7 @@ export default async function NavScrollExample() {
                   className=" link nav-link"
                   id="link"
                 >
-                  {link.name}
+                   {link.name}
                 </Link>
               ))}
             </Nav>
