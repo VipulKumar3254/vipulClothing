@@ -7,83 +7,83 @@ import {
 } from "firebase/firestore";
 import "@/styles/productDisplay.module.css";
 import Link from "next/link";
-import Filters from "../[productCategory]/Filters";
-import ProductCardClient from "../[productCategory]/ProductCardClient";
+import Filters from "@/components/Filters";
+import ProductCardClient from "@/components/ProductCardClient";
 import { Suspense } from "react";
+import { Await } from "react-router-dom";
 
 // 🔹 Unified search function (server-side)
 async function getProducts(term) {
-  const map = new Map();
-  const underMatch = term.match(/under\s+(\d+)/i);
-  const aboveMatch = term.match(/above\s+(\d+)/i);
-  const price = parseInt(underMatch?.[1] || aboveMatch?.[1]);
-  const condition = underMatch ? "<=" : ">=";
-  const filteredWords = term
-    .replace(/under\s+\d+|above\s+\d+/gi, "")
-    .split(/\s+/)
-    .filter(Boolean);
-
   try {
-    if (!isNaN(price) && filteredWords.length) {
-      const snap = await getDocs(
-        query(collection(db, "products"), where("price", condition, price))
-      );
-      snap.docs.forEach((doc) => {
-        const data = doc.data();
-        const title = data.title?.toLowerCase() || "";
-        const tags = (data.tags || []).map((t) => t.toLowerCase());
-        if (
-          filteredWords.some((w) => title.includes(w) || tags.includes(w))
-        ) {
-          map.set(doc.id, { id: doc.id, ...data });
-        }
-      });
-    } else {
-      // title search
-      const snap = await getDocs(
+    if (!term) return [];
+
+    const words = term
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    const map = new Map();
+
+    // Firestore array-contains ek word pe kaam karta hai
+    const queries = words.map((word) =>
+      getDocs(
         query(
           collection(db, "products"),
-          where("title", ">=", term),
-          where("title", "<=", term + "\uf8ff")
+          where("tags", "array-contains", word)
         )
-      );
-      snap.docs.forEach((doc) =>
-        map.set(doc.id, { id: doc.id, ...doc.data() })
-      );
+      )
+    );
 
-      // tag search
-      const tagSearches = term.split(/\s+/).map((w) =>
-        getDocs(
-          query(collection(db, "products"), where("tags", "array-contains", w))
-        )
-      );
-      const results = await Promise.all(tagSearches);
-      results.forEach((snap) => {
-        snap.docs.forEach((doc) =>
-          map.set(doc.id, { id: doc.id, ...doc.data() })
-        );
+    const snapshots = await Promise.all(queries);
+
+    snapshots.forEach((snap) => {
+      snap.docs.forEach((doc) => {
+        map.set(doc.id, { id: doc.id, ...doc.data() });
       });
+    });
 
-      // exact price match
-      const exact = await getDocs(
-        query(collection(db, "products"), where("price", "==", parseInt(term)))
-      );
-      exact.docs.forEach((doc) =>
-        map.set(doc.id, { id: doc.id, ...doc.data() })
-      );
-    }
+    console.log("Server Products:", map.size);
 
     return Array.from(map.values());
   } catch (err) {
-    console.error("Search error", err);
+    console.error("Search error:", err);
     return [];
   }
 }
+export async function generateMetadata({ searchParams }) {
+  const params = await searchParams; // 👈 IMPORTANT
+  const term = params?.search || "";
+
+  return {
+    title: term
+      ? `${term} | Kumar Fashion Store`
+      : "Search | Kumar Fashion Store",
+    description: term
+      ? `Buy ${term} online from Kumar Fashion Store`
+      : "Search products at Kumar Fashion Store",
+  };
+}
+
 
 // 🔹 Server Component Search Page
 export default async function SearchPage({ searchParams }) {
-  const term = searchParams?.search || "";
+const params = await searchParams;
+
+
+
+  const term = params.search || "";
   const products = term ? await getProducts(term.toLowerCase()) : [];
+ console.log(
+  "Products count:",
+  Array.isArray(products) ? products.length : "not array"
+);
+
+console.log(
+  "First product:",
+  products?.[0] ? JSON.stringify(products[0]) : "none"
+);
+
+  
 
   return (
     <>
@@ -115,7 +115,7 @@ export default async function SearchPage({ searchParams }) {
                     <div className="position-relative">
                       <img
                         src={
-                          Array.isArray(item.photo) ? item.photo[0] : item.photo
+                          Array.isArray(item.photo) ? item.photo[0].url : item.photo.url
                         }
                         className="card-img-top"
                         alt={item.title}

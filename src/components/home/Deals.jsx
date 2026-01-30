@@ -70,7 +70,7 @@ function Deals() {
                     <div className="image-wrapper">
                       {!loadedImages[product.id] && <div className="img-placeholder" />}
                       <Image
-                        src={product.photo[0]}
+                        src={product.photo[0].url}
                         alt={product.title}
                         width={200}
                         height={200}

@@ -17,23 +17,28 @@ const Footer = () => {
             <h5 className="fw-normal">Product Categories</h5>
             <ul className="list-unstyled">
               <li>
-                <Link href="/jeans" className="link-underline-dark link-secondary">
+                <Link href="/jeans-for-men" className="link-underline-dark link-secondary">
                   Jeans
                 </Link>
               </li>
               <li>
-                <Link href="/shirts" className="link-underline-dark link-secondary">
+                <Link href="/shirts-for-men" className="link-underline-dark link-secondary">
                   Shirts
                 </Link>
               </li>
               <li>
-                <Link href="/tshirts" className="link-underline-dark link-secondary">
+                <Link href="/tshirts-for-men" className="link-underline-dark link-secondary">
                   T-Shirts
                 </Link>
               </li>
               <li>
-                <Link href="/joggers" className="link-underline-dark link-secondary">
+                <Link href="/joggers-for-men" className="link-underline-dark link-secondary">
                   Joggers
+                </Link>
+              </li>
+                <li>
+                <Link href="/jackets" className="link-underline-dark link-secondary">
+                  Jackets
                 </Link>
               </li>
             </ul>

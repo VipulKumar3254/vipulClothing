@@ -30,7 +30,7 @@ const HeroSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Get any Product at 250/- only
+                Get any Product at 400/- only
               </motion.h2>
 
               <motion.p
@@ -61,7 +61,7 @@ const HeroSection = () => {
               >
                 <button
                   className="fw-normal rounded-0 btn btn-dark"
-                  onClick={() => router.push("/rs200Products")}
+                  onClick={() => router.push("/products-under-400")}
                 >
                   Shop Now
                 </button>

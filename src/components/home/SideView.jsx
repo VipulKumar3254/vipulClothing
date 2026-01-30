@@ -18,19 +18,19 @@ const slides = [
     img: img1,
     title: "Summer Vibes",
     desc: "Light and breezy fits for the season.",
-    link: "joggers",
+    link: "joggers-for-men",
   },
   {
     img: img2,
     title: "Beach Ready",
     desc: "Look great while staying cool.",
-    link: "tshirts",
+    link: "tshirts-for-men",
   },
   {
     img: img3,
     title: "Street Style",
     desc: "Trendy picks for your daily grind.",
-    link: "shirts",
+    link: "shirts-for-men",
   },
 ];
 

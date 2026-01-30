@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';         // Bootstrap CSS
 import 'bootstrap-icons/font/bootstrap-icons.css';     // Bootstrap Icons
 import { Jost } from 'next/font/google';               // Example Google Font
 import AdminPanelLinks from '@/components/admin/AdminPanelLinks';
+import Script from 'next/script';
 
 // Load Jost font
 const jost = Jost({
@@ -35,10 +36,7 @@ export default function allProducts({ children }) {
         {/* Footer could be here if global */}
         
         {/* Bootstrap JS (only if you use modals, dropdowns, etc.) */}
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          async
-        ></script>
+      
       </body>
     </html>
   );

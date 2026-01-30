@@ -135,7 +135,7 @@ const ProductsHorizontalGrid = ({ categoryTag, title }) => {
                 {product.photo && (
                   <Image
                     style={{ backgroundColor: "#F7F7F7", width:"auto" }}
-                    src={product.photo[0]} // Firebase returns array
+                    src={product.photo[0].url} // Firebase returns array
                     alt={product.title}
                     width={300}
                     height={300}

@@ -35,10 +35,7 @@ export default function orders({ children }) {
         {/* Footer could be here if global */}
         
         {/* Bootstrap JS (only if you use modals, dropdowns, etc.) */}
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-          async
-        ></script>
+       
       </body>
     </html>
   );

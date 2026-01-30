@@ -1,6 +1,6 @@
 "use client"; // ✅ Needed because we use state, refs, effects
 
-import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { db, storage } from "@/firebaseConfig"; // ✅ Adjust path for Next.js project
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -102,61 +102,82 @@ export default function UploadProduct() {
       },
     }));
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !product.title ||
-      !product.subTitle ||
-      !product.price ||
-      !product.desc.length ||
-      !product.photo.length ||
-      !product.sizes.length ||
-      !product.color.length
-    ) {
-      alert1.current.style.display = "block";
-      setalertMessage("Please fill all the fields.");
-      return;
+  // 🔒 Validation (same as yours)
+  if (
+    !product.title ||
+    !product.subTitle ||
+    !product.price ||
+    !product.desc.length ||
+    !product.photo.length ||
+    !product.sizes.length ||
+    !product.color.length
+  ) {
+    alert1.current.style.display = "block";
+    setalertMessage("Please fill all the fields.");
+    return;
+  }
+
+  if (!product.category) {
+    categoryMessage.current.style.display = "block";
+    return;
+  }
+
+  spinner.current.style.display = "block";
+
+  try {
+    // 🆕 Create product ref first
+    const productRef = doc(collection(db, "products"));
+    const productId = productRef.id;
+
+    let photos = [];
+
+    for (const file of product.photo) {
+      const imgRef = ref(
+        storage,
+        `products/${productId}/${Date.now()}_${file.name}`
+      );
+
+      await uploadBytes(imgRef, file);
+      const url = await getDownloadURL(imgRef);
+
+      photos.push({
+        url,
+        path: imgRef.fullPath,
+        alt: "" // later editable
+      });
     }
-    if (!product.category) {
-      categoryMessage.current.style.display = "block";
-      return;
-    } else {
-      categoryMessage.current.style.display = "none";
-    }
 
-    spinner.current.style.display = "block";
-    try {
-      let photoURL = [];
-      for (const file of product.photo) {
-        const photoRef = ref(storage, `photos/${file.name}`);
-        await uploadBytes(photoRef, file);
-        photoURL.push(await getDownloadURL(photoRef));
-      }
+    const productData = {
+      title: product.title,
+      subTitle: product.subTitle,
+      price: parseInt(product.price),
+      desc: product.desc,
+      sizes: product.sizes,
+      color: product.color,
+      photo: photos,          // 🔥 UPDATED
+      category: product.category,
+      tags: product.tags,
+      stock: product.stock,
+      createdAt: Date.now(),
+      sku: `KFS-${productId.slice(0, 6).toUpperCase()}`
+    };
 
-      const productData = {
-        title: product.title,
-        subTitle: product.subTitle,
-        price: parseInt(product.price),
-        desc: product.desc,
-        sizes: product.sizes,
-        color: product.color,
-        photo: photoURL,
-        category: product.category,
-        tags: product.tags,
-        stock: product.stock,
-      };
+    await setDoc(productRef, productData);
 
-      await addDoc(collection(db, "products"), productData);
-      alert1.current.style.display = "block";
-      setalertMessage("Product has been uploaded.");
-    } catch (error) {
-      console.error(error);
-      alert1.current.style.display = "block";
-      setalertMessage("Error while uploading product.");
-    }
-    spinner.current.style.display = "none";
-  };
+    alert1.current.style.display = "block";
+    setalertMessage("Product uploaded successfully 🚀");
+  } catch (error) {
+    console.error(error);
+    alert1.current.style.display = "block";
+    setalertMessage("Error while uploading product.");
+  }
+
+  spinner.current.style.display = "none";
+};
+
 
   return (
     <>
