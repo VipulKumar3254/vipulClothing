@@ -90,7 +90,7 @@ export default function ProductDescClient({ product }) {
               {product.photo.map((photo, index) => (
                 <div className="mt-2 ms-1" key={index}>
                   <Image
-                    src={photo}
+                    src={photo.url}
                     alt="Product Thumbnail"
                     width={35}
                     height={50}
@@ -102,12 +102,13 @@ export default function ProductDescClient({ product }) {
             </div>
             <Image
               className="productImg mx-auto d-block"
-              src={product.photo[selectedImageIndex]}
+              src={product.photo[selectedImageIndex].url}
               width={500}
               height={500} 
               
               alt="Product"
             />
+            
           </div>
 
           {/* Product Details */}
@@ -168,7 +169,7 @@ export default function ProductDescClient({ product }) {
                                                     setSelectedImageIndex(index)
                                                 }} value={color} id={color} />
                                                 <label htmlFor={color}>
-                                                    <img src={product.photo[index]} style={{ height: "80px", width: "60px", objectFit: "cover" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
+                                                    <img src={product.photo[index].url} style={{ height: "80px", width: "60px", objectFit: "cover" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
                                                     <p>{color}</p>
                                                 </label>
                                             </div>

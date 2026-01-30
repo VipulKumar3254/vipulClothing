@@ -52,9 +52,9 @@ export default function RootLayout({ children }) {
         <link rel="canonical" href="https://kumarfashion.in/" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Script
+         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
         />
         <UserProvider>
           {/* <Navbar /> */}

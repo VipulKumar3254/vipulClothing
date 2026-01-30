@@ -58,7 +58,8 @@ const AllProducts = () => {
   };
 
   const handleUpdateProduct = (productId) => {
-    router.push(`/admin/updateProduct/${productId}`);
+    
+    router.push(`/adminPanel/updateProduct/${productId}`);
   };
 
   const handleDeleteProduct = async (productId) => {
