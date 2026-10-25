@@ -60,7 +60,7 @@ const WishList = () => {
   };
 
   return (
-    <div className="container py-4">
+    <div className="store-catalog store-wishlist-page">
       <h2 className="mb-4 text-center" style={{ fontFamily: "Jost Variable" }}>
         Your Wishlist
       </h2>
@@ -79,7 +79,10 @@ const WishList = () => {
               >
                 <div className="position-relative">
                   <Image
-                    src={Array.isArray(item.photo) ? item.photo[0] : item.photo}
+                    src={(() => {
+                      const photo = Array.isArray(item.photo) ? item.photo[0] : item.photo;
+                      return typeof photo === "string" ? photo : photo?.url || "/logo.png";
+                    })()}
                     alt={item.title}
                     className="card-img-top"
                     width={300}

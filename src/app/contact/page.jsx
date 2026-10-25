@@ -47,13 +47,13 @@ const Contact = () => {
         <h3>We are at</h3>
         <p className="m-0"><strong>Address:</strong> Vill. Gyaspur, Sonipat 131027</p>
         <p className="m-0"><strong>Phone:</strong>+91 8307949189</p>
-        <p className="m-0"><strong>Email:</strong> vipulkumar3254gmail.com</p>
+        <p className="m-0"><strong>Email:</strong> vipulkumar3254@gmail.com</p>
         <p className="m-0"><strong>Business Hours:</strong> Mon - Sat, 9 AM - 6 PM</p>
       </div>
     </div>
     {/* form section */}
   </div>
-      <div className="contact-container" style={{ padding: "50px 20px" }}>
+      <div className="store-contact-page" style={{ padding: "50px 20px" }}>
         <h2 className="text-center mb-4">Contact Us</h2>
         <p className="text-center">
           If you have any questions or concerns, feel free to reach out to us!

@@ -2,24 +2,14 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./globals.css"; // your custom CSS
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/basic/Navbar";
-import Footer from "@/components/basic/footer";
+import StoreHeader from "@/components/store/StoreHeader";
+import StoreFooter from "@/components/store/StoreFooter";
 import { UserProvider } from "@/components/context/context";
-import SearchProducts from "@/components/home/SearchProducts";
 import { Toaster } from "react-hot-toast";
-import Navbarr from "@/components/basic/NayaNav";
+import { colorStyle } from "@/color";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Kumar Fashion Store",
@@ -46,22 +36,20 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" style={colorStyle}>
       <head>
         <meta name="apple-mobile-web-app-title" content="Kumar " />
         <link rel="canonical" href="https://kumarfashion.in/" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
          <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
           strategy="afterInteractive"
         />
         <UserProvider>
-          {/* <Navbar /> */}
-          <Navbarr/>
-          <SearchProducts />
+          <StoreHeader />
           {children}
-          <Footer />
+          <StoreFooter />
         </UserProvider>
               <Toaster position="bottom-left" />
       </body>

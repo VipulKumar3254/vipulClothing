@@ -7,7 +7,6 @@ import { db } from "@/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
-import Image from "next/image";
 import "@/styles/deals.css";
 import SideView from "./SideView";
 
@@ -61,24 +60,36 @@ function Deals() {
                   </div>
                 </Col>
               ))
-            : deals.map((product) => (
+            : deals.map((product) => {
+                const firstPhoto = Array.isArray(product.photo)
+                  ? product.photo[0]
+                  : product.photo;
+                const imageUrl =
+                  typeof firstPhoto === "string" ? firstPhoto : firstPhoto?.url;
+
+                return (
                 <Col key={product.id} className="mt-2 p-1">
                   <div
                     className="ProductCard"
                     onClick={() => router.push(`/product/${product.id}`)}
                   >
                     <div className="image-wrapper">
-                      {!loadedImages[product.id] && <div className="img-placeholder" />}
-                      <Image
-                        src={product.photo[0].url}
-                        alt={product.title}
-                        width={200}
-                        height={200}
-                        className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
-                        onLoad={() =>
-                          setLoadedImages((prev) => ({ ...prev, [product.id]: true }))
-                        }
-                      />
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={product.title || "Product"}
+                          className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
+                          onLoad={() =>
+                            setLoadedImages((prev) => ({ ...prev, [product.id]: true }))
+                          }
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                            setLoadedImages((prev) => ({ ...prev, [product.id]: true }));
+                          }}
+                        />
+                      ) : (
+                        <div className="img-placeholder" />
+                      )}
                     </div>
                     <p
                       style={{
@@ -90,7 +101,8 @@ function Deals() {
                     <p className="p-0 m-0 fs-6 title text-start">Rs. {product.price}</p>
                   </div>
                 </Col>
-              ))}
+                );
+              })}
         </Row>
       </div>
 

@@ -103,6 +103,7 @@ const Comments = ({ product }) => {
 
   return (
     <div
+      id="product-reviews"
       style={{ minHeight: "400px", fontFamily: "Jost Variable" }}
       className="container p-3 mt-4"
     >

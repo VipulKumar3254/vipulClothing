@@ -105,7 +105,7 @@ export default function AllDeals() {
   };
 
   return (
-    <div className="container mt-3 px-1" style={{ fontFamily: "Jost Variable" }}>
+    <div className="store-catalog store-deals-page" style={{ fontFamily: "Jost Variable" }}>
       <h2 className="text-center mb-4 fw-normal fs-2">🔥 Hot Deals 🔥</h2>
 
       {loading ? (

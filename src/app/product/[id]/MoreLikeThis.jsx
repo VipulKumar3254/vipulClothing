@@ -10,6 +10,11 @@ import "@/styles/moreLikeThis.css"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 
+const styledTogether = [
+  { id: "featured-olive-joggers", title: "Olive Modular Joggers", price: 499, tag: "BOTTOMWEAR", href: "/joggers-for-men", photo: "/stitch-assets/desktop/2cf81c12-bbe7-41be-a0d0-bbf76d33f422.jpg" },
+  { id: "featured-raw-indigo", title: "Raw Indigo Selvedge", price: 1299, tag: "OUTERWEAR", href: "/jeans-for-men", photo: "/stitch-assets/desktop/2c7b986d-9e2b-4335-b416-fc497db2697f.jpg" },
+];
+
 const MoreLikeThis = ({ product }) => {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +32,7 @@ const MoreLikeThis = ({ product }) => {
   // Fetch related products
   useEffect(() => {
     const fetchRelated = async () => {
-      if (!product?.price || !product?.category) return;
+        if (!product?.price || !product?.category) { setLoading(false); return; }
 
       try {
         const minPrice = product.price * 0.8;
@@ -35,7 +40,7 @@ const MoreLikeThis = ({ product }) => {
 
         const q = query(
           collection(db, "products"),
-          where("category", "==", product.category),
+          where("category", "array-contains", Array.isArray(product.category) ? product.category[0] : product.category),
           where("price", ">=", minPrice),
           where("price", "<=", maxPrice)
         );
@@ -83,74 +88,18 @@ const MoreLikeThis = ({ product }) => {
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ minHeight: "400px" }} className="mt-5 p-2">
-        <h4 style={{ fontFamily: "Jost Variable" }} className="mb-3">More Like This</h4>
-        <div className="d-flex overflow-auto pb-2">
-          {[...Array(4)].map((_, idx) => (
-            <div key={idx} className="me-3">
-              <div className="skeleton skeleton-card"></div>
-              <div className="skeleton skeleton-title"></div>
-              <div className="skeleton skeleton-price"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+  const suggestions = related.length >= 2 ? related.slice(0, 4).map((item) => ({ ...item, href: `/product/${item.id}`, tag: Array.isArray(item.category) ? item.category[0] : item.category })) : styledTogether;
   return (
-    <div style={{ minHeight: "400px" }} className="mt-5 px-1">
-      <h4 style={{ fontFamily: "Jost Variable" }} className="mb-3">More Like This</h4>
-      {related.length > 0 ? (
-        <div className="d-flex overflow-auto pb-2">
-          {related.map((item) => (
-            
-<Link href={`/product/${item.id}`} className="text-decoration-none text-dark">
-  <div className="card me-3 shadow-sm border-0" key={item.id}>
-    <div style={{ height: "350px", overflow: "hidden", borderRadius: "8px" }}>
-      <img
-        src={item.photo}
-        className="img-fluid w-100 h-100"
-        alt={item.title}
-        style={{ objectFit: "cover", borderRadius: "8px" }}
-      />
-    </div>
-    <div className="card-body p-2">
-      <h6
-        style={{ fontFamily: "Jost Variable", fontSize: "0.9rem" }}
-        className="card-title mb-1 fw-normal"
-      >
-        {item.title}
-      </h6>
-      <div className="mt-2">
-        <p
-          style={{ backgroundColor: "#FFCE12" }}
-          className="d-inline px-3 py-1 border rounded-5 cursor-pointer"
-          onClick={(e) => handleWishList(e, item)}
-        >
-          Add to Wishlist
-        </p>
+    <section className="store-pairings">
+      <div className="store-pairings-heading"><div><span>ATELIER WARDROBE</span><h2>Pairs Impeccably With</h2></div><small>Styled together ↗</small></div>
+      <div className="store-pairings-grid">
+        {suggestions.map((item, index) => {
+          const image = Array.isArray(item.photo) ? item.photo[0] : item.photo;
+          return <Link href={item.href} key={item.id} className="store-pairing-card"><div className="store-pairing-image"><img src={image || styledTogether[index % styledTogether.length].photo} alt={item.title}/><button type="button" aria-label={`Quick add ${item.title}`} onClick={(event)=>{event.preventDefault();toast("Choose a size on the product page to add this item.")}}>+</button></div><span>{item.tag || "ESSENTIAL"}</span><h3>{item.title}</h3><strong>₹{new Intl.NumberFormat("en-IN").format(Number(item.price)||0)}</strong></Link>;
+        })}
       </div>
-      <p
-        style={{ fontFamily: "Jost Variable", fontSize: "1.1rem" }}
-        className="card-text fw-medium text-muted mb-0 mt-2 price"
-      >
-        ₹{item.price}
-      </p>
-    </div>
-  </div>
-</Link>
-          ))}
-        </div>
-      ) : (
-        <p style={{ fontFamily: "Jost Variable" }} className="text-center">
-          No similar products found.
-        </p>
-      )}
       <Toaster position="bottom-left" />
-    </div>
+    </section>
   );
 };
 

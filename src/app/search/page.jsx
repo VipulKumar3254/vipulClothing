@@ -10,7 +10,6 @@ import Link from "next/link";
 import Filters from "@/components/Filters";
 import ProductCardClient from "@/components/ProductCardClient";
 import { Suspense } from "react";
-import { Await } from "react-router-dom";
 
 // 🔹 Unified search function (server-side)
 async function getProducts(term) {
@@ -86,7 +85,8 @@ console.log(
   
 
   return (
-    <>
+    <main className="store-search-results store-catalog">
+      <div className="store-catalog-heading"><div><span className="store-eyebrow">KUMAR FASHION STORE</span><h1>{term ? `Search: ${term}` : "Search"}</h1></div><p>{products.length} pieces found</p></div>
       {/* Mobile filter toggle button */}
       <div
         className="mt-1 d-block d-md-none text-center"
@@ -158,6 +158,6 @@ console.log(
           )}
         </div>
       </div>
-    </>
+    </main>
   );
 }

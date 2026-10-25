@@ -1,14 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';         // Bootstrap CSS
 import 'bootstrap-icons/font/bootstrap-icons.css';     // Bootstrap Icons
-import { Jost } from 'next/font/google';               // Example Google Font
+import "@fontsource-variable/jost";
 import AdminPanelLinks from '@/components/admin/AdminPanelLinks';
 
-// Load Jost font
-const jost = Jost({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-jost'
-});
+
 
 export const metadata = {
   title: 'Manage new arrivals',
@@ -17,7 +12,7 @@ export const metadata = {
 
 export default function manageNewArrivals({ children }) {
   return (
-    <html lang="en" className={jost.variable}>
+    <html lang="en">
         {/* Navbar could be here if global */}
         
              <div className="row m-0" style={{ backgroundColor: "#F9FAFB" }}>
