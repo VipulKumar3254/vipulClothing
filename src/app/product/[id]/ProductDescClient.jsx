@@ -14,6 +14,9 @@ import homeDelivery from "@/../public/DescBanner/homeDelivery.png";
 import cod from "@/../public/DescBanner/cod.png";
 
 export default function ProductDescClient({ product }) {
+  const photos = (Array.isArray(product.photo) ? product.photo : [product.photo])
+    .map((photo) => (typeof photo === "string" ? photo : photo?.url))
+    .filter((url) => typeof url === "string" && url.length > 0);
   const [purchase, setPurchase] = useState({});
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState("");
@@ -38,7 +41,7 @@ export default function ProductDescClient({ product }) {
       ...purchase,
       title: product.title,
       price: product.price,
-      photo: product.photo,
+      photo: photos,
       productId: product.id,
       userId: user?.uid,
     };
@@ -87,27 +90,31 @@ export default function ProductDescClient({ product }) {
         <div className="row">
           <div className="col-xl-5">
             <div className="d-flex flex-row">
-              {product.photo.map((photo, index) => (
+              {photos.map((photo, index) => (
                 <div className="mt-2 ms-1" key={index}>
                   <Image
-                    src={photo.url}
+                    src={photo}
                     alt="Product Thumbnail"
                     width={35}
                     height={50}
                     onClick={() => setSelectedImageIndex(index)}
-                    className="border rounded"
+                    className={`border rounded product-thumbnail ${selectedImageIndex === index ? "product-thumbnail-selected" : ""}`}
+                    style={{ width: 48, height: 64, objectFit: "cover", cursor: "pointer" }}
                   />
                 </div>
               ))}
             </div>
-            <Image
-              className="productImg mx-auto d-block"
-              src={product.photo[selectedImageIndex].url}
-              width={500}
-              height={500} 
-              
-              alt="Product"
-            />
+            {photos.length > 0 && (
+              <Image
+                className="productImg mx-auto d-block"
+                src={photos[Math.min(selectedImageIndex, photos.length - 1)]}
+                width={500}
+                height={500}
+                style={{ width: "100%", height: "auto", objectFit: "contain" }}
+                priority
+                alt={product.title || "Product"}
+              />
+            )}
             
           </div>
 
@@ -166,10 +173,10 @@ export default function ProductDescClient({ product }) {
                                             <div key={index} className="d-inline text-center ms-2">
                                                 <input type="radio" name="color" className="d-none" onChange={(e) => {
                                                     handleChange(e);
-                                                    setSelectedImageIndex(index)
+                                                    if (index < photos.length) setSelectedImageIndex(index)
                                                 }} value={color} id={color} />
                                                 <label htmlFor={color}>
-                                                    <img src={product.photo[index].url} style={{ height: "80px", width: "60px", objectFit: "cover" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />
+                                                    {photos[index] && <img src={photos[index]} style={{ height: "80px", width: "60px", objectFit: "cover" }} className={` ms-2 ${selectedColor == color ? "highlighedImage" : ""}`} alt={color} />}
                                                     <p>{color}</p>
                                                 </label>
                                             </div>
