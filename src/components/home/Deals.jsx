@@ -19,7 +19,10 @@ function Deals() {
   useEffect(() => {
     const fetchDeals = async () => {
       try {
-        const q = query(collection(db, "products"), where("isDeal", "==", true));
+        const q = query(
+          collection(db, "products"),
+          where("isDeal", "==", true),
+        );
         const snapshot = await getDocs(q);
         const fetchedDeals = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -35,9 +38,17 @@ function Deals() {
 
   return (
     <div className="mt-2 d-md-flex d-sm-block justify-content-between align-items-center">
-      <div ref={dealsRef} className={`mainContainer1 col-md-3 ${inView ? "fade-in" : ""}`}>
-        <div className={`d-flex justify-content-start justify-content-md-center align-items-baseline ${inView ? "TodayDealsHeader" : ""}`}>
-          <h3 style={{ fontFamily: "Jost Variable", fontWeight: "500" }} className="m-0 ms-2">
+      <div
+        ref={dealsRef}
+        className={`mainContainer1 col-md-3 ${inView ? "fade-in" : ""}`}
+      >
+        <div
+          className={`d-flex justify-content-start justify-content-md-center align-items-baseline ${inView ? "TodayDealsHeader" : ""}`}
+        >
+          <h3
+            style={{ fontFamily: "Jost Variable", fontWeight: "500" }}
+            className="m-0 ms-2"
+          >
             Today's Deals
           </h3>
           <p
@@ -68,39 +79,51 @@ function Deals() {
                   typeof firstPhoto === "string" ? firstPhoto : firstPhoto?.url;
 
                 return (
-                <Col key={product.id} className="mt-2 p-1">
-                  <div
-                    className="ProductCard"
-                    onClick={() => router.push(`/product/${product.id}`)}
-                  >
-                    <div className="image-wrapper">
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt={product.title || "Product"}
-                          className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
-                          onLoad={() =>
-                            setLoadedImages((prev) => ({ ...prev, [product.id]: true }))
-                          }
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
-                            setLoadedImages((prev) => ({ ...prev, [product.id]: true }));
-                          }}
-                        />
-                      ) : (
-                        <div className="img-placeholder" />
-                      )}
+                  <Col key={product.id} className="mt-2 p-1">
+                    <div
+                      className="ProductCard"
+                      onClick={() => router.push(`/product/${product.id}`)}
+                    >
+                      <div className="image-wrapper">
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            alt={product.title || "Product"}
+                            className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
+                            onLoad={() =>
+                              setLoadedImages((prev) => ({
+                                ...prev,
+                                [product.id]: true,
+                              }))
+                            }
+                            onError={(event) => {
+                              event.currentTarget.style.display = "none";
+                              setLoadedImages((prev) => ({
+                                ...prev,
+                                [product.id]: true,
+                              }));
+                            }}
+                          />
+                        ) : (
+                          <div className="img-placeholder" />
+                        )}
+                      </div>
+                      <p
+                        style={{
+                          fontFamily: "Jost Variable",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        className="p-0 m-0 title1 text-center text-uppercase"
+                      >
+                        {product.title}
+                      </p>
+                      <p className="p-0 m-0 fs-6 title text-start">
+                        Rs. {product.price}
+                      </p>
                     </div>
-                    <p
-                      style={{
-                        fontFamily: "Jost Variable",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }} className="p-0 m-0 title1 text-center text-uppercase">{product.title}</p>
-                    <p className="p-0 m-0 fs-6 title text-start">Rs. {product.price}</p>
-                  </div>
-                </Col>
+                  </Col>
                 );
               })}
         </Row>
