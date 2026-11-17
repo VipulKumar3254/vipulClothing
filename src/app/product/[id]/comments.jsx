@@ -103,6 +103,10 @@ const Comments = ({ product }) => {
 
   return (
     <div
+<<<<<<< HEAD
+      id="product-reviews"
+=======
+>>>>>>> origin/master
       style={{ minHeight: "400px", fontFamily: "Jost Variable" }}
       className="container p-3 mt-4"
     >

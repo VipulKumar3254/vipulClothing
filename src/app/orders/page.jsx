@@ -99,7 +99,11 @@ function UserOrders() {
   return (
     <>
       <div
+<<<<<<< HEAD
+        className={`store-account-page store-orders-page`}
+=======
         className={`container my-4 `}
+>>>>>>> origin/master
         style={{ minHeight: "500px" , fontFamily:"Jost Variable" }}
       >
         <Toaster position="bottom-left" />

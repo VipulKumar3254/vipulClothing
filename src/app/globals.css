@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+@import "@fontsource-variable/jost";
+@import "../styles/storefront.css";
+
+=======
+>>>>>>> origin/master
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -29,8 +35,11 @@ a {
   text-decoration: none;
 }
 
+<<<<<<< HEAD
+=======
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 }
+>>>>>>> origin/master

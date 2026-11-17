@@ -3,7 +3,11 @@ import "@fontsource-variable/jost";
 
 function TermsConditions() {
   return (
+<<<<<<< HEAD
+    <div className="store-legal-page" style={{fontFamily:"Jost Variable"}}>
+=======
     <div className="container py-5 px-3 px-md-5 text-dark" style={{fontFamily:"Jost Variable"}}>
+>>>>>>> origin/master
       <h1 className="text-center mb-4">Terms and Conditions</h1>
       <p>
         Welcome to <strong>Kumar Fashion Store</strong>. By accessing or using our website and services, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.

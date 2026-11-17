@@ -11,7 +11,11 @@ export async function generateMetadata() {
 
 function PrivacyPolicy() {
   return (
+<<<<<<< HEAD
+    <div className="store-legal-page" style={{fontFamily:"Jost Variable"}}>
+=======
     <div className="container py-5 px-3 px-md-5" style={{fontFamily:"Jost Variable"}}>
+>>>>>>> origin/master
       <h1 className="mb-4    fw-normal text-center">Privacy Policy</h1>
       <p>
         At <strong>Kumar Fashion Store</strong>, your privacy is a top priority. This Privacy Policy explains how we collect, use, and protect your information when you use our website or services.

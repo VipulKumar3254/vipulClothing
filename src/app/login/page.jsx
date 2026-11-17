@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import StoreAuthPage from "@/components/auth/StoreAuthPage";
+
+export default function LoginPage() {
+  return <StoreAuthPage mode="login" />;
+=======
 "use client";
 import React, { useState, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -110,4 +116,5 @@ const { setUser } = useContext(userContext);
       </div>
     </div>
   );
+>>>>>>> origin/master
 }

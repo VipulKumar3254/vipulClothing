@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import StoreCatalog from "@/components/store/StoreCatalog";
+
+export const dynamic = "force-dynamic";
+export default function CatalogPage({ searchParams }) {
+  return <StoreCatalog title="Joggers" category="joggers" searchParams={searchParams} />;
+=======
 import { db } from "@/firebaseConfig";
 import {
   collection,
@@ -139,4 +146,5 @@ export default async function JeansForMenPage({ searchParams }) {
       </div>
     </div>
   );
+>>>>>>> origin/master
 }

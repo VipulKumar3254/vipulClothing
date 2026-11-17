@@ -10,6 +10,14 @@ import "@/styles/moreLikeThis.css"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 
+<<<<<<< HEAD
+const styledTogether = [
+  { id: "featured-olive-joggers", title: "Olive Modular Joggers", price: 499, tag: "BOTTOMWEAR", href: "/joggers-for-men", photo: "/stitch-assets/hd/desktop/summer-vibes.jpg" },
+  { id: "featured-raw-indigo", title: "Raw Indigo Selvedge", price: 1299, tag: "OUTERWEAR", href: "/jeans-for-men", photo: "/stitch-assets/hd/desktop/category-jeans.jpg" },
+];
+
+=======
+>>>>>>> origin/master
 const MoreLikeThis = ({ product }) => {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +35,11 @@ const MoreLikeThis = ({ product }) => {
   // Fetch related products
   useEffect(() => {
     const fetchRelated = async () => {
+<<<<<<< HEAD
+        if (!product?.price || !product?.category) { setLoading(false); return; }
+=======
       if (!product?.price || !product?.category) return;
+>>>>>>> origin/master
 
       try {
         const minPrice = product.price * 0.8;
@@ -35,7 +47,11 @@ const MoreLikeThis = ({ product }) => {
 
         const q = query(
           collection(db, "products"),
+<<<<<<< HEAD
+          where("category", "array-contains", Array.isArray(product.category) ? product.category[0] : product.category),
+=======
           where("category", "==", product.category),
+>>>>>>> origin/master
           where("price", ">=", minPrice),
           where("price", "<=", maxPrice)
         );
@@ -83,6 +99,20 @@ const MoreLikeThis = ({ product }) => {
     }
   };
 
+<<<<<<< HEAD
+  const suggestions = related.length >= 2 ? related.slice(0, 4).map((item) => ({ ...item, href: `/product/${item.id}`, tag: Array.isArray(item.category) ? item.category[0] : item.category })) : styledTogether;
+  return (
+    <section className="store-pairings">
+      <div className="store-pairings-heading"><div><span>ATELIER WARDROBE</span><h2>Pairs Impeccably With</h2></div><small>Styled together ↗</small></div>
+      <div className="store-pairings-grid">
+        {suggestions.map((item, index) => {
+          const image = Array.isArray(item.photo) ? item.photo[0] : item.photo;
+          return <Link href={item.href} key={item.id} className="store-pairing-card"><div className="store-pairing-image"><img src={image || styledTogether[index % styledTogether.length].photo} alt={item.title}/><button type="button" aria-label={`Quick add ${item.title}`} onClick={(event)=>{event.preventDefault();toast("Choose a size on the product page to add this item.")}}>+</button></div><span>{item.tag || "ESSENTIAL"}</span><h3>{item.title}</h3><strong>₹{new Intl.NumberFormat("en-IN").format(Number(item.price)||0)}</strong></Link>;
+        })}
+      </div>
+      <Toaster position="bottom-left" />
+    </section>
+=======
   if (loading) {
     return (
       <div style={{ minHeight: "400px" }} className="mt-5 p-2">
@@ -151,6 +181,7 @@ const MoreLikeThis = ({ product }) => {
       )}
       <Toaster position="bottom-left" />
     </div>
+>>>>>>> origin/master
   );
 };
 

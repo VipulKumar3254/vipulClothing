@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import StoreAuthPage from "@/components/auth/StoreAuthPage";
+
+export default function CreateAccountPage() {
+  return <StoreAuthPage mode="signup" />;
+=======
 "use client";
 import React, { useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -266,4 +272,5 @@ export default function AccountCreation() {
       <Toaster position="bottom-left" />
     </div>
   );
+>>>>>>> origin/master
 }

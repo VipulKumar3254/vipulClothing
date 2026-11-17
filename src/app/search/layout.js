@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+export default function SearchLayout({ children }) {
+  return (
+    <div>{children}</div>
+=======
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -31,5 +36,6 @@ export default function RootLayout({ children }) {
         {children}
       </body>
     </html>
+>>>>>>> origin/master
   );
 }

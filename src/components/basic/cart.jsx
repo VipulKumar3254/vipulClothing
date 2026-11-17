@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import "@fontsource-variable/jost";
 import "@/styles/cart.css";
 import { Accordion, CardGroup } from "react-bootstrap";
+<<<<<<< HEAD
+import { addDoc, collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
+=======
 import { addDoc, collection, deleteDoc, doc, onSnapshot,} from "firebase/firestore";
+>>>>>>> origin/master
 import { db } from "@/firebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
@@ -35,7 +39,11 @@ function Cart({ toggleCart }) {
         }));
         setCart(cartList);
         let total = cartList.reduce((acc, item) => {
+<<<<<<< HEAD
+          return acc + parseInt(item.price, 10) * (Number(item.quantity) || 1);
+=======
           return acc + parseInt(item.price, 10);
+>>>>>>> origin/master
         }, 0);
         setTotalPrice(total);
       });
@@ -44,6 +52,18 @@ function Cart({ toggleCart }) {
       };
     }
   }, [user]);
+<<<<<<< HEAD
+  const changeQuantity = async (item, delta) => {
+    const nextQuantity = Math.max(1, (Number(item.quantity) || 1) + delta);
+    try {
+      await setDoc(doc(db, `users/${user.uid}/cart`, item.orderId), { quantity: nextQuantity }, { merge: true });
+    } catch (error) {
+      console.error("Unable to update cart quantity", error);
+      toast.error("Could not update quantity");
+    }
+  };
+=======
+>>>>>>> origin/master
   const removeProduct = async (id) => {
     try {
       const cartRef = doc(db, `users/${user.uid}/cart`, id);
@@ -101,7 +121,11 @@ function Cart({ toggleCart }) {
             <div className="m-1 d-flex" key={item.orderId}>
               <div>
                 <img
+<<<<<<< HEAD
+                  src={Array.isArray(item.photo) ? item.photo[0] : item.photo}
+=======
                   src={item.photo}
+>>>>>>> origin/master
                   style={{ height: "200px", width: "200px" }}
                   alt="cart item photo"
                 />
@@ -120,7 +144,11 @@ function Cart({ toggleCart }) {
                   </p>
                   <p className="fs-6 fw-bold m-0">
                     <sup>&#x20B9;</sup>
+<<<<<<< HEAD
+                    {item.price} {Number(item.quantity) > 1 ? `× ${item.quantity}` : ""}
+=======
                     {item.price}
+>>>>>>> origin/master
                   </p>
                   <div className="cart-action-container mt-2">
                     <button
@@ -129,10 +157,18 @@ function Cart({ toggleCart }) {
                     >
                       <DeleteIcon fontSize="medium" />
                     </button>
+<<<<<<< HEAD
+                    <button className="cart-action-btn" onClick={() => changeQuantity(item, -1)} aria-label="Decrease quantity">−</button>
+                    <p className="pt-3 px-1 quantity">{Number(item.quantity) || 1}</p>
+                    <button
+                      className="cart-action-btn text-success"
+                      onClick={() => changeQuantity(item, 1)}
+=======
                     <p className="pt-3 px-1 quantity">1</p>
                     <button
                       className="cart-action-btn text-success"
                       onClick={() => handleIncrement(item.id)}
+>>>>>>> origin/master
                     >
                       +1
                     </button>

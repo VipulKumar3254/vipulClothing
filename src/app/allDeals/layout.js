@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+export const metadata = {
+  title: "Today’s Deals | Kumar Fashion Store",
+  description: "Discover current deals at Kumar Fashion Store.",
+};
+
+export default function AllDealsLayout({ children }) {
+  return <div className="store-deals-layout">{children}</div>;
+=======
 import 'bootstrap/dist/css/bootstrap.min.css';         // Bootstrap CSS
 import 'bootstrap-icons/font/bootstrap-icons.css';     // Bootstrap Icons
 import { Jost } from 'next/font/google';               // Example Google Font
@@ -44,4 +53,5 @@ export default function allDeals({ children }) {
       </body>
     </html>
   );
+>>>>>>> origin/master
 }

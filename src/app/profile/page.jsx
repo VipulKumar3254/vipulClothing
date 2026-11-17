@@ -86,7 +86,11 @@ export default function Profile() {
   }
 
   return (
+<<<<<<< HEAD
+    <div className="store-account-page store-profile-page" style={{ fontFamily: "Jost Variable" }}>
+=======
     <div className="mb-5" style={{ fontFamily: "Jost Variable" }}>
+>>>>>>> origin/master
       {/* Mobile profile image */}
       <div className="col-md-12 text-center d-md-none mt-1 bg-dark">
         <div className="profile-img-wrapper mx-auto">
