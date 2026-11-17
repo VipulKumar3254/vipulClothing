@@ -11,8 +11,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 
 const styledTogether = [
-  { id: "featured-olive-joggers", title: "Olive Modular Joggers", price: 499, tag: "BOTTOMWEAR", href: "/joggers-for-men", photo: "/stitch-assets/desktop/2cf81c12-bbe7-41be-a0d0-bbf76d33f422.jpg" },
-  { id: "featured-raw-indigo", title: "Raw Indigo Selvedge", price: 1299, tag: "OUTERWEAR", href: "/jeans-for-men", photo: "/stitch-assets/desktop/2c7b986d-9e2b-4335-b416-fc497db2697f.jpg" },
+  { id: "featured-olive-joggers", title: "Olive Modular Joggers", price: 499, tag: "BOTTOMWEAR", href: "/joggers-for-men", photo: "/stitch-assets/hd/desktop/summer-vibes.jpg" },
+  { id: "featured-raw-indigo", title: "Raw Indigo Selvedge", price: 1299, tag: "OUTERWEAR", href: "/jeans-for-men", photo: "/stitch-assets/hd/desktop/category-jeans.jpg" },
 ];
 
 const MoreLikeThis = ({ product }) => {

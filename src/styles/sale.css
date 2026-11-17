@@ -10,11 +10,15 @@
 .padding{
     padding: 1.2rem;
 }
+.store-offer-li{
+    font-size: 12px;
+    padding: 0.5rem 0;
+}
 
 .bgDiv{
      
         background-image: url("/200Product.png");
-        background-size: cover;
+    background-size: cover;
         background-position: top;
         min-height: 48vh;
 }
@@ -32,7 +36,7 @@
 
     }
     .subTitle2{
-        font-size: 12px;
+        font-size: 16px;
         padding: 0 12px;
         text-align: center;
     }

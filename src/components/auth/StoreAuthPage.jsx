@@ -376,7 +376,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
         <div className="auth-login-layout">
           <section className="auth-login-hero">
             <Image
-              src="/stitch-assets/desktop/d5232177-b576-4ccc-963b-8a51fe54633b.jpg"
+              src="/stitch-assets/hd/desktop/story-atelier.jpg"
               alt="A tailor carefully cutting fabric in the Sonipat workshop"
               fill
               priority
@@ -643,7 +643,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
             <aside className="auth-signup-aside">
               <div className="auth-signup-story">
                 <Image
-                  src="/stitch-assets/desktop/d5232177-b576-4ccc-963b-8a51fe54633b.jpg"
+                  src="/stitch-assets/hd/desktop/story-atelier.jpg"
                   alt="Kumar Fashion tailor at work"
                   fill
                   sizes="(max-width: 760px) 100vw, 40vw"
@@ -796,7 +796,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
                           id="signup-name"
                           name="name"
                           autoComplete="name"
-                          placeholder="Vipul Kumar"
+                          placeholder="Enter Your Full Name"
                           value={form.name}
                           onChange={updateField}
                         />
@@ -814,7 +814,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
                           type="email"
                           name="email"
                           autoComplete="email"
-                          placeholder="vipulkumar@gmail.com"
+                          placeholder="Enter Your Email Address"
                           value={form.email}
                           onChange={updateField}
                         />
@@ -832,7 +832,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
                           inputMode="tel"
                           name="phone"
                           autoComplete="tel-national"
-                          placeholder="83079 49189"
+                          placeholder="Enter Your Phone Number"
                           value={form.phone}
                           onChange={updateField}
                         />
@@ -859,7 +859,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
                         id="signup-address"
                         name="address"
                         autoComplete="street-address"
-                        placeholder="House No., Street name, Landmark, Village or Colony Name"
+                        placeholder="Enter Your Delivery Address / House"
                         value={form.address}
                         onChange={updateField}
                       />
@@ -879,7 +879,7 @@ export default function StoreAuthPage({ mode: initialMode }) {
                           inputMode="numeric"
                           autoComplete="postal-code"
                           maxLength={6}
-                          placeholder="131001"
+                          placeholder="Enter Your Pincode"
                           value={form.pincode}
                           onChange={updateField}
                         />

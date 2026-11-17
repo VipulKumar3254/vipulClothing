@@ -8,6 +8,11 @@ import StoreFooter from "@/components/store/StoreFooter";
 import { UserProvider } from "@/components/context/context";
 import { Toaster } from "react-hot-toast";
 import { colorStyle } from "@/color";
+import { Inter, Playfair_Display } from "next/font/google";
+
+// Typefaces used in the Figma design (Inter for UI text, Playfair Display for headings)
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const playfair = Playfair_Display({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-playfair", display: "swap" });
 
 
 
@@ -36,7 +41,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" style={colorStyle}>
+    <html lang="en" style={colorStyle} className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <meta name="apple-mobile-web-app-title" content="Kumar " />
         <link rel="canonical" href="https://kumarfashion.in/" />

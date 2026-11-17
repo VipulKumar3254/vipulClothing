@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const desktopDeals = [
-  { title: "Black Minimalist Tee", category: "T-SHIRT • DAILY ESSENTIAL", description: "100% Combed Heavy Cotton 220 GSM", price: 399, originalPrice: 799, badge: "50% OFF", image: "/stitch-assets/deals/black-minimalist-tee.jpg", href: "/tshirts-for-men" },
-  { title: "Cocoa Knit Resort Polo", category: "POLOS • TEXTURED KNIT", description: "Breathable mercerized piqué knit", price: 699, originalPrice: 1199, badge: "BEST SELLER", image: "/stitch-assets/deals/cocoa-knit-polo.jpg", href: "/shirts-for-men" },
-  { title: "Olive Utility Joggers", category: "JOGGERS • ACTIVE FLEECE", description: "Pre-shrunk terry fleece with stretch", price: 599, originalPrice: 999, badge: "DROP 01", image: "/stitch-assets/deals/olive-utility-joggers.jpg", href: "/joggers-for-men" },
-  { title: "Raw Selvedge Denim Coat", category: "OUTERWEAR • DENIM", description: "13.5oz Rigid Cotton Denim", price: 1299, originalPrice: 2499, badge: "TRENDING", image: "/stitch-assets/deals/raw-selvedge-denim-coat.jpg", href: "/jackets" },
+  { title: "Black Minimalist Tee", category: "T-SHIRT • DAILY ESSENTIAL", description: "100% Combed Heavy Cotton 220 GSM", price: 399, originalPrice: 799, badge: "50% OFF", image: "/stitch-assets/hd/desktop/deal-black-minimalist-tee.jpg", href: "/tshirts-for-men" },
+  { title: "Cocoa Knit Resort Polo", category: "POLOS • TEXTURED KNIT", description: "Breathable mercerized piqué knit", price: 699, originalPrice: 1199, badge: "BEST SELLER", image: "/stitch-assets/hd/desktop/deal-cocoa-knit-polo.jpg", href: "/shirts-for-men" },
+  { title: "Olive Utility Joggers", category: "JOGGERS • ACTIVE FLEECE", description: "Pre-shrunk terry fleece with stretch", price: 599, originalPrice: 999, badge: "DROP 01", image: "/stitch-assets/hd/desktop/deal-olive-utility-joggers.jpg", href: "/joggers-for-men" },
+  { title: "Raw Selvedge Denim Coat", category: "OUTERWEAR • DENIM", description: "13.5oz Rigid Cotton Denim", price: 1299, originalPrice: 2499, badge: "TRENDING", image: "/stitch-assets/hd/desktop/deal-raw-selvedge-denim-coat.jpg", href: "/jackets" },
 ];
 const mobileDeals = [
-  { title: "Essential Oversized Tee", category: "T-SHIRT", price: 399, originalPrice: 799, badge: "50% OFF", image: "/stitch-assets/deals/mobile-essential-tee.jpg", href: "/tshirts-for-men" },
-  { title: "Summer Relaxed Jogger", category: "JOGGERS", price: 499, originalPrice: 999, badge: "50% OFF", image: "/stitch-assets/deals/mobile-summer-jogger.jpg", href: "/joggers-for-men" },
-  { title: "Resort Camp Collar Shirt", category: "SHIRTS", price: 599, originalPrice: 1199, badge: "SPECIAL", image: "/stitch-assets/deals/mobile-resort-shirt.jpg", href: "/shirts-for-men" },
-  { title: "Denim Workwear Overshirt", category: "JACKETS", price: 899, originalPrice: 1499, badge: "HOT", image: "/stitch-assets/deals/mobile-denim-overshirt.jpg", href: "/jackets" },
+  { title: "Essential Oversized Tee", category: "T-SHIRT", price: 399, originalPrice: 799, badge: "50% OFF", image: "/stitch-assets/hd/mobile/deal-essential-tee.jpg", href: "/tshirts-for-men" },
+  { title: "Summer Relaxed Jogger", category: "JOGGERS", price: 499, originalPrice: 999, badge: "50% OFF", image: "/stitch-assets/hd/mobile/deal-summer-jogger.jpg", href: "/joggers-for-men" },
+  { title: "Resort Camp Collar Shirt", category: "SHIRTS", price: 599, originalPrice: 1199, badge: "SPECIAL", image: "/stitch-assets/hd/mobile/deal-resort-shirt.jpg", href: "/shirts-for-men" },
+  { title: "Denim Workwear Overshirt", category: "JACKETS", price: 899, originalPrice: 1499, badge: "HOT", image: "/stitch-assets/hd/mobile/deal-denim-overshirt.jpg", href: "/jackets" },
 ];
 
 function imageUrl(photo) { const first=Array.isArray(photo)?photo[0]:photo;return typeof first==="string"?first:first?.url||""; }
