@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /adminPanel
+
+Sitemap: https://kumarfashion.in/sitemap.xml

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/wishList/layout,_N_T_/wishList/page,_N_T_/wishList"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/wishList/__PAGE__",
+    "/wishList",
+    "/_index",
+    "/_head"
+  ]
+}

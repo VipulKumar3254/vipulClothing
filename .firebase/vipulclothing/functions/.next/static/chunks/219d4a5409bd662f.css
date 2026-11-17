@@ -1,0 +1,1 @@
+.placeholder-card{border-radius:.5rem;animation:1.5s ease-in-out infinite pulse;overflow:hidden}.placeholder-img{background:#e0e0e0;border-radius:.5rem .5rem 0 0;height:250px}.placeholder-text{background:#ddd;border-radius:4px;height:14px}.placeholder-text.short{width:60%;margin-top:8px}@keyframes pulse{0%{opacity:1}50%{opacity:.5}to{opacity:1}}

@@ -7,6 +7,10 @@ import { db } from "@/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+<<<<<<< HEAD
+=======
+import Image from "next/image";
+>>>>>>> origin/master
 import "@/styles/deals.css";
 import SideView from "./SideView";
 
@@ -19,10 +23,14 @@ function Deals() {
   useEffect(() => {
     const fetchDeals = async () => {
       try {
+<<<<<<< HEAD
         const q = query(
           collection(db, "products"),
           where("isDeal", "==", true),
         );
+=======
+        const q = query(collection(db, "products"), where("isDeal", "==", true));
+>>>>>>> origin/master
         const snapshot = await getDocs(q);
         const fetchedDeals = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -38,6 +46,7 @@ function Deals() {
 
   return (
     <div className="mt-2 d-md-flex d-sm-block justify-content-between align-items-center">
+<<<<<<< HEAD
       <div
         ref={dealsRef}
         className={`mainContainer1 col-md-3 ${inView ? "fade-in" : ""}`}
@@ -49,6 +58,11 @@ function Deals() {
             style={{ fontFamily: "Jost Variable", fontWeight: "500" }}
             className="m-0 ms-2"
           >
+=======
+      <div ref={dealsRef} className={`mainContainer1 col-md-3 ${inView ? "fade-in" : ""}`}>
+        <div className={`d-flex justify-content-start justify-content-md-center align-items-baseline ${inView ? "TodayDealsHeader" : ""}`}>
+          <h3 style={{ fontFamily: "Jost Variable", fontWeight: "500" }} className="m-0 ms-2">
+>>>>>>> origin/master
             Today's Deals
           </h3>
           <p
@@ -71,6 +85,7 @@ function Deals() {
                   </div>
                 </Col>
               ))
+<<<<<<< HEAD
             : deals.map((product) => {
                 const firstPhoto = Array.isArray(product.photo)
                   ? product.photo[0]
@@ -126,6 +141,38 @@ function Deals() {
                   </Col>
                 );
               })}
+=======
+            : deals.map((product) => (
+                <Col key={product.id} className="mt-2 p-1">
+                  <div
+                    className="ProductCard"
+                    onClick={() => router.push(`/product/${product.id}`)}
+                  >
+                    <div className="image-wrapper">
+                      {!loadedImages[product.id] && <div className="img-placeholder" />}
+                      <Image
+                        src={product.photo[0].url}
+                        alt={product.title}
+                        width={200}
+                        height={200}
+                        className={`ProductImg ${loadedImages[product.id] ? "loaded" : "loading"}`}
+                        onLoad={() =>
+                          setLoadedImages((prev) => ({ ...prev, [product.id]: true }))
+                        }
+                      />
+                    </div>
+                    <p
+                      style={{
+                        fontFamily: "Jost Variable",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }} className="p-0 m-0 title1 text-center text-uppercase">{product.title}</p>
+                    <p className="p-0 m-0 fs-6 title text-start">Rs. {product.price}</p>
+                  </div>
+                </Col>
+              ))}
+>>>>>>> origin/master
         </Row>
       </div>
 

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/[productCategory]/layout,_N_T_/[productCategory]/page,_N_T_/shirts"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/$d$productCategory/__PAGE__",
+    "/$d$productCategory",
+    "/_index",
+    "/_head"
+  ]
+}

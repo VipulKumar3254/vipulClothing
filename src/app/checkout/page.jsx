@@ -87,7 +87,11 @@ useEffect(() => {
     const product = raw ? JSON.parse(raw) : null;
     setOrderDetails(product ? [product] : []);
 
+<<<<<<< HEAD
     const subtotal = product ? (Number(product.price) || 0) * (Number(product.quantity) || 1) : 0;
+=======
+    const subtotal = product ? product.price : 0;
+>>>>>>> origin/master
     setSubtotal(subtotal);
 
     setLoading(false);
@@ -102,7 +106,11 @@ useEffect(() => {
       setOrderDetails(cartData);
 
       const subtotal = cartData.reduce(
+<<<<<<< HEAD
         (total, item) => total + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+=======
+        (total, item) => total + (item.price || 0),
+>>>>>>> origin/master
         0
       );
       console.log("subtotal is", subtotal);

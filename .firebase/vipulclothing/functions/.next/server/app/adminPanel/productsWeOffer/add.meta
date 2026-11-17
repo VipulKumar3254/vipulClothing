@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/adminPanel/layout,_N_T_/adminPanel/productsWeOffer/layout,_N_T_/adminPanel/productsWeOffer/add/layout,_N_T_/adminPanel/productsWeOffer/add/page,_N_T_/adminPanel/productsWeOffer/add"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/adminPanel/productsWeOffer/add/__PAGE__",
+    "/adminPanel/productsWeOffer/add",
+    "/adminPanel/productsWeOffer",
+    "/adminPanel",
+    "/_index",
+    "/_head"
+  ]
+}

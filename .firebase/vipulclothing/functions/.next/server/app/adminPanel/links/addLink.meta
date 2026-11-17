@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/adminPanel/layout,_N_T_/adminPanel/links/layout,_N_T_/adminPanel/links/addLink/layout,_N_T_/adminPanel/links/addLink/page,_N_T_/adminPanel/links/addLink"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/adminPanel/links/addLink/__PAGE__",
+    "/adminPanel/links/addLink",
+    "/adminPanel/links",
+    "/adminPanel",
+    "/_index",
+    "/_head"
+  ]
+}
